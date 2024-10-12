@@ -1,0 +1,5 @@
+helmCharts:
+  - name: vault
+    repo: https://helm.releases.hashicorp.com
+    version: "0.28.0"
+    namespace: vault

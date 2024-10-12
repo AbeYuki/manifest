@@ -1,0 +1,13 @@
+helmCharts:
+  - name: longhorn
+    repo: https://charts.longhorn.io
+    version: "1.7.1"
+    releaseName: longhorn
+    namespace: longhorn-system
+    additionalValuesFiles:
+      - additional-values.yaml
+    valuesFile: ../../base/longhorn/values.yaml
+    valuesMerge: override
+    valuesInline:
+      persistence:
+        defaultFsType: xfs
