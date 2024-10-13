@@ -1,0 +1,5 @@
+helmCharts:
+  - name: kube-state-metrics
+    repo: https://prometheus-community.github.io/helm-charts
+    version: "5.19.0"
+    namespace: monitoring
