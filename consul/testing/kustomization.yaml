@@ -2,4 +2,5 @@ helmCharts:
   - name: consul
     repo: https://helm.releases.hashicorp.com
     version: "1.5.0"
+    releaseName: consul
     namespace: consul

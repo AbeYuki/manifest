@@ -3,3 +3,4 @@ helmCharts:
     repo: https://kedacore.github.io/charts
     version: "2.15.1"
     namespace: keda
+    releaseName: keda
