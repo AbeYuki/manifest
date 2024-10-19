@@ -4,3 +4,4 @@ helmCharts:
     version: "2.34.3"
     releaseName: argo-rollouts
     namespace: argo-rollouts
+    valuesFile: ../base/argo-rollouts/values.yaml

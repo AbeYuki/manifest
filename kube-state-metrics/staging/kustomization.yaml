@@ -4,3 +4,4 @@ helmCharts:
     version: "5.19.0"
     namespace: monitoring
     releaseName: kube-state-metrics
+    valuesFile: ../base/kube-state-metrics/values.yaml

@@ -4,3 +4,4 @@ helmCharts:
     version: "15.5.16"
     releaseName: postgresql
     namespace: airflow
+    valuesFile: ../base/airflow-postgresql/values.yaml
