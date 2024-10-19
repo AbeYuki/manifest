@@ -4,4 +4,4 @@ helmCharts:
     version: "1.14.0"
     releaseName: airflow
     namespace: airflow
-    valuesFile: ../base/airflow/values.yaml
+    valuesFile: ../../base/airflow/values.yaml
