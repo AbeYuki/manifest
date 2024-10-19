@@ -1,0 +1,5 @@
+helmCharts:
+  - name: argo-workflows
+    repo: https://argoproj.github.io/argo-helm
+    version: "0.33.1"
+    namespace: argo-workflows
