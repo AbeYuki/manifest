@@ -1,3 +1,4 @@
 server:
   dataStorage:
+    size: 1Gi
     storageClass: "longhorn-replica-none"
