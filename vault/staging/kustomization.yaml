@@ -5,3 +5,5 @@ helmCharts:
     namespace: vault
     releaseName: vault
     valuesFile: ../../base/vault/values.yaml
+    additionalValuesFiles:
+      - additional-values.yaml
