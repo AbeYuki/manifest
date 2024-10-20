@@ -3,4 +3,4 @@ helmCharts:
     repo: https://actions-runner-controller.github.io/actions-runner-controller
     version: "0.23.7"
     namespace: github-actions
-    valuesFile: ../../base/actions-runnser-controller/values.yaml
+    valuesFile: ../values.yaml

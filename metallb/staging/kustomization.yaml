@@ -1,0 +1,7 @@
+helmCharts:
+  - name: metallb
+    repo: https://metallb.github.io/metallb
+    version: "2.15.1"
+    namespace: metallb-system
+    releaseName: metallb
+    valuesFile: ../values.yaml

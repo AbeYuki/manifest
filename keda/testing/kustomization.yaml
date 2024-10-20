@@ -4,4 +4,4 @@ helmCharts:
     version: "2.15.1"
     namespace: keda
     releaseName: keda
-    valuesFile: ../../base/keda/values.yaml
+    valuesFile: ../values.yaml

@@ -4,7 +4,7 @@ helmCharts:
     version: "1.7.1"
     releaseName: longhorn
     namespace: longhorn-system
-    valuesFile: ../../base/longhorn/values.yaml
+    valuesFile: ../values.yaml
     additionalValuesFiles:
       - additional-values.yaml
     valuesMerge: override
