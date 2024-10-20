@@ -6,3 +6,12 @@ helmCharts:
     namespace: ingress-nginx
     additionalValuesFiles:
       - additional-values.yaml
+    valuesInline:
+      controller:
+        kind: "DaemonSet"
+        dnsPolicy: "ClusterFirstWithHostNet"
+        hostNetwork: true
+        admissionWebhooks:
+          enabled: true
+        service:
+          externalTrafficPolicy: "Local"
