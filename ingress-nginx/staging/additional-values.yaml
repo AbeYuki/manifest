@@ -1,3 +1,8 @@
 controller:
+  kind: "DaemonSet"
+  dnsPolicy: "ClusterFirstWithHostNet"
+  hostNetwork: true
+  admissionWebhooks:
+    enabled: true
   service:
-    loadBalancerIP: ""
+    externalTrafficPolicy: "Local"
