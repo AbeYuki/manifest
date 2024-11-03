@@ -2,11 +2,9 @@ apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
   name: arc-runner-terraform-helm-argocd
-  namespace: actions-runner-system
+  namespace: arc-runner
 spec:
   replicas: 2
   template:
     spec:
       repository: AbeYuki/terraform-helm-argocd
-      labels:
-        - arc-runner-repo
