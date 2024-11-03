@@ -9,7 +9,7 @@ spec:
     spec:
       repository: AbeYuki/terraform-helm-argocd
       containerMode: kubernetes
-      serviceAccountName: runner-sa
+      serviceAccountName: arc-runner-sa
       workVolumeClaimTemplate:
         storageClassName: "longhorn"
         accessModes:
