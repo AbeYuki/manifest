@@ -8,6 +8,9 @@ spec:
   template:
     spec:
       repository: AbeYuki/terraform-helm-argocd
+      labels:
+        - self-hosted
+        - kubernetes
       containerMode: kubernetes
       serviceAccountName: arc-runner-sa
       workVolumeClaimTemplate:
