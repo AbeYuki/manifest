@@ -11,6 +11,7 @@ spec:
       labels:
         - self-hosted
         - kubernetes
+        - arm64
       containerMode: kubernetes
       serviceAccountName: arc-runner-sa
       workVolumeClaimTemplate:

@@ -1,3 +1,2 @@
 resources:
   - ../base/
-  - ../base/controller-manager-secret
