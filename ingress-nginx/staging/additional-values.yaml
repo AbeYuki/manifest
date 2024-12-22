@@ -1,4 +1,4 @@
 controller:
   service:
     externalTrafficPolicy: "Local"
-  kind: Deployment
+  kind: DaemonSet
