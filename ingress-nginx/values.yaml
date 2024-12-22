@@ -1,5 +1,5 @@
 controller:
-  enableAnnotationValidations: true
+  #enableAnnotationValidations: true
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
