@@ -1,6 +1,6 @@
 controller:
   service:
-    externalTrafficPolicy: "ClientIP"
+    externalTrafficPolicy: "Local"
   autoscaling:
     enabled: true
     minReplicas: 1
