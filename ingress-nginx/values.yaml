@@ -1,4 +1,5 @@
 controller:
+  enableAnnotationValidations: true
   config:
   ingressClass: nginx
   ingressClassResource:
@@ -6,11 +7,7 @@ controller:
   service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: "192.168.1.100"
     externalTrafficPolicy: "Local"
-    ipFamilyPolicy: SingleStack
-    ipFamilies:
-      - IPv4
     ports:
       http: 80
       https: 443
@@ -19,10 +16,6 @@ controller:
       https: https
   kind: "Deployment"
   replicaCount: 2 
-  dnsPolicy: "ClusterFirst"
-  hostNetwork: false
-  admissionWebhooks:
-    enabled: true
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
