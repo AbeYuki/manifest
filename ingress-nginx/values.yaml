@@ -1,21 +1,5 @@
 controller:
   enableAnnotationValidations: true
-  config:
-  ingressClass: nginx
-  ingressClassResource:
-    name: "nginx"
-  service:
-    enabled: true
-    type: LoadBalancer
-    externalTrafficPolicy: "Local"
-    ports:
-      http: 80
-      https: 443
-    targetPorts:
-      http: http
-      https: https
-  kind: "Deployment"
-  replicaCount: 2 
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
