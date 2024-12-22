@@ -1,5 +1,4 @@
 controller:
   service:
     externalTrafficPolicy: "Local"
-    loadBalancerIP: "10.0.0.250"
   kind: DaemonSet
