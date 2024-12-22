@@ -1,3 +1,10 @@
 controller:
   service:
+    externalTrafficPolicy: "Local"
     loadBalancerIP: "192.168.1.100"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: 70
