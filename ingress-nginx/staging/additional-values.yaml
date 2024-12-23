@@ -1,4 +1,5 @@
 controller:
+  hostNetwork: true
   config:
     use-forwarded-headers: "true"
     compute-full-forwarded-for: "true"
