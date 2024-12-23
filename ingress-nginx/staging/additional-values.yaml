@@ -1,4 +1,7 @@
 controller:
+  config:
+    use-forwarded-headers: "true"
+    compute-full-forwarded-for: "true"
   kind: "DaemonSet"
   service:
     externalTrafficPolicy: "Local"
