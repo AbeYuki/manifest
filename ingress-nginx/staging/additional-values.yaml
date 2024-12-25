@@ -1,4 +1,4 @@
 controller:
-  kind: "DaemonSet"
-  dnsPolicy: "ClusterFirstWithHostNet"
-  hostNetwork: true
+  service:
+    loadBalancerIP: "10.0.0.100"
+
