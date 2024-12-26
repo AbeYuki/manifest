@@ -1,4 +1,8 @@
 controller:
   service:
     loadBalancerIP: "10.0.0.100"
-
+  hostNetwork: true
+  containerSecurityContext:
+    capabilities:
+      add:
+        - NET_BIND_SERVICE
