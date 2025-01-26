@@ -4,7 +4,6 @@ persistence:
 preUpgradeChecker:
   jobEnabled: false
 defaultSettings:
-  backupTarget: 
   defaultLonghornStaticStorageClass: "longhorn"
   nodeDownPodDeletionPolicy: "delete-both-statefulset-and-deployment-pod"
   nodeDrainPolicy: "block-for-eviction-if-contains-last-replica"
