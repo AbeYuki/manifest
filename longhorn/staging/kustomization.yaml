@@ -7,7 +7,3 @@ helmCharts:
     valuesFile: ../values.yaml
     additionalValuesFiles:
       - additional-values.yaml
-    valuesMerge: override
-    valuesInline:
-      persistence:
-        defaultFsType: ext4
