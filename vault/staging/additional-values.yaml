@@ -23,7 +23,7 @@ server:
     replicas: 3
     raft:
       enabled: true
-      setNodeId: false
+      setNodeId: true
       config: |
         ui = true
         listener "tcp" {
