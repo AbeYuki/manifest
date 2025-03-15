@@ -27,7 +27,10 @@ server:
       config: |
         ui = true
         listener "tcp" {
-          tls_disable = 1
+          tls_disable = 0
+          tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
+          tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
+          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/vault.ca"
           address = "[::]:8200"
           cluster_address = "[::]:8201"
           telemetry {
@@ -36,9 +39,6 @@ server:
         }
         storage "raft" {
           path = "/vault/data"
-          tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
-          tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
-          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/vault.ca"
           retry_join {
             leader_api_addr = "http://vault-0.vault-internal:8200"
           }
