@@ -2,3 +2,11 @@ server:
   dataStorage:
     size: 1Gi
     storageClass: "longhorn-replica-none"
+  volumes:
+    - name: vault-tls
+      secret:
+        secretName: vault-tls
+  volumeMounts:
+    - name: vault-tls
+      mountPath: /vault/tls
+      readOnly: true
