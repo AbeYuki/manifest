@@ -1,16 +1,23 @@
+global:
+   enabled: true
+   tlsDisable: false
 server:
   dataStorage:
     size: 1Gi
     storageClass: "longhorn-replica-none"
+  extraEnvironmentVars:
+     VAULT_CACERT: /vault/userconfig/vault-ha-tls/vault.ca
+     VAULT_TLSCERT: /vault/userconfig/vault-ha-tls/vault.crt
+     VAULT_TLSKEY: /vault/userconfig/vault-ha-tls/vault.key
   volumes:
-    - name: vault-tls
-      secret:
-        secretName: vault-tls
-        defaultMode: 0444
+     - name: userconfig-vault-ha-tls
+       secret:
+        defaultMode: 420
+        secretName: vault-ha-tls
   volumeMounts:
-    - name: vault-tls
-      mountPath: /vault/tls
-      readOnly: true
+     - mountPath: /vault/userconfig/vault-ha-tls
+       name: userconfig-vault-ha-tls
+       readOnly: true
   ha:
     enabled: true
     replicas: 3
@@ -29,8 +36,9 @@ server:
         }
         storage "raft" {
           path = "/vault/data"
-          #tls_cert_file = "/vault/tls/tls.crt"
-          #tls_key_file  = "/vault/tls/tls.key"
+          tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
+          tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
+          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/vault.ca"
           retry_join {
             leader_api_addr = "http://vault-0.vault-internal:8200"
           }
