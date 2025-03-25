@@ -1,13 +1,16 @@
-extraVolumes:
-  - name: vault-ca
-    secret:
-      secretName: vault-root-ca
-
-extraVolumeMounts:
-  - name: vault-ca
-    mountPath: /etc/ssl/certs/vault
-    readOnly: true
-
-extraEnv:
-  - name: SSL_CERT_FILE
-    value: /etc/ssl/certs/vault/ca.crt
+deployment:
+  controller:
+    extraEnv:
+      - name: SSL_CERT_FILE
+        value: /etc/ssl/certs/ca-certificates.crt
+    extraVolumeMounts:
+      - name: certs
+        mountPath: /etc/ssl/certs
+        readOnly: true
+    extraVolumes:
+      - name: certs
+        configMap:
+          name: vault-ca-certs
+          items:
+            - key: ca-certificates.crt
+              path: ca-certificates.crt
