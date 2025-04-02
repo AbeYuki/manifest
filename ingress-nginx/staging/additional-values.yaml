@@ -1,6 +1,8 @@
 controller:
   config:
     use-forwarded-headers: "true"
+    real-ip-header: "X-Forwarded-For"
+    set-real-ip-from: "10.0.0.0/8"
   kind: DaemonSet
   service:
     loadBalancerIP: "10.0.0.100"
