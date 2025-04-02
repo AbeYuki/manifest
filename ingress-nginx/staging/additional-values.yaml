@@ -1,4 +1,6 @@
 controller:
+  config:
+    use-forwarded-headers: "true"
   kind: DaemonSet
   service:
     loadBalancerIP: "10.0.0.100"
