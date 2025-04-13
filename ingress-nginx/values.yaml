@@ -1,4 +1,4 @@
 controller:
-  allowSnippetAnnotations: true
+  allowSnippetAnnotations: false
   service:
     externalTrafficPolicy: "Local"
