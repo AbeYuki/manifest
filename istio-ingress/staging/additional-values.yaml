@@ -1,3 +1,4 @@
 service:
+  externalTrafficPolicy: Local
   annotations:
     metallb.universe.tf/address-pool: pool3
