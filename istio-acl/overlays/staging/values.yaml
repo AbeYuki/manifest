@@ -1,6 +1,8 @@
 services:
   vault:
     enabled: false
+    matchLabels:
+      app: vault-ui
     aclAllowEnabled: true
     aclAllowIPBlocks:
         - 183.76.178.36/32
@@ -11,6 +13,8 @@ services:
 
   longhorn:
     enabled: true
+    matchLabels:
+      app: longhorn-ui
     aclAllowEnabled: true
     aclAllowIPBlocks:
         - 183.76.178.36/32

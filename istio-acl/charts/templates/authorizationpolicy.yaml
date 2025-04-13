@@ -9,7 +9,9 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ $name }}
+      {{- range $k, $v := required (printf "services.%s.matchLabels is required" $name) $svc.matchLabels }}
+      {{ $k }}: {{ $v | quote }}
+      {{- end }}
   action: ALLOW
   rules:
     - from:
@@ -30,7 +32,9 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ $name }}
+      {{- range $k, $v := required (printf "services.%s.matchLabels is required" $name) $svc.matchLabels }}
+      {{ $k }}: {{ $v | quote }}
+      {{- end }}
   action: DENY
   rules:
     {{- if and $svc.aclDenyIPBlocks (gt (len $svc.aclDenyIPBlocks) 0) }}
