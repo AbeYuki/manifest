@@ -1,0 +1,49 @@
+{{- range $name, $svc := .Values.services }}
+
+{{- if and $svc.enabled $svc.aclAllowEnabled }}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-{{ $name }}
+  namespace: {{ $svc.gateway.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            ipBlocks:
+              {{- range $svc.aclAllowIPBlocks }}
+              - {{ . }}
+              {{- end }}
+---
+{{- end }}
+
+{{- if and $svc.enabled $svc.aclDenyEnabled }}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-{{ $name }}
+  namespace: {{ $svc.gateway.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  action: DENY
+  rules:
+    {{- if and $svc.aclDenyIPBlocks (gt (len $svc.aclDenyIPBlocks) 0) }}
+    - from:
+        - source:
+            ipBlocks:
+              {{- range $svc.aclDenyIPBlocks }}
+              - {{ . }}
+              {{- end }}
+    {{- else }}
+    - {}  # deny all
+    {{- end }}
+---
+{{- end }}
+
+{{- end }}

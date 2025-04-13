@@ -1,0 +1,4 @@
+apiVersion: v2
+name: istio-acl
+version: 0.1.0
+description: Istio AuthorizationPolicy chart for ACL (allow/deny) rules
