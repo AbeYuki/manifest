@@ -18,6 +18,7 @@ injector:
   certs:
     secretName: vault-injector-tls
 server:
+  logLevel: "trace"
   dataStorage:
     enabled: true
     size: 10Gi
