@@ -1,5 +1,20 @@
 global:
   tlsDisable: false
+injector:
+  enabled: true
+  extraEnvironmentVars:
+    VAULT_ADDR: https://vault.vault.svc:8200
+    VAULT_CACERT: /vault/tls/ca.crt
+    VAULT_CLIENT_CERT: /vault/tls/tls.crt
+    VAULT_CLIENT_KEY: /vault/tls/tls.key
+  volumes:
+    - name: vault-tls
+      secret:
+        secretName: vault-client-tls
+  volumeMounts:
+    - name: vault-tls
+      mountPath: /vault/tls
+      readOnly: true
 server:
   dataStorage:
     enabled: true
@@ -23,6 +38,8 @@ server:
      - mountPath: /vault/userconfig/vault-ha-tls
        name: userconfig-vault-ha-tls
        readOnly: true
+  readinessProbe:
+    enabled: false
   ha:
     enabled: true
     replicas: 3
