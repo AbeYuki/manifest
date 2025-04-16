@@ -15,6 +15,8 @@ injector:
     - name: vault-tls
       mountPath: /vault/tls
       readOnly: true
+  certs:
+    secretName: vault-injector-tls
 server:
   dataStorage:
     enabled: true
@@ -30,14 +32,14 @@ server:
     VAULT_TLS_CLIENT_CA_FILE: /vault/userconfig/vault-ha-tls/ca.crt
     VAULT_TLS_REQUIRE_AND_VERIFY_CLIENT_CERT: "true"
   volumes:
-     - name: userconfig-vault-ha-tls
-       secret:
+    - name: userconfig-vault-ha-tls
+      secret:
         defaultMode: 420
         secretName: vault-ha-tls
   volumeMounts:
-     - mountPath: /vault/userconfig/vault-ha-tls
-       name: userconfig-vault-ha-tls
-       readOnly: true
+    - mountPath: /vault/userconfig/vault-ha-tls
+      name: userconfig-vault-ha-tls
+      readOnly: true
   readinessProbe:
     enabled: false
   ha:

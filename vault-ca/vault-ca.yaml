@@ -14,7 +14,7 @@ spec:
   isCA: true
   commonName: vault-ca
   secretName: vault-ca
-  duration: 87600h # 10 year
+  duration: 87600h
   issuerRef:
     name: selfsigned
     kind: ClusterIssuer
@@ -75,6 +75,25 @@ spec:
     - digital signature
     - key encipherment
     - client auth
+  issuerRef:
+    name: vault-ca-issuer
+    kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-injector-tls
+  namespace: vault
+spec:
+  secretName: vault-injector-tls
+  duration: 8760h
+  renewBefore: 360h
+  commonName: vault-agent-injector.vault.svc
+  dnsNames:
+    - vault-agent-injector
+    - vault-agent-injector.vault
+    - vault-agent-injector.vault.svc
+    - vault-agent-injector.vault.svc.cluster.local
   issuerRef:
     name: vault-ca-issuer
     kind: Issuer
