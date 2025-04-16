@@ -10,9 +10,10 @@ server:
     annotations: {}
     labels: {}
   extraEnvironmentVars:
-     VAULT_CACERT: /vault/userconfig/vault-ha-tls/vault.ca
-     VAULT_TLSCERT: /vault/userconfig/vault-ha-tls/vault.crt
-     VAULT_TLSKEY: /vault/userconfig/vault-ha-tls/vault.key
+    VAULT_TLS_CERT_FILE: /vault/userconfig/vault-ha-tls/tls.crt
+    VAULT_TLS_KEY_FILE: /vault/userconfig/vault-ha-tls/tls.key
+    VAULT_TLS_CLIENT_CA_FILE: /vault/userconfig/vault-ha-tls/ca.crt
+    VAULT_TLS_REQUIRE_AND_VERIFY_CLIENT_CERT: "true"
   volumes:
      - name: userconfig-vault-ha-tls
        secret:
@@ -33,9 +34,9 @@ server:
         listener "tcp" {
           tls_require_and_verify_client_cert = "true"
           tls_disable = 0
-          tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
-          tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
-          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/vault.ca"
+          tls_cert_file = "/vault/userconfig/vault-ha-tls/tls.crt"
+          tls_key_file  = "/vault/userconfig/vault-ha-tls/tls.key"
+          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/ca.crt"
           address = "[::]:8200"
           cluster_address = "[::]:8201"
           telemetry {
