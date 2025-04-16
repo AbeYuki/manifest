@@ -14,16 +14,15 @@ spec:
   isCA: true
   commonName: vault-ca
   secretName: vault-ca
-  duration: 87600h
+  duration: 87600h # 10 years
   issuerRef:
     name: selfsigned
     kind: ClusterIssuer
 ---
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
-  name: vault-ca-issuer
-  namespace: vault
+  name: vault-ca-cluster-issuer
 spec:
   ca:
     secretName: vault-ca
@@ -56,8 +55,8 @@ spec:
     - server auth
     - client auth
   issuerRef:
-    name: vault-ca-issuer
-    kind: Issuer
+    name: vault-ca-cluster-issuer
+    kind: ClusterIssuer
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -77,8 +76,8 @@ spec:
     - key encipherment
     - client auth
   issuerRef:
-    name: vault-ca-issuer
-    kind: Issuer
+    name: vault-ca-cluster-issuer
+    kind: ClusterIssuer
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -100,5 +99,26 @@ spec:
     - key encipherment
     - client auth
   issuerRef:
-    name: vault-ca-issuer
-    kind: Issuer
+    name: vault-ca-cluster-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-client
+  namespace: argocd
+spec:
+  secretName: vault-client-tls
+  duration: 8760h
+  renewBefore: 360h
+  subject:
+    organizations:
+      - VaultClient
+  commonName: vault-client
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
+  issuerRef:
+    name: vault-ca-cluster-issuer
+    kind: ClusterIssuer
