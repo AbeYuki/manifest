@@ -31,6 +31,7 @@ server:
       config: |
         ui = true
         listener "tcp" {
+          tls_require_and_verify_client_cert = "true"
           tls_disable = 0
           tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
           tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
