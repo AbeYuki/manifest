@@ -28,7 +28,7 @@ server:
     replicas: 3
     raft:
       enabled: true
-      setNodeId: true
+      setNodeId: false
       config: |
         ui = true
         listener "tcp" {
@@ -45,9 +45,9 @@ server:
         }
         storage "raft" {
           path = "/vault/data"
-          tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
-          tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
-          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/vault.ca"
+          tls_cert_file = "/vault/userconfig/vault-ha-tls/tls.crt"
+          tls_key_file  = "/vault/userconfig/vault-ha-tls/tls.key"
+          tls_client_ca_file = "/vault/userconfig/vault-ha-tls/ca.crt"
           retry_join {
             leader_api_addr = "https://vault-0.vault-internal:8200"
           }
