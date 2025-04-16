@@ -14,7 +14,7 @@ spec:
   isCA: true
   commonName: vault-ca
   secretName: vault-ca
-  duration: 87600h # 10 years
+  duration: 87600h 
   issuerRef:
     name: selfsigned
     kind: ClusterIssuer
@@ -105,7 +105,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: vault-client
+  name: vault-client-argocd
   namespace: argocd
 spec:
   secretName: vault-client-tls
