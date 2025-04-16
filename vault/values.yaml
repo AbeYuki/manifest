@@ -28,9 +28,9 @@ server:
     annotations: {}
     labels: {}
   extraEnvironmentVars:
-    VAULT_TLS_CERT_FILE: /vault/userconfig/vault-ha-tls/tls.crt
-    VAULT_TLS_KEY_FILE: /vault/userconfig/vault-ha-tls/tls.key
-    VAULT_TLS_CLIENT_CA_FILE: /vault/userconfig/vault-ha-tls/ca.crt
+    VAULT_CACERT: /vault/userconfig/vault-ha-tls/ca.crt
+    VAULT_CLIENT_CERT: /vault/userconfig/vault-ha-tls/tls.crt
+    VAULT_CLIENT_KEY: /vault/userconfig/vault-ha-tls/tls.key
     VAULT_TLS_REQUIRE_AND_VERIFY_CLIENT_CERT: "true"
   volumes:
     - name: userconfig-vault-ha-tls
