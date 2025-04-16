@@ -1,14 +1,18 @@
 controller:
-  config:
-    use-forwarded-headers: "true"
-    real-ip-header: "X-Forwarded-For"
-    set-real-ip-from: "10.0.0.0/8"
-  kind: DaemonSet
+  kind: Deployment
   service:
-    annotations:
-      metallb.universe.tf/address-pool: pool2
-  hostNetwork: true
-  containerSecurityContext:
-    capabilities:
-      add:
-        - NET_BIND_SERVICE
+    enabled: true
+    type: NodePort
+    external:
+      enabled: true
+    enableHttp: true
+    enableHttps: true
+    ports:
+      http: 80
+      https: 443
+    targetPorts:
+      http: http
+      https: https
+    nodePorts:
+      http: 30080
+      https: 30443

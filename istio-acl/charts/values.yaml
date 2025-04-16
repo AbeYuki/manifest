@@ -1,0 +1,25 @@
+services:
+  vault:
+    enabled: true
+    aclAllowEnabled: true
+    aclDenyEnabled: true
+    aclAllowIPBlocks:
+      production:
+        - 192.168.0.0/16
+      staging:
+        - 183.76.178.36/32
+    aclDenyIPBlocks: []  # empty = deny-all
+    gateway:
+      namespace: vault
+
+  longhorn:
+    enabled: true
+    aclAllowEnabled: true
+    aclDenyEnabled: false
+    aclAllowIPBlocks:
+      production:
+        - 192.168.1.0/24
+      staging:
+        - 203.0.113.100/32
+    gateway:
+      namespace: longhorn-system

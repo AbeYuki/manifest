@@ -1,0 +1,24 @@
+# templates/gateway.yaml
+
+{{- range $name, $svc := .Values.services }}
+{{- if and $svc.enabled $svc.gateway }}
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ $svc.gateway.name }}
+  namespace: {{ $svc.gateway.namespace }}
+spec:
+  selector:
+    {{- range $key, $val := $svc.gateway.selector }}
+    {{ $key }}: {{ $val }}
+    {{- end }}
+  servers:
+    - port:
+        number: {{ $svc.gateway.port }}
+        name: http
+        protocol: HTTP
+      hosts:
+        - {{ include "istio-gateway-aggregator.prefixedHost" (dict "Values" $.Values "hostname" $svc.hostname) }}
+---
+{{- end }}
+{{- end }}
