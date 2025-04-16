@@ -54,6 +54,7 @@ spec:
     - digital signature
     - key encipherment
     - server auth
+    - client auth
   issuerRef:
     name: vault-ca-issuer
     kind: Issuer
@@ -94,6 +95,10 @@ spec:
     - vault-agent-injector.vault
     - vault-agent-injector.vault.svc
     - vault-agent-injector.vault.svc.cluster.local
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
   issuerRef:
     name: vault-ca-issuer
     kind: Issuer
