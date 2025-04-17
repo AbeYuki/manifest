@@ -50,6 +50,8 @@ spec:
     - vault.vault.svc
     - vault.vault.svc.cluster.local
     - "*.vault-internal"
+  ipAddresses:
+    - 127.0.0.1
   usages:
     - digital signature
     - key encipherment
