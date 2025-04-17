@@ -52,8 +52,6 @@ server:
     - name: vault-client-tls
       mountPath: /vault/userconfig/vault-client-tls
       readOnly: true
-  readinessProbe:
-    enabled: false
   ha:
     enabled: true
     replicas: 3
