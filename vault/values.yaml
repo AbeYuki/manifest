@@ -64,8 +64,8 @@ server:
       setNodeId: false
       config: |
         ui = true
+        api_addr = "https://vault.vault.svc.cluster.local:8200"
         listener "tcp" {
-          api_addr = "https://vault.vault.svc.cluster.local:8200"
           tls_require_and_verify_client_cert = "true"
           tls_disable = 0
           tls_cert_file = "/vault/userconfig/vault-ha-tls/tls.crt"
@@ -80,7 +80,6 @@ server:
         }
         storage "raft" {
           path = "/vault/data"
-          api_addr = "https://vault.vault.svc.cluster.local:8200"
           tls_cert_file = "/vault/userconfig/vault-client-tls/tls.crt"
           tls_key_file  = "/vault/userconfig/vault-client-tls/tls.key"
           tls_client_ca_file = "/vault/userconfig/vault-ha-tls/ca.crt"
