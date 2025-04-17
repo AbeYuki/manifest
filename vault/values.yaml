@@ -5,19 +5,25 @@ injector:
   extraEnvironmentVars:
     VAULT_API_ADDR: "https://vault.vault.svc.cluster.local:8200"
     VAULT_ADDR: https://vault.vault.svc:8200
-    VAULT_CACERT: /vault/tls/ca.crt
-    VAULT_CLIENT_CERT: /vault/tls/tls.crt
-    VAULT_CLIENT_KEY: /vault/tls/tls.key
+    VAULT_CACERT: /vault/userconfig/vault-ha-tls/ca.crt
+    VAULT_CLIENT_CERT: /vault/userconfig/vault-client-tls/tls.crt
+    VAULT_CLIENT_KEY: /vault/userconfig/vault-client-tls/tls.key
   volumes:
-    - name: vault-tls
+    - name: userconfig-vault-ha-tls
       secret:
         secretName: vault-ha-tls
+    - name: vault-client-tls
+      secret:
+        secretName: vault-client-tls
   volumeMounts:
-    - name: vault-tls
-      mountPath: /vault/tls
+    - name: userconfig-vault-ha-tls
+      mountPath: /vault/userconfig/vault-ha-tls
+      readOnly: true
+    - name: vault-client-tls
+      mountPath: /vault/userconfig/vault-client-tls
       readOnly: true
   certs:
-    secretName: vault-ha-tls
+    tlsSecretName: vault-ha-tls
 server:
   logLevel: "trace"
   dataStorage:
@@ -29,6 +35,7 @@ server:
     annotations: {}
     labels: {}
   extraEnvironmentVars:
+    VAULT_API_ADDR: "https://vault.vault.svc.cluster.local:8200"
     VAULT_CACERT: /vault/userconfig/vault-ha-tls/ca.crt
     VAULT_CLIENT_CERT: /vault/userconfig/vault-client-tls/tls.crt
     VAULT_CLIENT_KEY: /vault/userconfig/vault-client-tls/tls.key
