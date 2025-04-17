@@ -36,7 +36,7 @@ server:
     - name: userconfig-vault-ha-tls
       secret:
         defaultMode: 420
-        secretName: vault-ha-tls
+        secretName: vault-client-tls
   volumeMounts:
     - mountPath: /vault/userconfig/vault-ha-tls
       name: userconfig-vault-ha-tls

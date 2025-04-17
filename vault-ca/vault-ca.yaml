@@ -79,3 +79,23 @@ spec:
     - digital signature
     - key encipherment
     - client auth
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-client-tls
+  namespace: vault 
+spec:
+  secretName: vault-client-tls
+  duration: 2160h
+  renewBefore: 360h 
+  issuerRef:
+    name: vault-ca-issuer
+    kind: ClusterIssuer
+  commonName: vault.vault.svc.cluster.local
+  dnsNames:
+    - vault.vault.svc.cluster.local
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
