@@ -10,13 +10,13 @@ injector:
   volumes:
     - name: vault-tls
       secret:
-        secretName: vault-client-tls
+        secretName: vault-ha-tls
   volumeMounts:
     - name: vault-tls
       mountPath: /vault/tls
       readOnly: true
   certs:
-    secretName: vault-injector-tls
+    secretName: vault-ha-tls
 server:
   logLevel: "trace"
   dataStorage:
