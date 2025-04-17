@@ -35,18 +35,17 @@ server:
   volumes:
     - name: userconfig-vault-ha-tls
       secret:
-        defaultMode: 420
-        secretName: vault-client-tls
-    - name: vault-client-tls
-      mountPath: /vault/userconfig/vault-client-tls
-      readOnly: true
-  volumeMounts:
-    - mountPath: /vault/userconfig/vault-ha-tls
-      name: userconfig-vault-ha-tls
-      readOnly: true
+        secretName: vault-ha-tls
     - name: vault-client-tls
       secret:
         secretName: vault-client-tls
+  volumeMounts:
+    - name: userconfig-vault-ha-tls
+      mountPath: /vault/userconfig/vault-ha-tls
+      readOnly: true
+    - name: vault-client-tls
+      mountPath: /vault/userconfig/vault-client-tls
+      readOnly: true
   readinessProbe:
     enabled: false
   ha:
