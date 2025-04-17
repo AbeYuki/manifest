@@ -29,18 +29,24 @@ server:
     labels: {}
   extraEnvironmentVars:
     VAULT_CACERT: /vault/userconfig/vault-ha-tls/ca.crt
-    VAULT_CLIENT_CERT: /vault/userconfig/vault-ha-tls/tls.crt
-    VAULT_CLIENT_KEY: /vault/userconfig/vault-ha-tls/tls.key
+    VAULT_CLIENT_CERT: /vault/userconfig/vault-client-tls/tls.crt
+    VAULT_CLIENT_KEY: /vault/userconfig/vault-client-tls/tls.key
     VAULT_TLS_REQUIRE_AND_VERIFY_CLIENT_CERT: "true"
   volumes:
     - name: userconfig-vault-ha-tls
       secret:
         defaultMode: 420
         secretName: vault-client-tls
+    - name: vault-client-tls
+      mountPath: /vault/userconfig/vault-client-tls
+      readOnly: true
   volumeMounts:
     - mountPath: /vault/userconfig/vault-ha-tls
       name: userconfig-vault-ha-tls
       readOnly: true
+    - name: vault-client-tls
+      secret:
+        secretName: vault-client-tls
   readinessProbe:
     enabled: false
   ha:
@@ -66,8 +72,8 @@ server:
         }
         storage "raft" {
           path = "/vault/data"
-          tls_cert_file = "/vault/userconfig/vault-ha-tls/tls.crt"
-          tls_key_file  = "/vault/userconfig/vault-ha-tls/tls.key"
+          tls_cert_file = "/vault/userconfig/vault-client-tls/tls.crt"
+          tls_key_file  = "/vault/userconfig/vault-client-tls/tls.key"
           tls_client_ca_file = "/vault/userconfig/vault-ha-tls/ca.crt"
           retry_join {
             leader_api_addr = "https://vault-0.vault-internal:8200"
