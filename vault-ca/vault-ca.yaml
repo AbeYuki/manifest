@@ -1,3 +1,4 @@
+# 認証局(CA)
 ## SelfSigned で Root CA をブートストラップ
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -22,6 +23,7 @@ spec:
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
+    group: cert-manager.io
 ---
 ## この CA で Vault サーバ・クライアント証明書を発行
 apiVersion: cert-manager.io/v1
@@ -32,6 +34,7 @@ spec:
   ca:
     secretName: vault-root-ca-secret  # 上記の Root CA の Secret
 ---
+# 自己署名証明書
 ## Vault サーバ証明書(共通証明書)
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -43,6 +46,7 @@ spec:
   issuerRef:
     name: vault-ca-issuer
     kind: ClusterIssuer
+    group: cert-manager.io
   commonName: vault.vault.svc
   dnsNames:
     - vault
@@ -52,8 +56,9 @@ spec:
     - vault-0.vault-internal
     - vault-1.vault-internal
     - vault-2.vault-internal
-    - "*.aimhighergg.com"
-    - "*.vault.aimhighergg.com"
+    - vault.aimhighergg.com
+    - staging.vault.aimhighergg.com
+    - internal.aimhighergg.com
   ipAddresses:
     - 127.0.0.1
     - 192.168.1.20
@@ -136,8 +141,7 @@ spec:
     kind: ClusterIssuer
   commonName: vault-web
   dnsNames:
-    - vault
-    - vault-internal
+    - internal.aimhighergg.com
   ipAddresses:
     - 127.0.0.1
     - 192.168.1.20
@@ -163,3 +167,27 @@ spec:
     - digital signature
     - key encipherment
     - client auth
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vault-ui
+  namespace: vault
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "vault-web-client-tls"
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: internal.aimhighergg.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vault
+                port:
+                  number: 8200
