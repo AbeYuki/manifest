@@ -180,6 +180,10 @@ metadata:
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+      - internal.aimhighergg.com
+    secretName: vault-internal-ingress-tls
   rules:
     - host: internal.aimhighergg.com
       http:
