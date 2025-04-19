@@ -61,6 +61,7 @@ spec:
     - internal.aimhighergg.com
   ipAddresses:
     - 127.0.0.1
+    - 192.168.1.100
   usages:
     - digital signature
     - key encipherment
@@ -115,7 +116,7 @@ metadata:
   namespace: vault
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/auth-tls-secret: "vault-web-client-tls"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "cert-manager/vault-root-ca-secret"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
 spec:
