@@ -4,6 +4,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   selfSigned: {}
 ---
@@ -13,6 +15,8 @@ kind: Certificate
 metadata:
   name: vault-root-ca
   namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   isCA: true
   commonName: vault-root-ca
@@ -30,6 +34,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: vault-ca-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   ca:
     secretName: vault-root-ca-secret  # 上記の Root CA の Secret
@@ -41,6 +47,8 @@ kind: Certificate
 metadata:
   name: vault-server-cert
   namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-ha-tls
   issuerRef:
@@ -72,6 +80,8 @@ kind: Certificate
 metadata:
   name: vault-client-cert
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-client-tls
   duration: 2160h
@@ -93,6 +103,8 @@ kind: Certificate
 metadata:
   name: vault-client-tls
   namespace: vault 
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-client-tls
   duration: 2160h
@@ -113,6 +125,8 @@ kind: Certificate
 metadata:
   name: vault-web-client-cert
   namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-web-client-tls
   duration: 2160h
@@ -122,6 +136,8 @@ spec:
     kind: ClusterIssuer
   commonName: vault-web-client
   dnsNames:
+    - vault.aimhighergg.com
+    - staging.vault.aimhighergg.com
     - internal.aimhighergg.com
   usages:
     - digital signature
@@ -154,6 +170,7 @@ metadata:
   name: vault-ui
   namespace: vault
   annotations:
+    argocd.argoproj.io/sync-wave: "15"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/auth-tls-secret: "vault/vault-root-ca-secret"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
