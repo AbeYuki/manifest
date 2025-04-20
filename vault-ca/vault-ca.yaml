@@ -173,7 +173,7 @@ spec:
     - host: internal.aimhighergg.com
       http:
         paths:
-          - path: /ui
+          - path: /
             pathType: Prefix
             backend:
               service:
