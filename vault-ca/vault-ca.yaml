@@ -161,6 +161,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-ssl-secret: "vault/vault-web-client-tls"
     nginx.ingress.kubernetes.io/proxy-ssl-verify: "on"
     nginx.ingress.kubernetes.io/proxy-ssl-name: "vault.vault.svc.cluster.local"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "2"
 spec:
   ingressClassName: nginx
   tls:
@@ -171,7 +172,7 @@ spec:
     - host: internal.aimhighergg.com
       http:
         paths:
-          - path: /
+          - path: /ui
             pathType: Prefix
             backend:
               service:
