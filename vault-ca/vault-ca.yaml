@@ -14,7 +14,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: vault-root-ca
-  namespace: cert-manager
+  namespace: cert-manager # ClusterIssuer を利用するので cert-manager に作成する
   annotations:
     argocd.argoproj.io/sync-wave: "-5"
 spec:
@@ -39,7 +39,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   ca:
-    secretName: vault-root-ca-secret
+    secretName: vault-root-ca-secret # ClusterIssuer はデフォルトで cert-manager の namespace を参照する
 ---
 # 自己署名証明書
 ## Vault サーバ証明書(共通証明書)
@@ -123,6 +123,7 @@ spec:
     - key encipherment
     - client auth
 ---
+### ingress とブラウザ用のクライアント証明書
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
