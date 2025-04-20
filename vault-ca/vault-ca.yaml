@@ -31,14 +31,15 @@ spec:
 ---
 ## この CA で Vault サーバ・クライアント証明書を発行
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
   name: vault-ca-issuer
+  namespace: vault
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   ca:
-    secretName: vault-root-ca-secret  # 上記の Root CA の Secret
+    secretName: vault-root-ca-secret
 ---
 # 自己署名証明書
 ## Vault サーバ証明書(共通証明書)
@@ -53,7 +54,7 @@ spec:
   secretName: vault-ha-tls
   issuerRef:
     name: vault-ca-issuer
-    kind: ClusterIssuer
+    kind: Issuer
     group: cert-manager.io
   commonName: vault.vault.svc
   dnsNames:
@@ -88,7 +89,7 @@ spec:
   renewBefore: 360h
   issuerRef:
     name: vault-ca-issuer
-    kind: ClusterIssuer
+    kind: Issuer
   commonName: argocd-vault-plugin
   dnsNames:
     - argocd-repo-server.argocd.svc
@@ -111,7 +112,7 @@ spec:
   renewBefore: 360h 
   issuerRef:
     name: vault-ca-issuer
-    kind: ClusterIssuer
+    kind: Issuer
   commonName: vault.vault.svc.cluster.local
   dnsNames:
     - vault.vault.svc.cluster.local
@@ -133,7 +134,7 @@ spec:
   renewBefore: 360h
   issuerRef:
     name: vault-ca-issuer
-    kind: ClusterIssuer
+    kind: Issuer
   commonName: vault-web-client
   dnsNames:
     - vault.aimhighergg.com
@@ -157,7 +158,7 @@ spec:
   renewBefore: 360h
   issuerRef:
     name: vault-ca-issuer
-    kind: ClusterIssuer
+    kind: Issuer
   commonName: internal.aimhighergg.com
   dnsNames:
     - internal.aimhighergg.com
