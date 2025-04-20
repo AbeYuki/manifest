@@ -35,7 +35,7 @@ kind: ClusterIssuer
 metadata:
   name: vault-ca-issuer
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   ca:
     secretName: vault-root-ca-secret  # 上記の Root CA の Secret
