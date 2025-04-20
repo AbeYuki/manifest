@@ -149,6 +149,8 @@ kind: Certificate
 metadata:
   name: vault-internal-ingress-tls
   namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-internal-ingress-tls
   duration: 2160h
