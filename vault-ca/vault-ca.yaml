@@ -7,12 +7,12 @@ metadata:
 spec:
   selfSigned: {}
 ---
-## Root CA を自己署名で作成
+## Root CA を自己署名で作成(ingress と同じ namespace にする必要あり)
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: vault-root-ca
-  namespace: cert-manager
+  namespace: vault
 spec:
   isCA: true
   commonName: vault-root-ca
