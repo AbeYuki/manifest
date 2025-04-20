@@ -155,7 +155,7 @@ metadata:
   namespace: vault
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/auth-tls-secret: "vault/vault-root-ca-secret"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "cert-manager/vault-root-ca-secret"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
     nginx.ingress.kubernetes.io/proxy-ssl-secret: "vault/vault-web-client-tls"
