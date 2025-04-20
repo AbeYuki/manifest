@@ -62,7 +62,7 @@ server:
         ui = true
         api_addr = "https://vault.vault.svc.cluster.local:8200"
         listener "tcp" {
-          tls_require_and_verify_client_cert = "false"
+          tls_require_and_verify_client_cert = "true"
           tls_disable = 0
           tls_cert_file = "/vault/userconfig/vault-ha-tls/tls.crt"
           tls_key_file  = "/vault/userconfig/vault-ha-tls/tls.key"
