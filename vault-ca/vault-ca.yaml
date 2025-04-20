@@ -158,7 +158,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-tls-secret: "vault/vault-root-ca-secret"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
-    nginx.ingress.kubernetes.io/proxy-ssl-secret: "vault/vault-ingress-client-tls"
+    nginx.ingress.kubernetes.io/proxy-ssl-secret: "vault/vault-web-client-tls"
     nginx.ingress.kubernetes.io/proxy-ssl-verify: "on"
     nginx.ingress.kubernetes.io/proxy-ssl-name: "vault.vault.svc.cluster.local"
 spec:
