@@ -176,6 +176,8 @@ kind: Service
 metadata:
   name: vault-proxy
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
 spec:
   type: ExternalName
   externalName: vault.vault.svc.cluster.local
@@ -189,6 +191,7 @@ metadata:
   name: vault-ui
   namespace: cert-manager
   annotations:
+    argocd.argoproj.io/sync-wave: "15"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/auth-tls-secret: "cert-manager/vault-root-ca-secret"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
