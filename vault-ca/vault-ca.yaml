@@ -4,15 +4,19 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   selfSigned: {}
 ---
-## Root CA を自己署名で作成
+## Root CA を自己署名で作成(ingress と同じ namespace にする必要あり)
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: vault-root-ca
-  namespace: cert-manager
+  namespace: cert-manager # ClusterIssuer を利用するので cert-manager に作成する
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   isCA: true
   commonName: vault-root-ca
@@ -30,9 +34,12 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: vault-ca-issuer
+  namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   ca:
-    secretName: vault-root-ca-secret  # 上記の Root CA の Secret
+    secretName: vault-root-ca-secret # ClusterIssuer はデフォルトで cert-manager の namespace を参照する
 ---
 # 自己署名証明書
 ## Vault サーバ証明書(共通証明書)
@@ -41,6 +48,8 @@ kind: Certificate
 metadata:
   name: vault-server-cert
   namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-ha-tls
   issuerRef:
@@ -73,6 +82,8 @@ kind: Certificate
 metadata:
   name: vault-client-cert
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-client-tls
   duration: 2160h
@@ -80,6 +91,7 @@ spec:
   issuerRef:
     name: vault-ca-issuer
     kind: ClusterIssuer
+    group: cert-manager.io
   commonName: argocd-vault-plugin
   dnsNames:
     - argocd-repo-server.argocd.svc
@@ -94,6 +106,8 @@ kind: Certificate
 metadata:
   name: vault-client-tls
   namespace: vault 
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   secretName: vault-client-tls
   duration: 2160h
@@ -101,6 +115,7 @@ spec:
   issuerRef:
     name: vault-ca-issuer
     kind: ClusterIssuer
+    group: cert-manager.io
   commonName: vault.vault.svc.cluster.local
   dnsNames:
     - vault.vault.svc.cluster.local
@@ -109,22 +124,89 @@ spec:
     - key encipherment
     - client auth
 ---
+### ingress とブラウザ用のクライアント証明書
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-web-client-cert
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  secretName: vault-web-client-tls
+  duration: 2160h
+  renewBefore: 360h
+  issuerRef:
+    name: vault-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: vault-web-client
+  dnsNames:
+    - vault.aimhighergg.com
+    - staging.vault.aimhighergg.com
+    - internal.aimhighergg.com
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-internal-ingress-tls
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  secretName: vault-internal-ingress-tls
+  duration: 2160h
+  renewBefore: 360h
+  issuerRef:
+    name: vault-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: internal.aimhighergg.com
+  dnsNames:
+    - internal.aimhighergg.com
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-proxy
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  type: ExternalName
+  externalName: vault.vault.svc.cluster.local
+  ports:
+    - port: 8200
+      targetPort: 8200
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vault-ui
-  namespace: vault
+  namespace: cert-manager
   annotations:
+    argocd.argoproj.io/sync-wave: "15"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/auth-tls-secret: "cert-manager/vault-root-ca-secret"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/proxy-ssl-secret: "cert-manager/vault-web-client-tls"
+    nginx.ingress.kubernetes.io/proxy-ssl-verify: "on"
+    nginx.ingress.kubernetes.io/proxy-ssl-name: "vault.vault.svc.cluster.local"
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-      - internal.aimhighergg.com
-    secretName: vault-internal-ingress-tls
+    - hosts:
+        - internal.aimhighergg.com
+      secretName: vault-internal-ingress-tls
   rules:
     - host: internal.aimhighergg.com
       http:
@@ -133,6 +215,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: vault
+                name: vault-proxy
                 port:
                   number: 8200
