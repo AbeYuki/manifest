@@ -9,3 +9,15 @@ controller:
     maxReplicas: 5
     targetCPUUtilizationPercentage: 60
     targetMemoryUtilizationPercentage: 70
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - nginx-proxy
+          topologyKey: kubernetes.io/hostname
+          namespaces:
+            - nginx-proxy
