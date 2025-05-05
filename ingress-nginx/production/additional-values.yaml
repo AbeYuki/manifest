@@ -1,8 +1,16 @@
 controller:
   config:
+
+    ### 上段の proxy が L4 TCP passthrough の場合
     use-proxy-protocol: "true"
     real-ip-header: "proxy_protocol"
     set-real-ip-from: "0.0.0.0/0"
+
+    ### 上段の proxy が L7 HTTP TLS passthrough の場合
+    #use-forwarded-headers: "true"
+    #real-ip-header: "X-Real-IP"
+    #set-real-ip-from: "0.0.0.0/0"
+
   service:
     externalTrafficPolicy: "Local"
     annotations:
