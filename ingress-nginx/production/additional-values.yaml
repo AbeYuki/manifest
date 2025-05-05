@@ -1,8 +1,8 @@
 controller:
   config:
-    use-forwarded-headers: "true" 
-    real-ip-header: "X-Forwarded-For"
-    set-real-ip-from: "0.0.0.0/0" 
+    use-proxy-protocol: "true"
+    real-ip-header: "proxy_protocol"
+    set-real-ip-from: "0.0.0.0/0"
   service:
     externalTrafficPolicy: "Local"
     annotations:
