@@ -1,6 +1,8 @@
 controller:
-  #config:
-  #  use-proxy-protocol: "true"
+  config:
+    use-proxy-protocol: "true"
+    real-ip-header: "proxy_protocol"
+    set-real-ip-from: "10.0.0.0/16"
   service:
     externalTrafficPolicy: "Local"
     annotations:
