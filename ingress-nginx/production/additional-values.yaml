@@ -1,4 +1,6 @@
 controller:
+  config:
+    use-proxy-protocol: "true"
   service:
     externalTrafficPolicy: "Local"
     annotations:
