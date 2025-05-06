@@ -19,8 +19,8 @@ controller:
     #  metallb.universe.tf/address-pool: pool2
     #type: LoadBalancer
 
-    ### 上段が k8s 内部からアクセスする場合
-    type: ClusterIP
+    ### 上段が k8s 内部から FQDN でアクセスかつ externalTrafficPolicy を Local にする場合
+    type: NodePort
 
   autoscaling:
     enabled: true
