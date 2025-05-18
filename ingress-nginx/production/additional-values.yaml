@@ -1,6 +1,7 @@
 controller:
   config:
-
+    log-format-upstream: |
+      '$proxy_protocol_addr - [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_time'
     ### 上段の proxy が L4 TCP passthrough の場合
     use-proxy-protocol: "true"
     real-ip-header: "proxy_protocol"
