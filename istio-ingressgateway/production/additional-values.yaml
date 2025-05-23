@@ -8,3 +8,10 @@ resources:
   limits:
     cpu: "2"
     memory: "1Gi"
+podAnnotations:
+  prometheus.io/port: "15020"
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/stats/prometheus"
+  inject.istio.io/templates: "gateway"
+  sidecar.istio.io/inject: "true"
+  proxy.istio.io/config: '{"concurrency":1}'
