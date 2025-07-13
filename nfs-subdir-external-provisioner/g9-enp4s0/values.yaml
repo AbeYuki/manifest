@@ -1,6 +1,9 @@
+fullnameOverride: nfs-provisioner-g9-enp4s0
+nameOverride: nfs-provisioner-g9-enp4s0
 nfs:
   server: 192.168.1.31
   path: /k8s
 storageClass:
   name: nfs-g9-enp4s0
   reclaimPolicy: Delete
+  defaultClass: false
