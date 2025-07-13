@@ -4,6 +4,4 @@ helmCharts:
     version: "4.0.18"
     namespace: nfs-provisioner
     releaseName: nfs-subdir-external-provisioner
-    valuesFile: ../values.yaml
-    additionalValuesFiles:
-      - additional-values.yaml
+    valuesFile: values.yaml
