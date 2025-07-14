@@ -3,8 +3,8 @@ nameOverride: nfs-provisioner-g9-enp5s0
 nfs:
   server: 192.168.1.32
   path: /k8s
-  pathPattern: "${namespace}/${pvcName}/${pvName}"
 storageClass:
   name: nfs-g9-enp5s0
   reclaimPolicy: Delete
   defaultClass: false
+  pathPattern: "${namespace}/${pvcName}/${pvName}"
