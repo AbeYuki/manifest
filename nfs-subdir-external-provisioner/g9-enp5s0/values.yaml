@@ -7,4 +7,4 @@ storageClass:
   name: nfs-g9-enp5s0
   reclaimPolicy: Delete
   defaultClass: false
-  pathPattern: ${namespace}/${pvcName}/${pvName}
+  pathPattern: "${.PVC.namespace}/${.PVC.name}"
