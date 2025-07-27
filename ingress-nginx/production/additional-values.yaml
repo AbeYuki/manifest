@@ -3,7 +3,7 @@ controller:
     log-format-upstream: '$proxy_protocol_addr - $request_id - [$proxy_add_x_forwarded_for] - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_length $request_time [$proxy_upstream_name] $upstream_addr $upstream_response_length $upstream_response_time $upstream_status'
 
     ### 上段の proxy が L4 TCP passthrough の場合
-    use-proxy-protocol: "true"
+    use-proxy-protocol: "false"
     real-ip-header: "proxy_protocol"
     set-real-ip-from: "0.0.0.0/0"
 
