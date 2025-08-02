@@ -1,3 +1,4 @@
+role: "Stateless-Aggregator"
 replicas: 4
 resources: {}
   requests:
