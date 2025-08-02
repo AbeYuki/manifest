@@ -52,6 +52,8 @@ customConfig:
         codec: json
       labels:
         job: promtail-via-vector
+      healthcheck:
+        enabled: false
     victoria-logs-cluster:
       type: loki
       inputs: [promtail-transforms]
@@ -62,10 +64,14 @@ customConfig:
         job: promtail-via-vector
       encoding:
         codec: json
+      healthcheck:
+        enabled: false
     mimir:
       type: prometheus_remote_write
       inputs: [prometheus-sources]
       endpoint: http://monitoring-mimir-01-001.monitoring.svc.cluster.local:8080/api/v1/push
+      healthcheck:
+        enabled: false
     victoria-metrics-cluster:
       type: prometheus_remote_write
       inputs: [prometheus-sources]
