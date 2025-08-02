@@ -91,7 +91,7 @@ customConfig:
     promtail-victoria-logs-sink:
       type: loki
       inputs: [promtail-victoria-logs-transform]
-      endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/loki/
+      endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/loki
       path: /api/v1/push?_msg_field=log&_time_field=timestamp&_stream_fields=namespace,container,pod
       compression: gzip
       encoding:
