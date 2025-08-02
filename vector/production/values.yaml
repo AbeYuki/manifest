@@ -48,7 +48,6 @@ customConfig:
       type: loki
       inputs: [promtail-transforms]
       endpoint: http://monitoring-frontend-loki-backend01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
-      method: "post"
       encoding:
         codec: json
       labels:
@@ -57,7 +56,6 @@ customConfig:
       type: loki
       inputs: [promtail-transforms]
       endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/loki/api/v1/push
-      method: "post"
       encoding:
         codec: json
       labels:
