@@ -1,0 +1,79 @@
+replicas: 4
+resources: {}
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1024Mi
+service:
+  ports:
+    - name: vector
+      protocol: TCP
+      port: 8686
+      targetPort: 8686
+    - name: promtail
+      protocol: TCP
+      port: 9080
+      targetPort: 9080
+    - name: prometheus
+      protocol: tcp
+      port: 9090
+      targetPort: 9090
+    - name: loki
+      protocol: tcp
+      port: 3100
+      targetPort: 3100
+customConfig:
+  api:
+    enabled: true
+    address: 127.0.0.1:8686
+    playground: false
+  sources:
+    promtail:
+      type: http
+      address: 0.0.0.0:9080
+    prometheus:
+      type: prometheus_remote_write
+      address: 0.0.0.0:9090
+  transforms:
+    promtail:
+      type: remap
+      inputs: [promtail]
+      source: |
+        .timestamp = now()
+  sinks:
+    loki:
+      type: loki
+      inputs: [promtail]
+      endpoint: http://monitoring-frontend-loki-backend01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
+      encoding:
+        codec: json
+      labels:
+        job: promtail-via-vector
+    victoria-logs-cluster:
+      type: loki
+      inputs: [promtail]
+      endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/loki/api/v1/push
+      encoding:
+        codec: json
+      labels:
+        job: promtail-via-vector
+    mimir:
+      type: prometheus_remote_write
+      inputs: [prometheus]
+      endpoint: http://monitoring-mimir-01-001.monitoring.svc.cluster.local:8080/api/v1/push
+      encoding:
+        codec: json
+      labels:
+        job: promtail-via-vector
+    victoria-metrics-cluster:
+      type: prometheus_remote_write
+      inputs: [prometheus]
+      endpoint: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.locaal:8480/api/v1/push
+      encoding:
+        codec: json
+      labels:
+        job: promtail-via-vector
+      
+      
