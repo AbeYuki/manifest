@@ -26,27 +26,91 @@ service:
       port: 3100
       targetPort: 3100
 customConfig:
+role: "Stateless-Aggregator"
+replicas: 4
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1024Mi
+
+service:
+  ports:
+    - name: api
+      protocol: TCP
+      port: 8686
+      targetPort: 8686
+    - name: promtail-loki
+      protocol: TCP
+      port: 9080
+      targetPort: 9080
+    - name: promtail-victoria
+      protocol: TCP
+      port: 9081
+      targetPort: 9081
+    - name: prometheus-mimir
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+    - name: prometheus-victoria
+      protocol: TCP
+      port: 9091
+      targetPort: 9091
+
+customConfig:
   api:
     enabled: true
     address: 127.0.0.1:8686
     playground: false
+
   sources:
-    promtail-sources:
+    promtail-loki:
       type: http
       address: 0.0.0.0:9080
-    prometheus-sources:
+
+    promtail-victoria-logs:
+      type: http
+      address: 0.0.0.0:9081
+
+    prometheus-mimir:
       type: prometheus_remote_write
       address: 0.0.0.0:9090
+
+    prometheus-victoria-metrics:
+      type: prometheus_remote_write
+      address: 0.0.0.0:9091
+
   transforms:
-    promtail-transforms:
+    promtail-loki-transform:
       type: remap
-      inputs: [promtail-sources]
+      inputs: [promtail-loki]
       source: |
         .timestamp = now()
+
+    promtail-victoria-logs-transform:
+      type: remap
+      inputs: [promtail-victoria-logs]
+      source: |
+        .timestamp = now()
+
+    prometheus-mimir-transform:
+      type: remap
+      inputs: [prometheus-mimir]
+      source: |
+        .timestamp = now()
+
+    prometheus-victoria-metrics-transform:
+      type: remap
+      inputs: [prometheus-victoria-metrics]
+      source: |
+        .timestamp = now()
+
   sinks:
-    loki:
+    promtail-loki-sink:
       type: loki
-      inputs: [promtail-transforms]
+      inputs: [promtail-loki-transform]
       endpoint: http://monitoring-frontend-loki-write01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
       encoding:
         codec: json
@@ -54,9 +118,10 @@ customConfig:
         job: promtail-via-vector
       healthcheck:
         enabled: false
-    victoria-logs-cluster:
+
+    promtail-victoria-logs-sink:
       type: loki
-      inputs: [promtail-transforms]
+      inputs: [promtail-victoria-logs-transform]
       endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/loki/
       compression: gzip
       path: /api/v1/push?_msg_field=log&_time_field=timestamp&_stream_fields=namespace,container,pod
@@ -66,15 +131,17 @@ customConfig:
         codec: json
       healthcheck:
         enabled: false
-    mimir:
+
+    prometheus-mimir-sink:
       type: prometheus_remote_write
-      inputs: [prometheus-sources]
+      inputs: [prometheus-mimir-transform]
       endpoint: http://monitoring-mimir-01-001.monitoring.svc.cluster.local:8080/api/v1/push
       healthcheck:
         enabled: false
-    victoria-metrics-cluster:
+
+    prometheus-victoria-metrics-sink:
       type: prometheus_remote_write
-      inputs: [prometheus-sources]
+      inputs: [prometheus-victoria-metrics-transform]
       endpoint: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.local:8480/insert/0/prometheus/api/v1/write
       healthcheck:
         enabled: false
