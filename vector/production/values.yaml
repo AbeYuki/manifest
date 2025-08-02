@@ -40,7 +40,7 @@ customConfig:
   transforms:
     promtail-transforms:
       type: remap
-      inputs: [promtail]
+      inputs: [promtail-sources]
       source: |
         .timestamp = now()
   sinks:
