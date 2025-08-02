@@ -42,16 +42,21 @@ customConfig:
       type: remap
       inputs: [promtail-sources]
       source: |
-        .timestamp = now()
+        .structured = parse_json!(.message)
+        .timestamp = to_timestamp(parse_timestamp!(.structured.values[0][0], "unix_ns"))
+        .log = .structured.values[0][1]
+        .namespace = .structured.stream.namespace
+        .container = .structured.stream.container_name
+        .pod = .structured.stream.pod_name
   sinks:
     loki:
       type: loki
       inputs: [promtail-transforms]
       endpoint: http://monitoring-frontend-loki-write01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
+      compression: gzip
+      path: /api/v1/push?_msg_field=log&_time_field=timestamp&_stream_fields=namespace,container,pod
       encoding:
         codec: json
-      labels:
-        job: promtail-via-vector
     victoria-logs-cluster:
       type: loki
       inputs: [promtail-transforms]
