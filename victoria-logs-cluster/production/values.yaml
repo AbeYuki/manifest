@@ -1,0 +1,5 @@
+vlstorage:
+  persistentVolume:
+    accessModes:
+      - ReadWriteMany
+    storageClassName: "nfs-g9-enp5s0-rwx"
