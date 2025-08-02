@@ -54,23 +54,31 @@ customConfig:
       type: remap
       inputs: [promtail-loki]
       source: |
-        .structured = parse_json!(.message)
-        .timestamp = parse_timestamp!(.structured.values[0][0], "unix_ns")
-        .log = .structured.values[0][1]
-        .namespace = .structured.stream.namespace
-        .pod = .structured.stream.pod_name
-        .container = .structured.stream.container_name
+        .structured = try(parse_json(.message)) ?? {}
+        if exists(.structured.stream) {
+          .timestamp = parse_timestamp!(.structured.values[0][0], "unix_ns")
+          .log = .structured.values[0][1]
+          .namespace = .structured.stream.namespace
+          .pod = .structured.stream.pod_name
+          .container = .structured.stream.container_name
+        } else {
+          .log = .message
+        }
 
     promtail-victoria-logs-transform:
       type: remap
       inputs: [promtail-victoria-logs]
       source: |
-        .structured = parse_json!(.message)
-        .timestamp = parse_timestamp!(.structured.values[0][0], "unix_ns")
-        .log = .structured.values[0][1]
-        .namespace = .structured.stream.namespace
-        .pod = .structured.stream.pod_name
-        .container = .structured.stream.container_name
+        .structured = try(parse_json(.message)) ?? {}
+        if exists(.structured.stream) {
+          .timestamp = parse_timestamp!(.structured.values[0][0], "unix_ns")
+          .log = .structured.values[0][1]
+          .namespace = .structured.stream.namespace
+          .pod = .structured.stream.pod_name
+          .container = .structured.stream.container_name
+        } else {
+          .log = .message
+        }
 
     prometheus-mimir-transform:
       type: remap
