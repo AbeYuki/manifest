@@ -41,14 +41,8 @@ customConfig:
     promtail-transforms:
       type: remap
       inputs: [promtail-sources]
-    source: |
-      .structured = parse_json!(.message)
-      .timestamp = to_timestamp(parse_timestamp!(.structured.values[0][0], "unix_ns"))
-      .log = .structured.values[0][1]
-      .namespace = .structured.stream.namespace
-      .container = .structured.stream.container_name
-      .pod = .structured.stream.pod_name
-      .message = .log
+      source: |
+        .timestamp = now()
   sinks:
     loki:
       type: loki
