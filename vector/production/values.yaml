@@ -54,13 +54,23 @@ customConfig:
       type: remap
       inputs: [promtail-loki]
       source: |
-        .timestamp = now()
+        .structured = parse_json!(.message)
+        .timestamp = to_timestamp!(.structured.values[0][0], "unix_ns")
+        .log = .structured.values[0][1]
+        .namespace = .structured.stream.namespace
+        .container = .structured.stream.container_name
+        .pod = .structured.stream.pod_name
 
     promtail-victoria-logs-transform:
       type: remap
       inputs: [promtail-victoria-logs]
       source: |
-        .timestamp = now()
+        .structured = parse_json!(.message)
+        .timestamp = to_timestamp!(.structured.values[0][0], "unix_ns")
+        .log = .structured.values[0][1]
+        .namespace = .structured.stream.namespace
+        .container = .structured.stream.container_name
+        .pod = .structured.stream.pod_name
 
     prometheus-mimir-transform:
       type: remap
@@ -83,6 +93,8 @@ customConfig:
       compression: snappy
       encoding:
         codec: json
+      labels:
+        job: promtail-via-vector
       healthcheck:
         enabled: false
 
@@ -94,6 +106,8 @@ customConfig:
       compression: gzip
       encoding:
         codec: json
+      labels:
+        job: promtail-via-vector
       healthcheck:
         enabled: false
 
@@ -101,6 +115,8 @@ customConfig:
       type: prometheus_remote_write
       inputs: [prometheus-mimir-transform]
       endpoint: http://monitoring-mimir-01-001.monitoring.svc.cluster.local:8080/api/v1/push
+      labels:
+        job: promtail-via-vector
       healthcheck:
         enabled: false
 
@@ -108,5 +124,7 @@ customConfig:
       type: prometheus_remote_write
       inputs: [prometheus-victoria-metrics-transform]
       endpoint: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.local:8480/insert/0/prometheus/api/v1/write
+      labels:
+        job: promtail-via-vector
       healthcheck:
         enabled: false
