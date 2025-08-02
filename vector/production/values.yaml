@@ -31,14 +31,14 @@ customConfig:
     address: 127.0.0.1:8686
     playground: false
   sources:
-    promtail:
+    promtail-sources:
       type: http
       address: 0.0.0.0:9080
-    prometheus:
+    prometheus-sources:
       type: prometheus_remote_write
       address: 0.0.0.0:9090
   transforms:
-    promtail:
+    promtail-transforms:
       type: remap
       inputs: [promtail]
       source: |
@@ -46,7 +46,7 @@ customConfig:
   sinks:
     loki:
       type: loki
-      inputs: [promtail]
+      inputs: [promtail-transforms]
       endpoint: http://monitoring-frontend-loki-backend01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
       encoding:
         codec: json
@@ -54,7 +54,7 @@ customConfig:
         job: promtail-via-vector
     victoria-logs-cluster:
       type: loki
-      inputs: [promtail]
+      inputs: [promtail-transforms]
       endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/loki/api/v1/push
       encoding:
         codec: json
@@ -62,9 +62,9 @@ customConfig:
         job: promtail-via-vector
     mimir:
       type: prometheus_remote_write
-      inputs: [prometheus]
+      inputs: [prometheus-sources]
       endpoint: http://monitoring-mimir-01-001.monitoring.svc.cluster.local:8080/api/v1/push
     victoria-metrics-cluster:
       type: prometheus_remote_write
-      inputs: [prometheus]
+      inputs: [prometheus-sources]
       endpoint: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.locaal:8480/api/v1/push
