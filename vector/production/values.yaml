@@ -47,7 +47,7 @@ customConfig:
     loki:
       type: loki
       inputs: [promtail-transforms]
-      endpoint: http://monitoring-frontend-loki-backend01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
+      endpoint: http://monitoring-frontend-loki-write01-001.monitoring.svc.cluster.local:3100/loki/api/v1/push
       encoding:
         codec: json
       labels:
