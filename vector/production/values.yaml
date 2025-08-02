@@ -18,11 +18,11 @@ service:
       port: 9080
       targetPort: 9080
     - name: prometheus
-      protocol: tcp
+      protocol: TCP
       port: 9090
       targetPort: 9090
     - name: loki
-      protocol: tcp
+      protocol: TCP
       port: 3100
       targetPort: 3100
 customConfig:
