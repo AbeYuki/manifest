@@ -67,4 +67,4 @@ customConfig:
     victoria-metrics-cluster:
       type: prometheus_remote_write
       inputs: [prometheus-sources]
-      endpoint: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.locaal:8480/insert/0/prometheus/api/v1/write
+      endpoint: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.local:8480/insert/0/prometheus/api/v1/write
