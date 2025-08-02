@@ -83,8 +83,6 @@ customConfig:
       compression: snappy
       encoding:
         codec: json
-      labels:
-        job: promtail-via-vector
       healthcheck:
         enabled: false
 
@@ -96,8 +94,6 @@ customConfig:
       compression: gzip
       encoding:
         codec: json
-      labels:
-        job: promtail-via-vector
       healthcheck:
         enabled: false
 
