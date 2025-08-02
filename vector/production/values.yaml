@@ -25,39 +25,6 @@ service:
       protocol: TCP
       port: 3100
       targetPort: 3100
-customConfig:
-role: "Stateless-Aggregator"
-replicas: 4
-resources:
-  requests:
-    cpu: 200m
-    memory: 512Mi
-  limits:
-    cpu: 500m
-    memory: 1024Mi
-
-service:
-  ports:
-    - name: api
-      protocol: TCP
-      port: 8686
-      targetPort: 8686
-    - name: promtail-loki
-      protocol: TCP
-      port: 9080
-      targetPort: 9080
-    - name: promtail-victoria
-      protocol: TCP
-      port: 9081
-      targetPort: 9081
-    - name: prometheus-mimir
-      protocol: TCP
-      port: 9090
-      targetPort: 9090
-    - name: prometheus-victoria
-      protocol: TCP
-      port: 9091
-      targetPort: 9091
 
 customConfig:
   api:
