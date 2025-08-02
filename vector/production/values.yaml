@@ -1,6 +1,6 @@
 role: "Stateless-Aggregator"
 replicas: 4
-resources: {}
+resources:
   requests:
     cpu: 200m
     memory: 512Mi
