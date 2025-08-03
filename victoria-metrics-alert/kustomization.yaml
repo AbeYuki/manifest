@@ -6,5 +6,5 @@ helmCharts:
     namespace: monitoring
     valuesFile: values.yaml
     additionalValuesFiles:
-      - metrics.yaml
-      - logs.yaml
+      - rules-metrics.yaml
+      - rules-logs.yaml
