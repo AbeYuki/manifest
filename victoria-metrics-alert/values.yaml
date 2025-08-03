@@ -1,0 +1,16 @@
+server:
+  replicaCount: 2
+
+  datasource.url:
+    - metrics=http://victoria-metrics-cluster-vmselect.monitoring.svc.cluster.local:8481/select/0/promql
+    - logs=http://victoria-logs-cluster-vlselect.monitoring.svc.cluster.local:9471/select/0/promql
+
+  remote:
+    write:
+      url: http://victoria-metrics-cluster-vminsert.monitoring.svc.cluster.local:8480/api/v1/write
+    read:
+      url: http://victoria-metrics-cluster-vmselect.monitoring.svc.cluster.local:8481/select/0/promql
+
+  notifier:
+    alertmanager:
+      url: http://alertmanager.monitoring.svc:9093

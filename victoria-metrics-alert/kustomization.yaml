@@ -1,0 +1,10 @@
+helmCharts:
+  - name: victoria-metrics-alert
+    repo: https://victoriametrics.github.io/helm-charts/
+    version: "0.24.0"
+    releaseName: victoria-metrics-alert
+    namespace: monitoring
+    valuesFile: values.yaml
+    additionalValuesFiles:
+      - metrics.yaml
+      - logs.yaml
