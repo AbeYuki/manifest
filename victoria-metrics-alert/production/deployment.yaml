@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmalert
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vmalert
+  template:
+    metadata:
+      labels:
+        app: vmalert
+    spec:
+      containers:
+        - name: vmalert
+          image: victoriametrics/vmalert:v1.123.0
+          args:
+            - -rule=/config/metrics-rules.yaml
+            - -rule=/config/logs-rules.yaml
+            - -datasource.url=metrics=http://victoria-metrics-cluster-vmselect.monitoring.svc:8481/select/0/promql
+            - -datasource.url=logs=http://victoria-logs-cluster-vlselect.monitoring.svc:9471/select/0/promql
+            - -remoteWrite.url=http://victoria-metrics-cluster-vminsert.monitoring.svc:8480/api/v1/write
+            - -notifier.url=http://monitoring-backend-alertmanager01-001.monitoring.svc:9093
+            - -httpListenAddr=:8880
+            - -loggerFormat=json
+          ports:
+            - name: http
+              containerPort: 8880
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: vmalert-rules
