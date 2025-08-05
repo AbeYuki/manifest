@@ -1,0 +1,10 @@
+server:
+  replicaCount: 2
+  remote:
+    write:
+      url: http://victoria-metrics-cluster-vminsert.monitoring.svc:8480
+    read:
+      url: http://victoria-metrics-cluster-vmselect.monitoring.svc:8481
+  notifier:
+    alertmanager:
+      url: http://monitoring-backend-alertmanager01-001.monitoring.svc:9093
