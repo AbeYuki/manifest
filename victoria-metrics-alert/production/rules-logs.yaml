@@ -4,6 +4,7 @@ server:
       groups:
         - name: server
           interval: 1m
+          type: vlogs 
           rules:
           - alert: under_voltage_detected
             expr: count_over_time({job="journal"} |= "Undervoltage detected"[1m]) > 0
@@ -55,6 +56,7 @@ server:
               summary: "{{ $labels.host }} で NFS ファイルロックがロストした"
               description: "kubectl get all -A | grep <IP> で SERVICE/PVC を特定し PVC を再マウントする"
         - name: application
+          type: vlogs 
           interval: 1m
           rules:
           - alert: remote_storage_error
@@ -115,6 +117,7 @@ server:
               summary: "longhorn-system {{ $labels.node }} cannot mount nfs"
               description: "NFSサーバの状態確認を実施"
         - name: security
+          type: vlogs 
           interval: 1m
           rules:
           - alert: XMRigMiningAttempt
