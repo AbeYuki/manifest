@@ -8,8 +8,7 @@ helmCharts:
     additionalValuesFiles:
       - values-metrics.yaml
       - rules-metrics.yaml
----
-helmCharts:
+
   - name: victoria-metrics-alert
     repo: https://victoriametrics.github.io/helm-charts/
     version: "0.24.0"
