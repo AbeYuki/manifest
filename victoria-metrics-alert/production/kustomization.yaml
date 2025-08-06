@@ -17,4 +17,4 @@ helmCharts:
     valuesFile: values.yaml
     additionalValuesFiles:
       - values-logs.yaml
-      #- rules-logs.yaml
+      - rules-logs.yaml

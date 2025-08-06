@@ -7,7 +7,8 @@ server:
           type: vlogs 
           rules:
           - alert: under_voltage_detected
-            expr: count_over_time({job="journal"} |= "Undervoltage detected"[1m]) > 0
+            expr: |
+              job: "journal" AND _msg:~"Undervoltage detected" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: warn
@@ -15,7 +16,8 @@ server:
               summary: "Instance {{ $labels.node }} Under-voltage detected"
               description: "電圧不足のため電源交換を実施"
           - alert: system_err
-            expr: count_over_time({job="journal",level="err"} | json [1m]) > 0
+            expr: |
+              job: "journal" AND level: "err" | json | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: error
@@ -23,7 +25,8 @@ server:
               summary: "{{$labels.host}}の{{$labels.systemd_unit}}ユニットでエラー発生"
               description: "{{$labels.MESSAGE}}"
           - alert: system_crit
-            expr: count_over_time({job="journal",level="crit"} | json [1m]) > 0
+            expr: |
+              job: "journal" AND level: "crit" | json | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -31,7 +34,8 @@ server:
               summary: "{{$labels.host}}の{{$labels.systemd_unit}}ユニットで致命的なエラー発生"
               description: "{{$labels.MESSAGE}}"
           - alert: journal_io_error
-            expr: count_over_time({job="journal"} |= "log I/O erro"[1m]) > 1
+            expr: |
+              job: "journal" AND _msg:~"log I/O erro" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -39,7 +43,8 @@ server:
               summary: "{{ $labels.host }} で I/O Error が発生"
               description: "ファイルシステムをアンマウントして修復してください。"
           - alert: journal_device_offline_error
-            expr: count_over_time({job="journal"} |= "device offline error"[1m]) > 1
+            expr: |
+              job: "journal" AND _msg:~"device offline error" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -48,7 +53,7 @@ server:
               description: "ディスクの損傷・接続不良などの問題の可能性がある。"
           - alert: journal_nfs_lost_lock
             expr: |
-              count_over_time({job="journal"} |~ "NFS: .+: lost .+ locks"[1m]) > 1
+              job: "journal" AND _msg:~"NFS: .+: lost .+ locks" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -60,7 +65,8 @@ server:
           interval: 1m
           rules:
           - alert: remote_storage_error
-            expr: count_over_time({app_kubernetes_io_name="prometheus"}|detected_level="error" |="non-recoverable error"[5m]) > 0
+            expr: |
+              app_kubernetes_io_name: "prometheus" AND detected_level: "error" AND _msg:~"non-recoverable error" | stats count() as matches | filter matches:>0
             for: 5m
             labels:
               severity: alert
@@ -68,7 +74,8 @@ server:
               summary: "prometheus remote write error"
               description: "PrometheusのRemoteWrite周りを確認"
           - alert: oom_killer
-            expr: count_over_time({job="journal"} |= "Memory cgroup out of memory"[1m]) > 0
+            expr: |
+              job: "journal" AND _msg:~"Memory cgroup out of memory" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -77,7 +84,8 @@ server:
               summary: "Instance {{ $labels.node }} Memory cgroup out of memory"
               description: "アプリケーションがメモリ不足のためresourcesを調整する"
           - alert: unauthorized_access_detection
-            expr: count_over_time({namespace="ingress-nginx"} |~ "HTTP/[1-2]\\.[0-2]\"\\s4[0-9]{2}\\s" |~ "/wp-login.php"[1m]) > 1
+            expr: |
+              namespace: "ingress-nginx" AND _msg:~"HTTP/[1-2]\\.[0-2]\\\"\\s4[0-9]{2}\\s" AND _msg:~"/wp-login.php" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: alert
@@ -86,7 +94,7 @@ server:
               description: "アクセス内容を確認して必要であれば該当のIPをdenyに追加"
           - alert: vault_failed_to_heartbeat_to_peer
             expr: |
-              count_over_time({app_kubernetes_io_name="vault"}  |="storage.raft: failed to heartbeat to: peer"[1m]) > 0
+              app_kubernetes_io_name: "vault" AND _msg:~"storage.raft: failed to heartbeat to: peer" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -94,7 +102,8 @@ server:
               summary: "vault で raft peers のハートビート監視で失敗"
               description: "vault を確認して raft peers を構成してください"
           - alert: pod_input_output_error
-            expr: count_over_time({pod_name=~".+"} | app_kubernetes_io_name != "loki" |= "input/output"[1m]) > 0
+            expr: |
+              app_kubernetes_io_name:!"loki" AND pod_name:~".+" AND _msg:~"input/output" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -102,14 +111,16 @@ server:
               summary: "{{ $labels.pod_name }}でI/Oエラーが発生しました"
               description: "{{ $labels.pod_name }}のpodを再起動してください"
           - alert: minecraft_bedrock_server_user_connected
-            expr: count_over_time({namespace="prod-minecraft"}|~ "Player connected"[10m]) > 0
+            expr: |
+              namespace: "prod-minecraft" AND _msg:~"Player connected" | stats count() as matches | filter matches:>0
             for: 5m
             labels:
               severity: info
             annotations:
               summary: "Minecraft bedrock server user connected"
           - alert: longhorn_buckup_error
-            expr: count_over_time({namespace="longhorn-system"} |= "cannot mount nfs"[1m]) > 0
+            expr: |
+              namespace: "longhorn-system" AND _msg:~"cannot mount nfs" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -121,49 +132,56 @@ server:
           interval: 1m
           rules:
           - alert: XMRigMiningAttempt
-            expr: count_over_time({namespace="ingress-nginx",remote_addr!~"192\\.168\\..+"} |~ "mining"[1m]) > 0
+            expr: |
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"mining" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
             annotations:
               summary: "XMRig マイニングアクセスを検出"
           - alert: SQLInjectionAttempt
-            expr: count_over_time({namespace="ingress-nginx",remote_addr!~"192\\.168\\..+"} |~ "UNION SELECT|DROP TABLE|OR 1=1|--|%27"[1m]) > 0
+            expr: |
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"UNION SELECT|DROP TABLE|OR 1=1|--|%27" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: high
             annotations:
               summary: "SQLインジェクションの可能性あり"
           - alert: WordPressScan
-            expr: count_over_time({namespace="ingress-nginx",remote_addr!~"192\\.168\\..+"} |~ "wp-login\\.php|xmlrpc\\.php|wp-admin"[1m]) > 0
+            expr: |
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"wp-login\\.php|xmlrpc\\.php|wp-admin" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: warning
             annotations:
               summary: "WordPress ターゲットのスキャン試行"
           - alert: Log4ShellAttempt
-            expr: count_over_time({namespace="ingress-nginx",remote_addr!~"192\\.168\\..+"} |~ "\\$\\{jndi:[a-z]+://"[1m]) > 0
+            expr: |
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"\\$\\{jndi:[a-z]+://" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
             annotations:
               summary: "Log4Shell 攻撃検出"
           - alert: PathTraversalAttempt
-            expr: count_over_time({namespace="ingress-nginx",remote_addr!~"192\\.168\\..+"} |~ "\\.\\./|\\.\\.\\\\|%2e%2e%2f"[1m]) > 0
+            expr: |
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"\\.\\./|\\.\\.\\\\|%2e%2e%2f" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: high
             annotations:
               summary: "パストラバーサル試行"
           - alert: SuspiciousUserAgent
-            expr: count_over_time({namespace="ingress-nginx",remote_addr!~"192\\.168\\..+"} |~ "sqlmap|nikto|XMRig|curl"[1m]) > 0
+            expr: |
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"sqlmap|nikto|XMRig|curl" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: warning
             annotations:
               summary: "疑わしい User-Agent を検出"
           - alert: SshLoginFromOutsice
-            expr: count_over_time({systemd_unit="ssh.service"} |="Accepted publickey" !="192.168"[1m]) > 0
+            expr: |
+              systemd_unit: "ssh.service" AND _msg:~"Accepted publickey" AND _msg:!~"192\\.168" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
