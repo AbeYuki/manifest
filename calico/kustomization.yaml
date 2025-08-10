@@ -1,0 +1,7 @@
+helmCharts:
+  - name: tigera-operator
+    repo: https://docs.tigera.io/calico/charts
+    version: 3.30.2
+    releaseName: calico
+    namespace: tigera-operator
+    includeCRDs: true
