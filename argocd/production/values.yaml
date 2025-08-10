@@ -295,8 +295,8 @@ repoServer:
     - name: custom-tools
       emptyDir: {}
     - name: vault-tls
-      secret:
-        secretName: vault-ha-tls
+      configMap: 
+        name: vault-internal-ca 
   volumeMounts:
     - name: argocd-cmp-cm
       mountPath: /home/argocd/cmp-server/config
