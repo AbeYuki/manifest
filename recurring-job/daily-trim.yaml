@@ -1,15 +1,13 @@
+---
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
-  name: production-trim
+  name: daily-trim
   namespace: longhorn-system
 spec:
-  concurrency: 1
-  cron: 30 0 * * *
-  groups:
-  - production
-  labels: {}
-  name: production-trim
-  parameters: {}
+  cron: "30 0 * * *"
+  task: "filesystem-trim"
   retain: 0
-  task: filesystem-trim
+  concurrency: 1
+  groups:
+    - default

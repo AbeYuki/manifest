@@ -1,3 +1,4 @@
+---
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
@@ -6,7 +7,7 @@ metadata:
 spec:
   cron: "0 3 * * *"
   task: "backup"
-  retain: 3
+  retain: 30
   concurrency: 1
   groups:
-    - default     
+    - default
