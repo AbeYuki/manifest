@@ -21,12 +21,12 @@ configs:
     resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration: |
       jqPathExpressions:
       - '.webhooks[]?.clientConfig.caBundle'
+
     resource.customizations.ignoreDifferences.apiextensions.k8s.io_CustomResourceDefinition: |
       jqPathExpressions:
       - '.spec.conversion.webhook.clientConfig.caBundle'
-    resource.customizations.ignoreDifferences.apiextensions.k8s.io_CustomResourceDefinition: |
-      jqPathExpressions:
       - '.spec.preserveUnknownFields'
+  
   cmp:
     create: true
     plugins:
