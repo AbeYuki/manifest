@@ -1,4 +1,5 @@
 #kubectl label ns argocd trust-manager/bundle=enabled --overwrite
+#kubectl label ns vault trust-manager/bundle=enabled --overwrite
 #kubectl -n cert-manager get secret vault-root-ca-secret -o jsonpath='{.data.tls\.crt}' \
 # | base64 -d \
 # | kubectl -n cert-manager create configmap vault-ca-bundle --from-file=ca.pem=/dev/stdin

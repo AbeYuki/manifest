@@ -5,12 +5,18 @@ injector:
   extraEnvironmentVars:
     VAULT_API_ADDR: "https://vault.vault.svc.cluster.local:8200"
     VAULT_ADDR: "https://vault.vault.svc:8200"
-    VAULT_CACERT: "/vault/userconfig/vault-ha-tls/ca.crt"
+    VAULT_CACERT: "/etc/vault/ca/ca.pem"
   volumes:
+    - name: vault-ca
+      configMap:
+        name: vault-trust-bundle
     - name: userconfig-vault-ha-tls
       secret:
         secretName: vault-ha-tls
   volumeMounts:
+    - name: vault-ca
+      mountPath: /etc/vault/ca
+      readOnly: true
     - name: userconfig-vault-ha-tls
       mountPath: /vault/userconfig/vault-ha-tls
       readOnly: true
