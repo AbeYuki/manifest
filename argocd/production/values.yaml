@@ -171,6 +171,9 @@ repoServer:
         - name: vault-ca
           mountPath: /etc/vault/ca
           readOnly: true
+        - name: vault-client-tls
+          mountPath: /etc/vault/tls
+          readOnly: true
     - name: helm-template-avp
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
@@ -193,6 +196,9 @@ repoServer:
           subPath: helmfile
         - name: vault-ca
           mountPath: /etc/vault/ca
+          readOnly: true
+        - name: vault-client-tls
+          mountPath: /etc/vault/tls
           readOnly: true
     - name: helmfile
       command: [/var/run/argocd/argocd-cmp-server]
@@ -217,6 +223,9 @@ repoServer:
         - name: vault-ca
           mountPath: /etc/vault/ca
           readOnly: true
+        - name: vault-client-tls
+          mountPath: /etc/vault/tls
+          readOnly: true
     - name: avp-kustomize
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
@@ -239,6 +248,9 @@ repoServer:
           subPath: helmfile
         - name: vault-ca
           mountPath: /etc/vault/ca
+          readOnly: true
+        - name: vault-client-tls
+          mountPath: /etc/vault/tls
           readOnly: true
     - name: kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
@@ -263,6 +275,9 @@ repoServer:
         - name: vault-ca
           mountPath: /etc/vault/ca
           readOnly: true
+        - name: vault-client-tls
+          mountPath: /etc/vault/tls
+          readOnly: true
     - name: avp-kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
@@ -286,6 +301,9 @@ repoServer:
         - name: vault-ca
           mountPath: /etc/vault/ca
           readOnly: true
+        - name: vault-client-tls
+          mountPath: /etc/vault/tls
+          readOnly: true
   volumes:
     - name: argocd-cmp-cm
       configMap:
@@ -297,6 +315,14 @@ repoServer:
     - name: vault-ca
       configMap: 
         name: vault-trust-bundle
+    - name: vault-client-tls
+      secret:
+        secretName: vault-client-tls
+        items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
   volumeMounts:
     - name: argocd-cmp-cm
       mountPath: /home/argocd/cmp-server/config
@@ -308,6 +334,9 @@ repoServer:
       subPath: helmfile
     - name: vault-ca
       mountPath: /etc/vault/ca
+      readOnly: true
+    - name: vault-client-tls
+      mountPath: /etc/vault/tls
       readOnly: true
 server:
   name: server
