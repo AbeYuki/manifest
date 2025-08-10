@@ -14,6 +14,7 @@ spec:
         key: ca.pem
   target:
     configMap:
+      name: vault-ca-bundle
       key: ca.pem
     namespaceSelector:
       matchLabels:
