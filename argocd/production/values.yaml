@@ -168,8 +168,8 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/helmfile
           subPath: helmfile
-        - name: vault-tls
-          mountPath: /vault/tls
+        - name: vault-ca
+          mountPath: /etc/vault/ca
           readOnly: true
     - name: helm-template-avp
       command: [/var/run/argocd/argocd-cmp-server]
@@ -191,8 +191,8 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/helmfile
           subPath: helmfile
-        - name: vault-tls
-          mountPath: /vault/tls
+        - name: vault-ca
+          mountPath: /etc/vault/ca
           readOnly: true
     - name: helmfile
       command: [/var/run/argocd/argocd-cmp-server]
@@ -214,8 +214,8 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/helmfile
           subPath: helmfile
-        - name: vault-tls
-          mountPath: /vault/tls
+        - name: vault-ca
+          mountPath: /etc/vault/ca
           readOnly: true
     - name: avp-kustomize
       command: [/var/run/argocd/argocd-cmp-server]
@@ -237,8 +237,8 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/helmfile
           subPath: helmfile
-        - name: vault-tls
-          mountPath: /vault/tls
+        - name: vault-ca
+          mountPath: /etc/vault/ca
           readOnly: true
     - name: kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
@@ -260,8 +260,8 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/helmfile
           subPath: helmfile
-        - name: vault-tls
-          mountPath: /vault/tls
+        - name: vault-ca
+          mountPath: /etc/vault/ca
           readOnly: true
     - name: avp-kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
@@ -283,8 +283,8 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/helmfile
           subPath: helmfile
-        - name: vault-tls
-          mountPath: /vault/tls
+        - name: vault-ca
+          mountPath: /etc/vault/ca
           readOnly: true
   volumes:
     - name: argocd-cmp-cm
@@ -294,9 +294,9 @@ repoServer:
       emptyDir: {}
     - name: custom-tools
       emptyDir: {}
-    - name: vault-tls
+    - name: vault-ca
       configMap: 
-        name: vault-internal-ca 
+        name: vault-trust-bundle
   volumeMounts:
     - name: argocd-cmp-cm
       mountPath: /home/argocd/cmp-server/config
@@ -306,8 +306,8 @@ repoServer:
     - name: custom-tools
       mountPath: /usr/local/bin/helmfile
       subPath: helmfile
-    - name: vault-tls
-      mountPath: /vault/tls
+    - name: vault-ca
+      mountPath: /etc/vault/ca
       readOnly: true
 server:
   name: server
