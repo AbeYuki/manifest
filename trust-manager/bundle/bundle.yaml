@@ -1,4 +1,4 @@
-#kubectl label ns argocd linkerd.io/inject=enabled --overwrite
+#kubectl label ns argocd trust-manager/bundle=enabled --overwrite
 #kubectl -n cert-manager get secret vault-root-ca-secret -o jsonpath='{.data.tls\.crt}' \
 # | base64 -d \
 # | kubectl -n cert-manager create configmap vault-ca-bundle --from-file=ca.pem=/dev/stdin
@@ -11,10 +11,10 @@ spec:
   sources:
     - configMap:
         name: vault-ca-bundle
-        key: root-ca.pem
+        key: ca.pem
   target:
     configMap:
-      key: bundle.pem
+      key: ca.pem
     namespaceSelector:
       matchLabels:
-        linkerd.io/inject: "enabled"
+        trust-manager/bundle: "enabled"
