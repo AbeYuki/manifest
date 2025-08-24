@@ -1,3 +1,10 @@
+resources:
+  - https://raw.githubusercontent.com/actions/actions-runner-controller/v0.27.6/charts/actions-runner-controller/crds/actions.summerwind.dev_runners.yaml
+  - https://raw.githubusercontent.com/actions/actions-runner-controller/v0.27.6/charts/actions-runner-controller/crds/actions.summerwind.dev_runnerdeployments.yaml
+  - https://raw.githubusercontent.com/actions/actions-runner-controller/v0.27.6/charts/actions-runner-controller/crds/actions.summerwind.dev_runnerreplicasets.yaml
+  - https://raw.githubusercontent.com/actions/actions-runner-controller/v0.27.6/charts/actions-runner-controller/crds/actions.summerwind.dev_horizontalrunnerautoscalers.yaml
+
+
 helmCharts:
   - name: actions-runner-controller
     repo: https://actions-runner-controller.github.io/actions-runner-controller
