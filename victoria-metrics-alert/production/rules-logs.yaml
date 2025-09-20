@@ -149,10 +149,11 @@ server:
               summary: "SQLインジェクションの可能性あり"
           - alert: WordPressScan
             expr: |
+              _time:5m
               namespace:="ingress-nginx"
               AND remote_addr:!~"192\\.168\\..+"
               AND _msg:~"wp-login\\.php|xmlrpc\\.php|wp-admin"
-              | stats by (_time:1m) count() as matches
+              | stats count() as matches
               | filter matches:>=5
             for: 0m
             labels:
