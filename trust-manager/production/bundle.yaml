@@ -1,5 +1,8 @@
+## Bundle で配布したい namespace にラベル設定
 #kubectl label ns argocd trust-manager/bundle=enabled --overwrite
 #kubectl label ns vault trust-manager/bundle=enabled --overwrite
+
+## ns: cert-manager にある Root 証明書を ns: cert-manager の configMap に作成して Bundle で配布する
 #kubectl -n cert-manager get secret vault-root-ca-secret -o jsonpath='{.data.tls\.crt}' \
 # | base64 -d \
 # | kubectl -n cert-manager create configmap vault-ca-bundle --from-file=ca.pem=/dev/stdin
@@ -8,8 +11,10 @@ apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
   name: vault-trust-bundle
+  # namespace の指定不可（ClusterScope）
 spec:
   sources:
+    # namespace: cert-manager のリソースを参照
     - configMap:
         name: vault-ca-bundle
         key: ca.pem
