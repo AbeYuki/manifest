@@ -7,3 +7,4 @@ vlinsert:
   service:
     annotations: 
       metallb.universe.tf/address-pool: vlinsert
+  type: LoadBalancer
