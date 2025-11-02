@@ -8,7 +8,7 @@ server:
           rules:
           - alert: under_voltage_detected
             expr: |
-              _msg:~"Undervoltage detected" | stats count() as matches | filter matches:>0
+              PRIORITY: "2" AND SYSLOG_IDENTIFIER: "kernel" AND ~"Undervoltage detected" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: warn
@@ -17,7 +17,7 @@ server:
               description: "電圧不足のため電源交換を実施"
           - alert: system_err
             expr: |
-              level: "err" | json | stats count() as matches | filter matches:>0
+              level: "error" AND _RUNTIME_SCOPE: "system" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: error
@@ -26,7 +26,7 @@ server:
               description: "{{$labels.MESSAGE}}"
           - alert: system_crit
             expr: |
-              level: "crit" | json | stats count() as matches | filter matches:>0
+              level: "crit" AND _RUNTIME_SCOPE: "system" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -35,7 +35,7 @@ server:
               description: "{{$labels.MESSAGE}}"
           - alert: journal_io_error
             expr: |
-               _msg:~"log I/O erro" | stats count() as matches | filter matches:>1
+              _RUNTIME_SCOPE: "system" | ~"I/O error" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -44,7 +44,7 @@ server:
               description: "ファイルシステムをアンマウントして修復してください。"
           - alert: journal_device_offline_error
             expr: |
-              _msg:~"device offline error" | stats count() as matches | filter matches:>1
+              _RUNTIME_SCOPE: "system" | ~"device offline error"  | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -53,7 +53,7 @@ server:
               description: "ディスクの損傷・接続不良などの問題の可能性がある。"
           - alert: journal_nfs_lost_lock
             expr: |
-              _msg:~"NFS: .+: lost .+ locks" | stats count() as matches | filter matches:>1
+              _RUNTIME_SCOPE: "system" | ~"NFS: .+: lost .+ locks" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -94,7 +94,7 @@ server:
               description: "アクセス内容を確認して必要であれば該当のIPをdenyに追加"
           - alert: vault_failed_to_heartbeat_to_peer
             expr: |
-              app_kubernetes_io_name: "vault" AND _msg:~"storage.raft: failed to heartbeat to: peer" | stats count() as matches | filter matches:>0
+              app_kubernetes_io_name: "vault" |~"storage.raft: failed to heartbeat to: peer" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -162,7 +162,10 @@ server:
               summary: "WordPress ターゲットのスキャン試行"
           - alert: Log4ShellAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"\\$\\{jndi:[a-z]+://" | stats count() as matches | filter matches:>0
+              namespace: "ingress-nginx" 
+              AND remote_addr:!~"192\\.168\\..+"
+              AND _msg:~"\\$\\{jndi:[a-z]+://" 
+              | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
