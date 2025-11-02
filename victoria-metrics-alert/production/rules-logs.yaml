@@ -8,7 +8,7 @@ server:
           rules:
           - alert: under_voltage_detected
             expr: |
-              job: "journal" AND _msg:~"Undervoltage detected" | stats count() as matches | filter matches:>0
+              _msg:~"Undervoltage detected" | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: warn
@@ -17,7 +17,7 @@ server:
               description: "電圧不足のため電源交換を実施"
           - alert: system_err
             expr: |
-              job: "journal" AND level: "err" | json | stats count() as matches | filter matches:>0
+              level: "err" | json | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: error
@@ -26,7 +26,7 @@ server:
               description: "{{$labels.MESSAGE}}"
           - alert: system_crit
             expr: |
-              job: "journal" AND level: "crit" | json | stats count() as matches | filter matches:>0
+              level: "crit" | json | stats count() as matches | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -35,7 +35,7 @@ server:
               description: "{{$labels.MESSAGE}}"
           - alert: journal_io_error
             expr: |
-              job: "journal" AND _msg:~"log I/O erro" | stats count() as matches | filter matches:>1
+               _msg:~"log I/O erro" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -44,7 +44,7 @@ server:
               description: "ファイルシステムをアンマウントして修復してください。"
           - alert: journal_device_offline_error
             expr: |
-              job: "journal" AND _msg:~"device offline error" | stats count() as matches | filter matches:>1
+              _msg:~"device offline error" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
@@ -53,7 +53,7 @@ server:
               description: "ディスクの損傷・接続不良などの問題の可能性がある。"
           - alert: journal_nfs_lost_lock
             expr: |
-              job: "journal" AND _msg:~"NFS: .+: lost .+ locks" | stats count() as matches | filter matches:>1
+              _msg:~"NFS: .+: lost .+ locks" | stats count() as matches | filter matches:>1
             for: 0m
             labels:
               severity: critical
