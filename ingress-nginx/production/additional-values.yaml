@@ -1,6 +1,17 @@
 controller:
   config:
     log-format-upstream: '$proxy_protocol_addr - $request_id - [$proxy_add_x_forwarded_for] - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_length $request_time [$proxy_upstream_name] $upstream_addr $upstream_response_length $upstream_response_time $upstream_status'
+    server-snippet: |
+      location = /readme.html { return 404; }
+      location = /license.txt { return 404; }
+      location = /wp-config.php { deny all; }
+      location ~* /wp-config.php\.bak$ { deny all; }
+      location = /xmlrpc.php { return 403; }
+      location = /wp-cron.php { return 403; }
+      location = /wp-json/wp/v2/users { deny all; }
+      location = /wp-sitemap-users-1.xml { deny all; }
+      location ~* /wp-content/uploads/.*\.(sql|sql\.gz|zip|tar|env|bak)$ { deny all; }
+      location ~* /wp-content/uploads/.*\.php$ { deny all; }
 
     ### 上段の proxy が L4 TCP passthrough の場合
     use-proxy-protocol: "true"
