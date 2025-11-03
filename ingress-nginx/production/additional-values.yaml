@@ -2,16 +2,25 @@ controller:
   config:
     log-format-upstream: '$proxy_protocol_addr - $request_id - [$proxy_add_x_forwarded_for] - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_length $request_time [$proxy_upstream_name] $upstream_addr $upstream_response_length $upstream_response_time $upstream_status'
     server-snippet: |
-      location = /readme.html { return 404; }
-      location = /license.txt { return 404; }
-      location = /wp-config.php { deny all; }
-      location ~* /wp-config.php\.bak$ { deny all; }
-      location = /xmlrpc.php { return 403; }
-      location = /wp-cron.php { return 403; }
-      location = /wp-json/wp/v2/users { deny all; }
-      location = /wp-sitemap-users-1.xml { deny all; }
-      location ~* /wp-content/uploads/.*\.(sql|sql\.gz|zip|tar|env|bak)$ { deny all; }
-      location ~* /wp-content/uploads/.*\.php$ { deny all; }
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      if ($wp_block) { return 404; }
+    http-snippet: |
+      map $uri $wp_block {
+        default                                                    0;
+        ~^/xmlrpc\.php$                                            1;
+        ~^/readme\.html$                                           1;
+        ~^/license\.txt$                                           1;
+        ~^/wp-json/wp/v2/users$                                    1;
+        ~^/wp-sitemap-users-\d+\.xml$                              1;
+        ~^/wp-config\.php(\.bak|~)?$                               1;
+        ~^/\.env$                                                  1;
+        ~^/\.git                                                   1;
+        ~^/\.ht                                                    1;
+        ~^/.*\.(?:bak|old|orig|swp|ini|log|conf)$                  1;
+        ~^/wp-content/uploads/.*\.(?:php|phar)$                    1;
+        ~^/wp-content/uploads/.*\.(?:sql|sql\.gz|zip|tar|env|bak)$ 1;
+      }
 
     ### 上段の proxy が L4 TCP passthrough の場合
     use-proxy-protocol: "true"
