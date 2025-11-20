@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 longhorn:login
 	argocd app sync longhorn
 
