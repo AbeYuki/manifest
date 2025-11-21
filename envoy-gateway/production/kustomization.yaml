@@ -1,5 +1,5 @@
 helmCharts:
-  - name: envoy-gateway
+  - name: eg 
     repo: oci://docker.io/envoyproxy/gateway-helm
     version: "1.6.0"
     releaseName: envoy-gateway
