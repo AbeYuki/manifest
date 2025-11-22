@@ -12,5 +12,8 @@ vmalert:login
 monitoring:login
 	argocd app sync monitoring --prune
 
+ingress-nginx:login
+	argocd app sync ingress-nginx --prune
+
 login:
 	argocd login argocd.aimhighergg.com --grpc-web
