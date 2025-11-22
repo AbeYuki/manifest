@@ -2,10 +2,6 @@ speaker:
   securityContext:
     runAsNonRoot: false
     runAsUser: 0
-    capabilities:
-      add:
-        - NET_ADMIN
-        - NET_RAW
   livenessProbe:
     enabled: false
   readinessProbe:
