@@ -2,4 +2,5 @@ resources:
   - ./cluster-issuer/cluster-issuer.yaml
   - ./gateway/envoy/gateway.yaml
   - ./gateway/nginx/gateway.yaml
+  - ./gateway-class/gateway-class.yaml
   - ./http-route/http-route.yaml
