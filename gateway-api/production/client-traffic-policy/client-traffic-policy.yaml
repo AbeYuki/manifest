@@ -1,0 +1,14 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: enable-client-ip-detection
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy
+  proxyProtocol:
+    version: V2
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
