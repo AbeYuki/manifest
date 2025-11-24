@@ -9,6 +9,3 @@ spec:
       kind: Gateway
       name: envoy
   enableProxyProtocol: true
-  clientIPDetection:
-    xForwardedFor:
-      numTrustedHops: 1
