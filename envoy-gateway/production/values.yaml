@@ -1,0 +1,9 @@
+service:
+  annotations:
+    metallb.io/address-pool: envoy-gateway
+    metallb.io/loadBalancerIPs: 192.168.1.104
+  type: "LoadBalancer"
+config:
+  envoyGateway:
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller
