@@ -18,7 +18,7 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: Same
+      hostname: "www-aimhighergg-com"
       tls:
         mode: Terminate
         certificateRefs:
