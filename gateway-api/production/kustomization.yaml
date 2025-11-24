@@ -1,7 +1,8 @@
 resources:
   - ./certificate/certificate.yaml
   - ./cluster-issuer/cluster-issuer.yaml
+  - ./envoy-proxy/envoy-proxy.yaml
   - ./gateway/envoy/gateway.yaml
-  - ./gateway/nginx/gateway.yaml
+#  - ./gateway/nginx/gateway.yaml
   - ./gateway-class/gateway-class.yaml
   - ./http-route/http-route.yaml
