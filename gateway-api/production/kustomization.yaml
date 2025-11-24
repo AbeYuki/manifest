@@ -1,4 +1,5 @@
 resources:
+  - ./certificate/certificate.yaml
   - ./cluster-issuer/cluster-issuer.yaml
   - ./gateway/envoy/gateway.yaml
   - ./gateway/nginx/gateway.yaml
