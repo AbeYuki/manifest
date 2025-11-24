@@ -14,7 +14,7 @@ spec:
       hostname: "www-aimhighergg-com"
       allowedRoutes:
         namespaces:
-          from: www-aimhighergg-com
+          from: Same
     - name: https
       protocol: HTTPS
       port: 443
@@ -26,4 +26,4 @@ spec:
             name: aimhighergg-tls
       allowedRoutes:
         namespaces:
-          from: www-aimhighergg-com
+          from: Same
