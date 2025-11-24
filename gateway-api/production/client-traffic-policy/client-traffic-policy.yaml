@@ -4,10 +4,9 @@ metadata:
   name: enable-proxy-protocol-policy
   namespace: envoy-gateway
 spec:
-  enableProxyProtocol: true
   targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: envoy
-      sectionName: https-www-aimhighergg-com
-
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy
+    sectionName: https-www-aimhighergg-com
+  enableProxyProtocol: true
