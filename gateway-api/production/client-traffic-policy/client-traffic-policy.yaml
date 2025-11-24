@@ -10,3 +10,8 @@ spec:
     name: envoy
     sectionName: https-www-aimhighergg-com
   enableProxyProtocol: true
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
+  proxyProtocol:
+    optional: false      
