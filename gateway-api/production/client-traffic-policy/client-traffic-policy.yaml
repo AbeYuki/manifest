@@ -1,7 +1,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: nable-proxy-protocol-policy
+  name: enable-proxy-protocol-policy
   namespace: envoy-gateway
 spec:
   targetRefs:
