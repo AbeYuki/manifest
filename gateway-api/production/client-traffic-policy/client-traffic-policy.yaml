@@ -1,7 +1,22 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: enable-proxy-protocol-policy
+  name: http-www-aimhighergg-com
+  namespace: envoy-gateway
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy
+    sectionName: http-www-aimhighergg-com
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: https-www-aimhighergg-com
   namespace: envoy-gateway
 spec:
   targetRefs:
@@ -13,5 +28,34 @@ spec:
   clientIPDetection:
     xForwardedFor:
       numTrustedHops: 1
-  proxyProtocol:
-    optional: false      
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: http-grafana-aimhighergg-com
+  namespace: envoy-gateway
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy
+    sectionName: http-grafana-aimhighergg-com
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: https-grafana-aimhighergg-com
+  namespace: envoy-gateway
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy
+    sectionName: https-grafana-aimhighergg-com
+  enableProxyProtocol: true
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
