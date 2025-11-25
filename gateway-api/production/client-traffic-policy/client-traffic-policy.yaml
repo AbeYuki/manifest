@@ -5,10 +5,10 @@ metadata:
   namespace: envoy-gateway
 spec:
   targetRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy
-    sectionName: http-www-aimhighergg-com
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy
+      sectionName: http-www-aimhighergg-com
   clientIPDetection:
     xForwardedFor:
       numTrustedHops: 1
@@ -20,10 +20,10 @@ metadata:
   namespace: envoy-gateway
 spec:
   targetRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy
-    sectionName: https-www-aimhighergg-com
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy
+      sectionName: https-www-aimhighergg-com
   enableProxyProtocol: true
   clientIPDetection:
     xForwardedFor:
@@ -36,10 +36,10 @@ metadata:
   namespace: envoy-gateway
 spec:
   targetRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy
-    sectionName: http-grafana-aimhighergg-com
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy
+      sectionName: http-grafana-aimhighergg-com
   clientIPDetection:
     xForwardedFor:
       numTrustedHops: 1
@@ -51,10 +51,10 @@ metadata:
   namespace: envoy-gateway
 spec:
   targetRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy
-    sectionName: https-grafana-aimhighergg-com
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy
+      sectionName: https-grafana-aimhighergg-com
   enableProxyProtocol: true
   clientIPDetection:
     xForwardedFor:
