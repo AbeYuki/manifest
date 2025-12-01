@@ -22,7 +22,7 @@ spec:
           from: Selector
           selector:
             matchLabels:
-              gatewawy: www-aimhighergg-com
+              gateway: www-aimhighergg-com
     - name: https-www-aimhighergg-com
       protocol: HTTPS
       port: 443
@@ -37,7 +37,7 @@ spec:
           from: Selector
           selector:
             matchLabels:
-              gatewawy: www-aimhighergg-com
+              gateway: www-aimhighergg-com
     - name: http-grafana-aimhighergg-com
       protocol: HTTP
       port: 80
