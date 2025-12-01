@@ -19,7 +19,10 @@ spec:
       hostname: "www.aimhighergg.com"
       allowedRoutes: # HTTPRoute の namespace
         namespaces:
-          from: All
+          from: Selector
+          selector:
+            matchLabels:
+              gatewawy: www-aimhighergg-com
     - name: https-www-aimhighergg-com
       protocol: HTTPS
       port: 443
@@ -31,7 +34,10 @@ spec:
             name: aimhighergg-tls
       allowedRoutes:
         namespaces:
-          from: All
+          from: Selector
+          selector:
+            matchLabels:
+              gatewawy: www-aimhighergg-com
     - name: http-grafana-aimhighergg-com
       protocol: HTTP
       port: 80
