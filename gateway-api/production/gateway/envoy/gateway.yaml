@@ -17,10 +17,10 @@ spec:
       protocol: HTTP
       port: 80
       hostname: "www.aimhighergg.com"
-      allowedRoutes: # HTTPRoute の namespace
+      allowedRoutes: # HTTPRoute リソースの namespace
         namespaces:
           from: Selector
-          selector:
+          selector: # namespace リソースの label を設定
             matchLabels:
               gateway: www-aimhighergg-com
     - name: https-www-aimhighergg-com
@@ -35,14 +35,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: Selector
-          selector:
+          selector: # namespace リソースの label を設定
             matchLabels:
               gateway: www-aimhighergg-com
     - name: http-grafana-aimhighergg-com
       protocol: HTTP
       port: 80
       hostname: "grafana.aimhighergg.com"
-      allowedRoutes: # HTTPRoute の namespace
+      allowedRoutes:
         namespaces:
           from: All
     - name: https-grafana-aimhighergg-com
