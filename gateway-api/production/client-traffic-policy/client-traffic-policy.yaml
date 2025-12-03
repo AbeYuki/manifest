@@ -25,9 +25,6 @@ spec:
       name: envoy
       sectionName: https-www-aimhighergg-com
   proxyProtocol: {}
-  clientIPDetection:
-    xForwardedFor:
-      numTrustedHops: 1
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
@@ -55,6 +52,4 @@ spec:
       kind: Gateway
       name: envoy
       sectionName: https-grafana-aimhighergg-com
-  clientIPDetection:
-    xForwardedFor:
-      numTrustedHops: 1
+  proxyProtocol: {}
