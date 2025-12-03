@@ -24,6 +24,8 @@ spec:
       kind: Gateway
       name: envoy
       sectionName: https-www-aimhighergg-com
+  proxyProtocol:
+    version: V2
   clientIPDetection:
     xForwardedFor:
       numTrustedHops: 1

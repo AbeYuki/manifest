@@ -4,4 +4,5 @@ helmCharts:
     version: "1.6.0"
     releaseName: envoy-gateway
     namespace: envoy-gateway-system
+    includeCRDs: false
     valuesFile: values.yaml
