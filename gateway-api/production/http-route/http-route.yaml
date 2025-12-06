@@ -24,7 +24,7 @@ spec:
             type: Exact
             value: /readme.html
         - path:
-            type: Exact
+            type: PathPrefix
             value: /wp-json
       filters:
         - type: ExtensionRef
