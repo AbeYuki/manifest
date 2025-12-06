@@ -32,7 +32,6 @@ spec:
             group: gateway.envoyproxy.io
             kind: HTTPRouteFilter
             name: deny-filter
-      backendRefs: []
     - matches:
         - path:
             type: PathPrefix
