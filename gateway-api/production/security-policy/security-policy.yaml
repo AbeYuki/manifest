@@ -18,3 +18,4 @@ spec:
   basicAuth:
     users:
       name: basic-auth
+      namespace: monitoring
