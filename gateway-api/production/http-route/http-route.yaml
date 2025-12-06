@@ -39,20 +39,6 @@ spec:
       backendRefs:
         - name: www-aimhighergg-com-frontend-app01-001
           port: 80
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: www-aimhighergg-com-wikijs-001
-          port: 3000
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: www-aimhighergg-com-frontend-static03-001
-          port: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
