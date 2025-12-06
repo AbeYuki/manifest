@@ -36,10 +36,6 @@ spec:
         - path:
             type: PathPrefix
             value: /
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
       backendRefs:
         - name: www-aimhighergg-com-wikijs-001
           port: 3000
