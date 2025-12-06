@@ -15,3 +15,6 @@ spec:
       principal:
         clientCIDRs:
         - 192.168.0.0/16
+  basicAuth:
+    users:
+      name: basic-auth

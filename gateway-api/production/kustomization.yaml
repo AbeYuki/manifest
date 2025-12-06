@@ -1,4 +1,5 @@
 resources:
+  - ./basic_auth/secret.yaml
   - ./client-traffic-policy/client-traffic-policy.yaml
   - ./cluster-issuer/cluster-issuer.yaml
   - ./envoy-proxy/envoy-proxy.yaml
