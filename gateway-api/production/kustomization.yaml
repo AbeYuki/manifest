@@ -7,4 +7,5 @@ resources:
 #  - ./gateway/nginx/gateway.yaml
   - ./gateway-class/gateway-class.yaml
   - ./http-route/http-route.yaml
+  - ./http-route-filter/http-route-filter.yaml
   - ./security-policy/security-policy.yaml
