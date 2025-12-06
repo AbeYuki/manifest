@@ -13,25 +13,25 @@ spec:
   hostnames:
     - www.aimhighergg.com
   rules:
-    - matches:
-        - path:
-            type: Exact
-            value: /xmlrpc.php
-        - path:
-            type: Exact
-            value: /wp-config.php
-        - path:
-            type: Exact
-            value: /readme.html
-        - path:
-          type: Exact
-          value: /wp-json
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: gateway.envoyproxy.io
-            kind: HTTPRouteFilter
-            name: deny-filter
+    #- matches:
+    #    - path:
+    #        type: Exact
+    #        value: /xmlrpc.php
+    #    - path:
+    #        type: Exact
+    #        value: /wp-config.php
+    #    - path:
+    #        type: Exact
+    #        value: /readme.html
+    #    - path:
+    #      type: Exact
+    #      value: /wp-json
+    #  filters:
+    #    - type: ExtensionRef
+    #      extensionRef:
+    #        group: gateway.envoyproxy.io
+    #        kind: HTTPRouteFilter
+    #        name: deny-filter
     - matches:
         - path:
             type: PathPrefix
