@@ -33,23 +33,23 @@ spec:
           kind: HTTPRouteFilter
           name: deny-filter
     - matches:
-        - path:
-            type: PathPrefix
-            value: /
+      - path:
+          type: PathPrefix
+          value: /
       backendRefs:
         - name: www-aimhighergg-com-frontend-app01-001
           port: 80
     - matches:
-        - path:
-            type: PathPrefix
-            value: /
+      - path:
+          type: PathPrefix
+          value: /
       backendRefs:
         - name: www-aimhighergg-com-wikijs-001
           port: 3000
     - matches:
-        - path:
-            type: PathPrefix
-            value: /
+      - path:
+          type: PathPrefix
+          value: /
       backendRefs:
         - name: www-aimhighergg-com-frontend-static03-001
           port: 80
