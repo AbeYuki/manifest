@@ -9,4 +9,4 @@ resources:
   - ./http-route/www-aimhighergg-com.yaml
   - ./http-route/grafana-aimhighergg-com.yaml
   - ./http-route-filter/http-route-filter.yaml
-  - ./security-policy/security-policy.yaml
+  - ./security-policy/grafana-aimhighergg-com.yaml

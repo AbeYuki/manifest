@@ -5,7 +5,7 @@ metadata:
   name: www-aimhighergg-com
   namespace: www-aimhighergg-com
 spec:
-  parentRefs: # どの gateway 配下で有効にするかの紐づけ
+  parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy
