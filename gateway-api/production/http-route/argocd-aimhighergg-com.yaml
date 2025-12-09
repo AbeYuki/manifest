@@ -10,7 +10,7 @@ spec:
       kind: Gateway
       name: envoy
       namespace: envoy-gateway
-      sectionName: http-www-aimhighergg-com
+      sectionName: http-argocd-aimhighergg-com
   hostnames:
     - argocd.aimhighergg.com
   rules:
@@ -33,7 +33,7 @@ spec:
       kind: Gateway
       name: envoy
       namespace: envoy-gateway
-      sectionName: https-www-aimhighergg-com
+      sectionName: https-argocd-aimhighergg-com
   hostnames:
     - argocd.aimhighergg.com
   rules:
