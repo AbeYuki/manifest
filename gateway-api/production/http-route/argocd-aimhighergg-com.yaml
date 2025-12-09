@@ -10,7 +10,6 @@ spec:
       kind: Gateway
       name: envoy
       namespace: envoy-gateway
-      sectionName: https-argocd-aimhighergg-com
   hostnames:
     - argocd.aimhighergg.com
   rules:
@@ -20,4 +19,4 @@ spec:
             value: /
       backendRefs:
         - name: argo-cd-argocd-server
-          port: 443
+          port: 80
