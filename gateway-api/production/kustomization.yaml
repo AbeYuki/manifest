@@ -1,12 +1,11 @@
 resources:
-  - ./basic_auth/secret.yaml
-  - ./client-traffic-policy/client-traffic-policy.yaml
-  - ./cluster-issuer/cluster-issuer.yaml
-  - ./envoy-proxy/envoy-proxy.yaml
-  - ./gateway/envoy/gateway.yaml
+  - basic_auth/secret.yaml
+  - client-traffic-policy/client-traffic-policy.yaml
+  - cluster-issuer/cluster-issuer.yaml
+  - envoy-proxy/envoy-proxy.yaml
+  - gateway/envoy/gateway.yaml
 #  - ./gateway/nginx/gateway.yaml
-  - ./gateway-class/gateway-class.yaml
-  - ./http-route/www-aimhighergg-com.yaml
-  - ./http-route/grafana-aimhighergg-com.yaml
-  - ./http-route-filter/http-route-filter.yaml
-  - ./security-policy/grafana-aimhighergg-com.yaml
+  - gateway-class/gateway-class.yaml
+  - http-route/
+  - http-route-filter/http-route-filter.yaml
+  - security-policy/
