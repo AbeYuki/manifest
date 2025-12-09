@@ -344,6 +344,8 @@ repoServer:
 server:
   name: server
   replicas: 1
+  extraArgs:
+    - --insecure
   extensions:
     enabled: true
     extensionList:
