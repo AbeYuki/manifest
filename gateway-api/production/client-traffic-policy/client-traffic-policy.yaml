@@ -72,7 +72,7 @@ spec:
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: https-grafana-aimhighergg-com
+  name: https-argocd-aimhighergg-com
   namespace: envoy-gateway
 spec:
   targetRefs:
