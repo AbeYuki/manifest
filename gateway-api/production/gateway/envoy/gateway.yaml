@@ -38,25 +38,25 @@ spec:
           selector: 
             matchLabels:
               gateway: www-aimhighergg-com
-    - name: http-argocd-aimhighergg-com
-      protocol: HTTP
-      port: 80
-      hostname: "argocd.aimhighergg.com"
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-argocd-aimhighergg-com
-      protocol: HTTPS
-      port: 443
-      hostname: "argocd.aimhighergg.com"
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: argocd-aimhighergg-com-tls
-      allowedRoutes:
-        namespaces:
-          from: All
+    #- name: http-argocd-aimhighergg-com
+    #  protocol: HTTP
+    #  port: 80
+    #  hostname: "argocd.aimhighergg.com"
+    #  allowedRoutes:
+    #    namespaces:
+    #      from: All
+    #- name: https-argocd-aimhighergg-com
+    #  protocol: HTTPS
+    #  port: 443
+    #  hostname: "argocd.aimhighergg.com"
+    #  tls:
+    #    mode: Terminate
+    #    certificateRefs:
+    #      - kind: Secret
+    #        name: argocd-aimhighergg-com-tls
+    #  allowedRoutes:
+    #    namespaces:
+    #      from: All
     - name: http-grafana-aimhighergg-com
       protocol: HTTP
       port: 80
