@@ -1,4 +1,5 @@
 resources:
+  - backend-tls-policy/
   - basic_auth/secret.yaml
   - client-traffic-policy/
   - cluster-issuer/cluster-issuer.yaml
