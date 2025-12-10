@@ -10,7 +10,7 @@ spec:
       kind: Gateway
       name: envoy
       namespace: envoy-gateway
-      sectionName: http-grafana-aimhighergg-com
+      sectionName: https-grafana-aimhighergg-com
   hostnames:
     - grafana.aimhighergg.com
   rules:
