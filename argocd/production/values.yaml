@@ -3,6 +3,8 @@ global:
     level: info
 
 configs:
+  params:
+    server.insecure: true
   cm:
     exec.enabled: true
     resource.customizations.health.argoproj.io_Application: |
