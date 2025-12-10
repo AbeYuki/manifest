@@ -2,13 +2,13 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: http-argocd-aimhighergg-com
+  name: argocd-aimhighergg-com
   namespace: argocd
 spec:
   targetRefs:
   - group: gateway.networking.k8s.io
     kind: HTTPRoute
-    name: http-argocd-aimhighergg-com
+    name: argocd-aimhighergg-com
   authorization:
     defaultAction: Deny
     rules:
