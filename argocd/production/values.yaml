@@ -3,9 +3,9 @@ global:
     level: info
 
 configs:
-  params:
-    server.insecure: true
   cm:
+    server.insecure: "true"
+    url: https://argocd.aimhighergg.com
     exec.enabled: true
     resource.customizations.health.argoproj.io_Application: |
       hs = {}
