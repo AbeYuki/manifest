@@ -1,0 +1,9 @@
+service:
+  annotations: 
+    metallb.universe.tf/address-pool: ingress-treafik
+ingressRoute:
+  dashboard:
+    enabled: true
+logs:
+  access:
+    enabled: true
