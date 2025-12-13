@@ -8,3 +8,6 @@ ingressRoute:
 logs:
   access:
     enabled: true
+    entryPoints:
+      - web
+      - websecure
