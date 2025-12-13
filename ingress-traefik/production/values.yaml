@@ -8,6 +8,7 @@ ingressRoute:
     entryPoints:
       - web
       - websecure
+      - traefik
 logs:
   access:
     enabled: true
