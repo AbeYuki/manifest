@@ -11,3 +11,7 @@ ingressRoute:
 logs:
   access:
     enabled: true
+ports:
+  traefik:
+    expose:
+      default: true
