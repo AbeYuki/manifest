@@ -5,9 +5,9 @@ service:
 ingressRoute:
   dashboard:
     enabled: true
-logs:
-  access:
-    enabled: true
     entryPoints:
       - web
       - websecure
+logs:
+  access:
+    enabled: true
