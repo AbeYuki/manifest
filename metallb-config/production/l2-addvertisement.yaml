@@ -97,5 +97,3 @@ spec:
     - ingress-traefik
   interfaces:
     - eth0
-
-
