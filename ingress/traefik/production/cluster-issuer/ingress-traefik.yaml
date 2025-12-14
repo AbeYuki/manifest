@@ -10,5 +10,4 @@ spec:
       name: ingress-acme-account-key
     solvers:
     - http01:
-        ingress:
-          class: traefik
+        ingressClassName: traefik
