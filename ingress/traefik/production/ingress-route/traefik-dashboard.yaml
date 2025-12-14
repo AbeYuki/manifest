@@ -10,7 +10,7 @@ spec:
   - match: Host(`traefik-dashboard.aimhighergg.com`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
     kind: Rule
     middlewares:
-    - name: ip-whitelist
+    - name: acl
     - name: basic-auth
     services:
     - name: api@internal

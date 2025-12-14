@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vmalert-aimhighergg-com
+  namespace: monitoring
+  annotations:
+    ingressClassName: traefik
+    cert-manager.io/cluster-issuer: ingress-traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: acl@kubernetescrd,basic-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - vmalert.aimhighergg.com
+      secretName: vmalert-aimhighergg-com-tls
+  rules:
+    - host: vmalert.aimhighergg.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: appvmalert-metrics-victoria-metrics-alert-server
+                port:
+                  number: 8880
