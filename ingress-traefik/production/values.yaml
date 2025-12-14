@@ -1,14 +1,17 @@
+ingressClass:  # @schema additionalProperties: false
+  enabled: true
+  name: "traefik"
 service:
   annotations: 
     metallb.io/address-pool: ingress-traefik
     metallb.io/loadBalancerIPs: 192.168.1.105
-ingressRoute:
-  dashboard:
-    enabled: true
-    entryPoints:
-      - web
-      - websecure
-      - traefik
+#ingressRoute:
+#  dashboard:
+#    enabled: true
+#    entryPoints:
+#      - web
+#      - websecure
+#      - traefik
 logs:
   access:
     enabled: true
