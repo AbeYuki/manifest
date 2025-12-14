@@ -11,7 +11,7 @@ spec:
     kind: Rule
     middlewares:
     - name: ip-whitelist
-    - name: basic-auth
+    - name: ingress-basic-auth
     services:
     - name: api@internal
       kind: TraefikService

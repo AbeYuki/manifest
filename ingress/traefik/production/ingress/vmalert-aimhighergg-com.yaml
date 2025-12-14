@@ -7,7 +7,7 @@ metadata:
     ingressClassName: traefik
     cert-manager.io/cluster-issuer: ingress-traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: monitoring-ip-whitelist@kubernetescrd,monitoring-basic-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: monitoring-ip-whitelist@kubernetescrd,monitoring-ingress-basic-auth@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
