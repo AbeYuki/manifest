@@ -18,7 +18,13 @@ ports:
   web:
     port: 80
   websecure:
-    port: 443
+    port: 8443
+    exposedPort: 443
+    protocol: TCP
+    proxyProtocol:
+      enabled: true
+      trustedIPs:
+        - "192.168.1.0/24" 
   traefik:
     port: 8080
     expose:
