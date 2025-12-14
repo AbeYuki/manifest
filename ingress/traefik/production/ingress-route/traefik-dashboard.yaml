@@ -16,4 +16,4 @@ spec:
     - name: api@internal
       kind: TraefikService
   tls:
-    secretName: traefik-dashboard-tls
+    secretName: traefik-dashboard-aimhighergg-com-tls

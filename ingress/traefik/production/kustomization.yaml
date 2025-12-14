@@ -1,4 +1,5 @@
 resources:
+  - certificate/
   - cluster-issuer/ingress-traefik.yaml
   - ingress-route/
   - middleware/
