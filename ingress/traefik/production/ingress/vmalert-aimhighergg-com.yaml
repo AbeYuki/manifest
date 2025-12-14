@@ -22,6 +22,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: appvmalert-metrics-victoria-metrics-alert-server
+                name: vmalert-metrics-victoria-metrics-alert-server
                 port:
                   number: 8880
