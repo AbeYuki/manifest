@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: traefik-dashboard-aimhighergg-com-tls
-  namespace: traefik
+  namespace: ingress-traefik
 spec:
   secretName: traefik-dashboard-aimhighergg-com-tls
   issuerRef:
