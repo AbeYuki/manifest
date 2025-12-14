@@ -7,7 +7,7 @@ spec:
   entryPoints:
   - websecure
   routes:
-  - match: Host(`traefik-dashboard.aimhighergg.com`)
+  - match: Host(`traefik-dashboard.aimhighergg.com`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
     kind: Rule
     middlewares:
     - name: ip-whitelist
