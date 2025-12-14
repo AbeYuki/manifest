@@ -1,4 +1,4 @@
-ingressClass:  # @schema additionalProperties: false
+ingressClass:
   enabled: true
   name: "traefik"
 api:
