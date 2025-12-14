@@ -27,7 +27,7 @@ server:
     enabled: true
     replicas: 3
     apiAddr: https://vault.vault.svc.cluster.local:8200
-    clusterAddr: "https://$(POD_IP):8201"
+    clusterAddr: "https://$(HOSTNAME).vault-internal:8201"
     raft:
       enabled: true
       setNodeId: true
