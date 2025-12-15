@@ -5,7 +5,8 @@ server:
         - name: system
           rules:
           - alert: HighLoadAVG
-            expr: "node_load15 > 10"
+            expr: |
+              node_load15 > 10
             labels:
               severity: critical
             annotations:
@@ -14,14 +15,16 @@ server:
         - name: server
           rules:
           - alert: PrometheusDown
-            expr: "absent(count_over_time(prometheus_ready[15m]))"
+            expr: |
+              absent(count_over_time(prometheus_ready[15m]))
             labels:
               severity: page
             annotations:
               summary: "Instance {{ $labels.instance }} down"
               description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
           - alert: LowRemoteStorageRate
-            expr: rate(prometheus_remote_storage_samples_total[10m]) < 500
+            expr: |
+              rate(prometheus_remote_storage_samples_total[10m]) < 500
             for: 5m
             labels:
               severity: critical
@@ -29,7 +32,8 @@ server:
               summary: "Low remote storage rate detected"
               description: "The rate of prometheus_remote_storage_samples_total is below 500 (current value: {{ $value }})"
           - alert: NfsServerDown
-            expr: namedprocess_namegroup_num_procs{groupname="rpc.idmapd"} == 0
+            expr: |
+              namedprocess_namegroup_num_procs{groupname="rpc.idmapd"} == 0
             for: 1m
             labels:
               severity: critical
@@ -39,7 +43,8 @@ server:
         - name: kubernetes
           rules:
           - alert: scheduler_pending_pods
-            expr: sum(scheduler_pending_pods) != 0
+            expr: |
+              sum(scheduler_pending_pods) != 0
             for: 5m
             labels:
               severity: warning
@@ -47,7 +52,8 @@ server:
               summary: "Instance {{ $labels.instance }} scheduler pending pod"
               description: "POD is pending in {{ $labels.queue }} status for more than 5 minutes on {{ $labels.instance }}."
           - alert: longhor_backup_error
-            expr: kube_custom_resouce_longhorn_backup_state_condition{state="Error"} == 1
+            expr: |
+              kube_custom_resouce_longhorn_backup_state_condition{state="Error"} == 1
             for: 0m
             labels:
               severity: alert
@@ -55,7 +61,8 @@ server:
               summary: "Longhorn Backup PVC/{{$labels.backup_id}} Error"
               description: "PVC/{{$labels.backup_id}} が Longhorn Backup に失敗した"
           - alert: argocd_application_progressing
-            expr: kube_custom_resouce_argocd_application_state{state="Progressing"} == 1
+            expr: |
+              kube_custom_resouce_argocd_application_state{state="Progressing"} == 1
             for: 10m
             labels:
               severity: alert
@@ -63,7 +70,8 @@ server:
               summary: "Argocd application {{$labels.app_name}} Progressing"
               description: "Argocd の application/{{$labels.app_name}} が Progressing 状態が継続している"
           - alert: argocd_application_degraded
-            expr: kube_custom_resouce_argocd_application_state{state="Degraded"} == 1
+            expr: |
+              kube_custom_resouce_argocd_application_state{state="Degraded"} == 1
             for: 5m
             labels:
               severity: alert
@@ -71,7 +79,8 @@ server:
               summary: "Argocd application {{$labels.app_name}} Degraded"
               description: "Argocd の application/{{$labels.app_name}} が Degraded になった"
           - alert: pod_status_not_ready
-            expr: kube_pod_status_ready{condition="false", pod!~"(production-backup|production-snapshot|production-trim).*"} == 1
+            expr: |
+              kube_pod_status_ready{condition="false", pod!~"(production-backup|production-snapshot|production-trim).*"} == 1
             for: 5m
             labels:
               severity: alert
@@ -79,7 +88,8 @@ server:
               summary: "NS/{{ $labels.namespace }} POD/{{ $labels.pod}} NotReady"
               description: "{{ $labels.namespace }}/{{ $labels.pod}} POD が Not Ready 状態が継続している"
           - alert: loki_ruler_cofig_reload_failed
-            expr: 'irate(loki_ruler_sync_rules_total{reason="periodic"}[5m]) > 1'
+            expr: |
+              irate(loki_ruler_sync_rules_total{reason="periodic"}[5m]) > 1
             for: 0m
             labels:
               severity: alert
@@ -89,7 +99,8 @@ server:
         - name: service
           rules:
           - alert: ServiceDown
-            expr: probe_http_status_code{instance="https://www.aimhighergg.com/", job="service"} != 200
+            expr: |
+              probe_http_status_code{instance="https://www.aimhighergg.com/", job="service"} != 200
             labels:
               severity: critical
             annotations:
@@ -97,7 +108,8 @@ server:
         - name: hardware
           rules:
             - alert: cpu_temperature_high
-              expr: cpu_temperature > 90
+              expr: |
+                cpu_temperature > 90
               for: 0m
               labels:
                 severity: critical
@@ -122,7 +134,8 @@ server:
         - name: server_resources
           rules:
           - alert: HighMemoryUsage
-            expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 90
+            expr: |
+              (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 90
             for: 5m
             labels:
               severity: critical
@@ -130,7 +143,8 @@ server:
               summary: "{{ $labels.instance }}でMemoryの使用率が90%超過"
               description: "Memmoryの使用率: (current value: {{ $value }}%)"
           - alert: HighCpuUsage
-            expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+            expr: |
+              100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
             for: 5m
             labels:
               severity: critical
@@ -162,7 +176,8 @@ server:
         - name: disk
           rules:
           - alert: node_disk_written_bytes_total
-            expr: rate(node_disk_written_bytes_total{}[5m]) > 6000000
+            expr: |
+              rate(node_disk_written_bytes_total{}[5m]) > 6000000
             for: 10m
             labels:
               severity: warning
@@ -170,7 +185,8 @@ server:
               summary: "{{ $labels.instance }} の {{ $labels.device}} で書き込みレート超過"
               description: "{{ $labels.instance }} の {{ $labels.device}} でディスクに書き込まれたバイト数のレート（秒あたりのバイト数）: (current value: {{ $value }})"
           - alert: node_disk_io_time_seconds_total
-            expr: rate(node_disk_io_time_seconds_total{}[5m]) > 1
+            expr: |
+              rate(node_disk_io_time_seconds_total{}[5m]) > 1
             for: 5m
             labels:
               severity: warning
@@ -178,7 +194,8 @@ server:
               summary: "{{ $labels.instance }} の {{ $labels.device}} でディスクI/O操作に費やされた時間のレート超過"
               description: "{{ $labels.instance }} の {{ $labels.device}} でディスクI/O操作に費やされた時間のレート: (current value: {{ $value }})"
           - alert: node_disk_write_time_seconds_total
-            expr: rate(node_disk_write_time_seconds_total{}[5m]) > 4
+            expr: |
+              rate(node_disk_write_time_seconds_total{}[5m]) > 4
             for: 10m
             labels:
               severity: warning
