@@ -3,12 +3,11 @@ helmCharts:
     repo: oci://docker.io/envoyproxy/
     version: "1.6.0"
     releaseName: envoy-gateway
-    namespace: envoy-gateway-system
     includeCRDs: true
     valuesInline:
       crds:
         gatewayAPI:
-          enabled: true
+          enabled: false
           channel: standard
         envoyGateway:
           enabled: true
