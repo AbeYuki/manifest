@@ -8,7 +8,6 @@ metadata:
     cert-manager.io/cluster-issuer: ingress-traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-ip-whitelist@kubernetescrd,longhorn-system-basic-auth@kubernetescrd
-    acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
   ingressClassName: traefik
   tls:
