@@ -1,9 +1,5 @@
 secretTargets:
   enabled: true
+  authorizedSecretsAll: false
   authorizedSecrets:
-  # source（Root CA）
-  - name: vault-root-ca-secret
-    namespace: cert-manager
-  # target（配布先）
-  - name: vault-trust-bundle
-    namespace: vault
+    - vault-trust-bundle

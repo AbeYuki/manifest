@@ -1,6 +1,5 @@
 resources:
   - bundle.yaml
-  - rback.yaml
 
 helmCharts:
   - name: trust-manager
