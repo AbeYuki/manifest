@@ -26,3 +26,19 @@ spec:
     namespaceSelector:
       matchLabels:
         trust-manager/bundle: "enabled"
+---
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: vault-trust-bundle-secret
+spec:
+  sources:
+    - configMap:
+        name: vault-ca-bundle
+        key: ca.pem
+  target:
+    secret:
+      key: ca.crt
+    namespaceSelector:
+      matchLabels:
+        trust-manager/bundle: "enabled"
