@@ -8,7 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: ingress-traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: vault-ip-whitelist@kubernetescrd,vault-basic-auth@kubernetescrd
-    traefik.ingress.kubernetes.io/service.serverstransport: vault-vault-transport@kubernetescrd
+    traefik.ingress.kubernetes.io/service.serverstransport: vault-transport@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
@@ -21,7 +21,7 @@ spec:
         paths:
           - backend:
               service:
-                name: vault-ui-https
+                name: vault-ui
                 port:
                   number: 8200
             path: /
