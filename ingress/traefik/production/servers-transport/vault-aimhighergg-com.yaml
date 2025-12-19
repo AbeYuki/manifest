@@ -6,4 +6,4 @@ metadata:
 spec:
   serverName: vault.vault.svc.cluster.local
   rootCAs:
-    - vault-trust-bundle-secret
+    - secretName: vault-trust-bundle-secret
