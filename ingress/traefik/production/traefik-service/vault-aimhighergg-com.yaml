@@ -10,3 +10,4 @@ spec:
         port: 8200
         scheme: https
         serversTransport: vault-transport
+        passHostHeader: true
