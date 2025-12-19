@@ -4,7 +4,7 @@ metadata:
   name: vault-transport
   namespace: vault
 spec:
-  serverName: vault.aimhighergg.com 
+  serverName: vault.vault.svc.cluster.local
   insecureSkipVerify: true
   rootCAs:
     - secret: vault-trust-bundle-secret
