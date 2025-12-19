@@ -15,9 +15,7 @@ spec:
         #- name: vault-basic-auth
         #  namespace: vault
       services:
-        - name: vault-ui
-          port: 8200
-          scheme: https
-          serversTransport: vault-transport
+        - name: vault-ui-https
+          kind: TraefikService
   tls:
     secretName: vault-aimhighergg-com-tls
