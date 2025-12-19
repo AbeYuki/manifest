@@ -7,4 +7,4 @@ helmCharts:
     version: "0.18.0"
     releaseName: trust-manager
     namespace: cert-manager
-    valuesFile: values.yaml
+    #valuesFile: values.yaml
