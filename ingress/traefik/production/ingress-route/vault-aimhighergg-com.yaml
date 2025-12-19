@@ -10,7 +10,7 @@ spec:
     - match: Host(`vault.aimhighergg.com`)
       kind: Rule
       middlewares:
-        - name: vault-ip-whitelist
+        - name: ip-whitelist
           namespace: vault
         #- name: vault-basic-auth
         #  namespace: vault
