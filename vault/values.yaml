@@ -15,7 +15,6 @@ server:
     labels: {}
   extraEnvironmentVars:
     VAULT_CACERT: "/vault/userconfig/vault-ha-tls/ca.crt"
-    VAULT_ADDR: "https://vault.vault.svc.cluster.local:8200"
   volumes:
     - name: userconfig-vault-ha-tls
       secret:
@@ -28,7 +27,6 @@ server:
     enabled: true
     replicas: 3
     apiAddr: https://vault.vault.svc.cluster.local:8200
-    clusterAddr: "https://$(HOSTNAME).vault-internal:8201"
     raft:
       enabled: true
       setNodeId: true
