@@ -20,11 +20,9 @@ spec:
     - configMap:
         name: vault-ca-bundle
         key: ca.pem
-  target: # 配布する形式とファイル
+  target:
     configMap:
       key: ca.pem
-    secret:
-      key: ca.crt
     namespaceSelector:
       matchLabels:
         trust-manager/bundle: "enabled"
