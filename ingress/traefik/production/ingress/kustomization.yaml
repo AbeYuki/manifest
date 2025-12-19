@@ -1,5 +1,8 @@
 resources:
   - argo-rollouts-aimhighergg-com.yaml
 #  - grafana-aimhighergg-com.yaml
+  - longhorn-aimhighergg-com.yaml
+  - prometheus-aimhighergg-com.yaml
+  - vault-aimhighergg-com.yaml
   - vlalert-aimhighergg-com.yaml
   - vmalert-aimhighergg-com.yaml
