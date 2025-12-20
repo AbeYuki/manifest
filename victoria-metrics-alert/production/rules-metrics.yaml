@@ -100,7 +100,7 @@ server:
           rules:
           - alert: ServiceDown
             expr: |
-              probe_http_status_code{instance="https://www.aimhighergg.com/", job="service"} != 200
+              probe_http_status_code{instance="https://www.aimhighergg.com/"} != 200
             labels:
               severity: critical
             annotations:
