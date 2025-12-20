@@ -202,4 +202,38 @@ server:
             annotations:
               summary: "{{ $labels.instance }} の {{ $labels.device}} で書き込み操作に費やされた時間のレート超過"
               description: "{{ $labels.instance }} の {{ $labels.device}} で書き込み操作に費やされた時間のレート（秒あたりの時間）: (current value: {{ $value }})"
-        
+        - name: gateway
+          rules:
+          - alert: node_disk_written_bytes_total
+            expr: |
+              rate(node_disk_written_bytes_total{}[5m]) > 6000000
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.instance }} の {{ $labels.device}} で書き込みレート超過"
+              description: "{{ $labels.instance }} の {{ $labels.device}} でディスクに書き込まれたバイト数のレート（秒あたりのバイト数）: (current value: {{ $value }})"
+          - alert: NodeSystemdUnitNotActive
+            expr: node_systemd_unit_state{job="node-exporter", name=~"(nfs-server|rpcbind|rpc-statd|nfs-idmapd)\\.service", state="active"} != 1
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "{{ $labels.instance }} NodeSystemdUnitNotActive"
+              description: "{{ $labels.name }} サービスが Active じゃない (active!=1). current={{ $value }}"
+          - alert: NodeSystemdUnitFailed
+            expr: node_systemd_unit_state{job="node-exporter", name=~"(nfs-server|rpcbind|rpc-statd|nfs-idmapd)\\.service", state="failed"} == 1
+            for: 0m
+            labels:
+              severity: critical
+            annotations:
+              summary: "{{ $labels.instance }} NodeSystemdUnitFailed"
+              description: "{{ $labels.name }} サービスが failed"
+          - alert: NodeSystemdUnitActivatingTooLong
+            expr: node_systemd_unit_state{job="node-exporter", name=~"(haproxy|nfs-server|rpcbind|rpc-statd|nfs-idmapd)\\.service", state="activating"} == 1
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.instance }} NodeSystemdUnitActivatingTooLong"
+              description: "{{ $labels.name }} サービスがハングアップしている可能性あり"
