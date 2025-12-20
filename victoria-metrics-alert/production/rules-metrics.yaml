@@ -80,7 +80,7 @@ server:
               description: "Argocd の application/{{$labels.app_name}} が Degraded になった"
           - alert: pod_status_not_ready
             expr: |
-              kube_pod_status_ready{condition="false", pod!~"(production-backup|production-snapshot|production-trim).*"} == 1
+              kube_pod_status_ready{condition="false", pod!~"(daily-backup-|daily-snapshot|daily-trim).*"} == 1
             for: 5m
             labels:
               severity: alert
