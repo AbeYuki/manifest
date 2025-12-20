@@ -18,5 +18,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: service/www-aimhighergg-com-wikijs-001
+        - name: www-aimhighergg-com-wikijs-001
           port: 300
