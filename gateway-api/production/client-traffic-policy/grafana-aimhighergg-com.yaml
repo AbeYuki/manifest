@@ -26,3 +26,6 @@ spec:
       name: envoy
       sectionName: https-grafana-aimhighergg-com
   proxyProtocol: {}
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
