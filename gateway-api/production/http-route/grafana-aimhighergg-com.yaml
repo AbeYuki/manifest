@@ -26,6 +26,8 @@ spec:
                 value: "https"
               - name: X-Forwarded-Port
                 value: "443"
+              - name: X-Forwarded-Host
+                value: "grafana.aimhighergg.com"
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             set:
