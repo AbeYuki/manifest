@@ -14,6 +14,14 @@ spec:
   hostnames:
     - grafana.aimhighergg.com
   rules:
+    - filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Forwarded-Proto
+                value: "https"
+              - name: X-Forwarded-Port
+                value: "443"
     - matches:
         - path:
             type: PathPrefix
