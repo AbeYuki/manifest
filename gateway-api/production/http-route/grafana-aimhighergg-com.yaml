@@ -21,14 +21,14 @@ spec:
       filters:
         - type: RequestHeaderModifier
           requestHeaderModifier:
-            add:
+            set:
               - name: X-Forwarded-Proto
                 value: "https"
               - name: X-Forwarded-Port
                 value: "443"
         - type: ResponseHeaderModifier
           responseHeaderModifier:
-            add:
+            set:
               - name: Strict-Transport-Security
                 value: "max-age=31536000; includeSubDomains"
       backendRefs:
