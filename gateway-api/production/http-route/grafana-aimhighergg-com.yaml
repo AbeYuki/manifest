@@ -19,11 +19,15 @@ spec:
             type: PathPrefix
             value: /
       filters:
-        - type: ResponseHeaderModifier
-          responseHeaderModifier:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            remove:
+              - Authorization
             set:
-              - name: Strict-Transport-Security
-                value: "max-age=31536000; includeSubDomains"
+              - name: X-Forwarded-Proto
+                value: "https"
+              - name: X-Forwarded-Port
+                value: "443"
       backendRefs:
         - name: monitoring-frontend-grafana-app01-001
           port: 80
