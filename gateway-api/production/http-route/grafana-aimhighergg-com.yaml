@@ -28,6 +28,13 @@ spec:
                 value: "https"
               - name: X-Forwarded-Port
                 value: "443"
+              - name: X-Forwarded-Host
+                value: "grafana.aimhighergg.com"
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - name: Strict-Transport-Security
+                value: "max-age=31536000; includeSubDomains"
       backendRefs:
         - name: monitoring-frontend-grafana-app01-001
           port: 80
