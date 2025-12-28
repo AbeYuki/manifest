@@ -23,4 +23,4 @@ spec:
               service:
                 name: <path:secret/data/ingress/app_1#service_name>
                 port:
-                  number: <path:secret/data/ingress/app_1#service_port>
+                  number: <path:secret/data/ingress/app_1#service_port | jsonParse>
