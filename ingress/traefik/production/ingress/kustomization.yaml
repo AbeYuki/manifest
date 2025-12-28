@@ -1,4 +1,5 @@
 resources:
+  - app_1.yaml
   - argo-rollouts-aimhighergg-com.yaml
 #  - grafana-aimhighergg-com.yaml
   - longhorn-aimhighergg-com.yaml
