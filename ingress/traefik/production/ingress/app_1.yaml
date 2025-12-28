@@ -22,4 +22,5 @@ spec:
             backend:
               service:
                 name: <path:secret/data/ingress/app_1#service_name>
-                portNumber: <path:secret/data/ingress/app_1#service_port>
+                port:
+                  number: <path:secret/data/ingress/app_1#service_port>
