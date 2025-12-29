@@ -52,7 +52,7 @@ server:
               description: "エラーが発生(サービスユニットエラーなど)"
           - alert: system_warning_detected
             expr: |
-              RIORITY: "3"
+              RIORITY: "4"
               | stats by (_HOSTNAME) count() as matches 
               | filter matches:>0
             for: 0m
