@@ -212,7 +212,9 @@ server:
               severity: critical
             annotations:
               summary: "{{ $labels.pod_name }}でI/Oエラーが発生しました"
-              description: "{{ $labels.pod_name }}のpodを再起動してください"
+              description: |
+                "{{ $labels.host_pod }} のホストで発生"
+                "{{ $labels.pod_name }} の pod を再起動してください"
           - alert: minecraft_bedrock_server_user_connected
             expr: |
               namespace: "prod-minecraft" AND _msg:~"Player connected"
