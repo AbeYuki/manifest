@@ -142,13 +142,25 @@ server:
             annotations:
               summary: "journal_ufw_block"
               description: "{{ $labels._HOSTNAME }} で UFW で通信が BLOCK された"
+          - alert: SshLoginFromOutsice
+            expr: |
+              _RUNTIME_SCOPE: "system" AND _msg:~"Accepted publickey" AND _msg:!~"192\\.168"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
+            for: 0m
+            labels:
+              severity: critical
+            annotations:
+              summary: "外部からSSHログイン"
         - name: application
           type: vlogs 
           interval: 1m
           rules:
           - alert: remote_storage_error
             expr: |
-              app_kubernetes_io_name: "prometheus" AND detected_level: "error" AND _msg:~"non-recoverable error" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              app_kubernetes_io_name: "prometheus" AND detected_level: "error" AND _msg:~"non-recoverable error" 
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 5m
             labels:
               severity: alert
@@ -157,7 +169,9 @@ server:
               description: "PrometheusのRemoteWrite周りを確認"
           - alert: oom_killer
             expr: |
-              job: "journal" AND _msg:~"Memory cgroup out of memory" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              job: "journal" AND _msg:~"Memory cgroup out of memory" 
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -167,7 +181,9 @@ server:
               description: "アプリケーションがメモリ不足のためresourcesを調整する"
           - alert: unauthorized_access_detection
             expr: |
-              namespace: "ingress-nginx" AND _msg:~"HTTP/[1-2]\\.[0-2]\\\"\\s4[0-9]{2}\\s" AND _msg:~"/wp-login.php" | stats by (_HOSTNAME) count() as matches | filter matches:>1
+              namespace: "ingress-nginx" AND _msg:~"HTTP/[1-2]\\.[0-2]\\\"\\s4[0-9]{2}\\s" AND _msg:~"/wp-login.php"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>1
             for: 0m
             labels:
               severity: alert
@@ -176,7 +192,10 @@ server:
               description: "アクセス内容を確認して必要であれば該当のIPをdenyに追加"
           - alert: vault_failed_to_heartbeat_to_peer
             expr: |
-              app_kubernetes_io_name: "vault" |~"storage.raft: failed to heartbeat to: peer" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              app_kubernetes_io_name: "vault" 
+              |~"storage.raft: failed to heartbeat to: peer"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -185,7 +204,9 @@ server:
               description: "vault を確認して raft peers を構成してください"
           - alert: pod_input_output_error
             expr: |
-              app_kubernetes_io_name:!"loki" AND pod_name:~".+" AND _msg:~"input/output" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              app_kubernetes_io_name:!"loki" AND pod_name:~".+" AND _msg:~"input/output"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -194,7 +215,9 @@ server:
               description: "{{ $labels.pod_name }}のpodを再起動してください"
           - alert: minecraft_bedrock_server_user_connected
             expr: |
-              namespace: "prod-minecraft" AND _msg:~"Player connected" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              namespace: "prod-minecraft" AND _msg:~"Player connected"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 5m
             labels:
               severity: info
@@ -202,7 +225,9 @@ server:
               summary: "Minecraft bedrock server user connected"
           - alert: longhorn_buckup_error
             expr: |
-              namespace: "longhorn-system" AND _msg:~"cannot mount nfs" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              namespace: "longhorn-system" AND _msg:~"cannot mount nfs"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: alert
@@ -215,7 +240,9 @@ server:
           rules:
           - alert: XMRigMiningAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"mining" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"mining"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -223,7 +250,9 @@ server:
               summary: "XMRig マイニングアクセスを検出"
           - alert: SQLInjectionAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"UNION SELECT|DROP TABLE|OR 1=1|--|%27" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"UNION SELECT|DROP TABLE|OR 1=1|--|%27"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: high
@@ -235,7 +264,7 @@ server:
               namespace:="ingress-nginx"
               AND remote_addr:!~"192\\.168\\..+"
               AND _msg:~"wp-login\\.php|xmlrpc\\.php|wp-admin"
-              | stats by (_HOSTNAME) count() as matches
+              | stats by (hostname, namespace, pod_name) count() as matches
               | filter matches:>=5
             for: 0m
             labels:
@@ -247,7 +276,8 @@ server:
               namespace: "ingress-nginx" 
               AND remote_addr:!~"192\\.168\\..+"
               AND _msg:~"\\$\\{jndi:[a-z]+://" 
-              | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: critical
@@ -255,7 +285,9 @@ server:
               summary: "Log4Shell 攻撃検出"
           - alert: PathTraversalAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"\\.\\./|\\.\\.\\\\|%2e%2e%2f" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"\\.\\./|\\.\\.\\\\|%2e%2e%2f"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: high
@@ -263,17 +295,11 @@ server:
               summary: "パストラバーサル試行"
           - alert: SuspiciousUserAgent
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"sqlmap|nikto|XMRig|curl" | stats by (_HOSTNAME) count() as matches | filter matches:>0
+              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"sqlmap|nikto|XMRig|curl"
+              | stats by (hostname, namespace, pod_name) count() as matches
+              | filter matches:>0
             for: 0m
             labels:
               severity: warning
             annotations:
               summary: "疑わしい User-Agent を検出"
-          - alert: SshLoginFromOutsice
-            expr: |
-              systemd_unit: "ssh.service" AND _msg:~"Accepted publickey" AND _msg:!~"192\\.168" | stats by (_HOSTNAME) count() as matches | filter matches:>0
-            for: 0m
-            labels:
-              severity: critical
-            annotations:
-              summary: "外部からSSHログイン"
