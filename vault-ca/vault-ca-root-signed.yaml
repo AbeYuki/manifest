@@ -69,4 +69,31 @@ spec:
     - digital signature
     - key encipherment
     - server auth
-
+---
+## argocd-repo-server Leaf CA 
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-client-cert
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  secretName: vault-client-tls
+  duration: 2160h
+  renewBefore: 360h
+  issuerRef:
+    name: vault-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: argocd-vault-plugin
+  uris:
+    - spiffe://cluster.local/ns/argocd/sa/argocd-repo-server
+  subject:
+    organizationalUnits:
+      - argocd
+      - avp
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
