@@ -63,6 +63,8 @@ spec:
     - vault-0.vault-internal
     - vault-1.vault-internal
     - vault-2.vault-internal
+  ipAddresses:
+    - 127.0.0.1
   usages:
     - digital signature
     - key encipherment
