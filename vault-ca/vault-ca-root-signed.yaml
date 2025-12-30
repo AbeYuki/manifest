@@ -97,3 +97,32 @@ spec:
     - digital signature
     - key encipherment
     - client auth
+---
+# vault webアクセス用の mTLS クライアント(Leaf CA を Intermediate CA で発行)
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-vault-client-leaf
+  namespace: vault
+spec:
+  secretName: traefik-vault-client-tls
+  duration: 2160h         # 90d
+  renewBefore: 360h       # 15d
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: traefik-to-vault
+  uris:
+    - spiffe://cluster.local/ns/vault/traefik-to-vault
+  subject:
+    organizationalUnits:
+      - traefik
+      - vault
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
