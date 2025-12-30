@@ -29,7 +29,11 @@ configs:
       jqPathExpressions:
       - '.spec.conversion.webhook.clientConfig.caBundle'
       - '.spec.preserveUnknownFields'
-  
+
+    resource.customizations.ignoreDifferences.apiregistration.k8s.io_APIService: |
+      jqPathExpressions:
+        - .spec.insecureSkipTLSVerify
+
   cmp:
     create: true
     plugins:
