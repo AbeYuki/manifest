@@ -8,3 +8,5 @@ spec:
   insecureSkipVerify: false
   rootCAs:
     - secret: vault-trust-bundle-secret
+  certificatesSecrets:
+    - vault-traefik-client-tls
