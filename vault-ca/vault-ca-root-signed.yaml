@@ -69,6 +69,7 @@ spec:
     - digital signature
     - key encipherment
     - server auth
+    - client auth
 ---
 ## argocd-repo-server Leaf CA 
 apiVersion: cert-manager.io/v1
