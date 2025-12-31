@@ -1,3 +1,5 @@
+deployment:
+  replicas: 2
 ingressClass:
   enabled: true
   name: "traefik"
