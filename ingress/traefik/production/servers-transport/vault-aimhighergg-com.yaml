@@ -9,4 +9,4 @@ spec:
   rootCAs:  # Vault サーバ証明書を検証するための CA
     - secret: vault-trust-bundle-secret
   certificatesSecrets: # Traefik が Vault へ提示するクライアント証明書
-    - vault-traefik-client-tls
+    - traefik-vault-client-tls
