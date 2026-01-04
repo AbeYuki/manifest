@@ -8,3 +8,7 @@ server:
   notifier:
     alertmanager:
       url: http://monitoring-backend-alertmanager01-001.monitoring.svc:9093
+  extraArgs:
+    external.url: "https://grafana.aimhighergg.com"
+    external.alert.source: >-
+      /explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{ .Expr|jsonEscape|queryEscape }},"refId":"A"}],"range":{"from":"{{ .ActiveAt.UnixMilli }}","to":"now"}}
