@@ -217,21 +217,21 @@ server:
             annotations:
               summary: "NodeDiskUsageWarning"
               description: "ファイルシステムの使用率 80 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
-        - alert: NodeDiskUsageCritical
-          expr: |
-            100 * (1 - (
-              node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
-              /
-              node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
-            )) > 90
-            and on(instance, device, mountpoint)
-            node_filesystem_readonly == 0
-          for: 10m
-          labels:
-            severity: critical
-          annotations:
-            summary: "NodeDiskUsageCritical"
-            description: "ファイルシステムの使用率 90 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
+          - alert: NodeDiskUsageCritical
+            expr: |
+              100 * (1 - (
+                node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
+                /
+                node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
+              )) > 90
+              and on(instance, device, mountpoint)
+              node_filesystem_readonly == 0
+            for: 10m
+            labels:
+              severity: critical
+            annotations:
+              summary: "NodeDiskUsageCritical"
+              description: "ファイルシステムの使用率 90 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
         - name: gateway
           rules:
           - alert: node_disk_written_bytes_total
