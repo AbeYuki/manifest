@@ -11,4 +11,18 @@ server:
   extraArgs:
     external.url: "https://grafana.aimhighergg.com"
     external.alert.source: >-
-      explore?orgId=1&left={"datasource":"{{ if eq .Type `vlogs` }}victoria-logs-cluster{{ else }}victoria-metrics-cluster{{ end }}","queries":[{"expr":{{ .Expr|jsonEscape|queryEscape }},"refId":"A"}],"range":{"from":"{{ .ActiveAt.UnixMilli }}","to":"now"}}
+      {{- $t := .ActiveAt -}}
+      /explore?orgId=1&schemaVersion=1&panes=
+      {{- if eq .Type `vlogs` -}}
+      {{ printf `{"p0":{"datasource":"victoria-logs-cluster","queries":[{"refId":"A","expr":%s}],"range":{"from":"%d","to":"%d"},"compact":false}}`
+        (.Expr|jsonEscape)
+        (($t.Add (parseDurationTime `-30m`)).UnixMilli)
+        (($t.Add (parseDurationTime `30m`)).UnixMilli)
+        | queryEscape }}
+      {{- else -}}
+      {{ printf `{"p0":{"datasource":"victoria-metrics-cluster","queries":[{"refId":"A","expr":%s}],"range":{"from":"%d","to":"%d"},"compact":false}}`
+        (.Expr|jsonEscape)
+        (($t.Add (parseDurationTime `-30m`)).UnixMilli)
+        (($t.Add (parseDurationTime `30m`)).UnixMilli)
+        | queryEscape }}
+      {{- end -}}
