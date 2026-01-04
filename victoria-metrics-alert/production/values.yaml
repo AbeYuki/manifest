@@ -11,4 +11,4 @@ server:
   extraArgs:
     external.url: "https://grafana.aimhighergg.com"
     external.alert.source: >-
-      explore?orgId=1&left={"datasource":"{{ if eq .Type `vlogs` }}VictoriaLogs{{ else }}VictoriaMetrics{{ end }}","queries":[{"expr":{{ .Expr|jsonEscape|queryEscape }},"refId":"A"}],"range":{"from":"{{ .ActiveAt.UnixMilli }}","to":"now"}}
+      explore?orgId=1&left={"datasource":"{{ if eq .Type `vlogs` }}victoria-logs-cluster{{ else }}victoria-metrics-cluster{{ end }}","queries":[{"expr":{{ .Expr|jsonEscape|queryEscape }},"refId":"A"}],"range":{"from":"{{ .ActiveAt.UnixMilli }}","to":"now"}}
