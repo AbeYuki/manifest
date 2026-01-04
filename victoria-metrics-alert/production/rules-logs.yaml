@@ -145,7 +145,7 @@ server:
           - alert: SshLoginFromOutsice
             expr: |
               _RUNTIME_SCOPE: "system" AND _msg:~"Accepted publickey" AND _msg:!~"192\\.168"
-              | stats by (hostname, namespace, pod_name) count() as matches
+              | stats by (hostname) count() as matches
               | filter matches:>0
             for: 0m
             labels:
@@ -242,8 +242,9 @@ server:
           rules:
           - alert: XMRigMiningAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"mining"
-              | stats by (hostname, namespace, pod_name) count() as matches
+              namespace:~ "ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              | ~"mining"
+              | stats by (hostname) count() as matches
               | filter matches:>0
             for: 0m
             labels:
@@ -252,8 +253,9 @@ server:
               summary: "XMRig マイニングアクセスを検出"
           - alert: SQLInjectionAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"UNION SELECT|DROP TABLE|OR 1=1|--|%27"
-              | stats by (hostname, namespace, pod_name) count() as matches
+              namespace:~ "ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              | ~"UNION SELECT|DROP TABLE|OR 1=1|--|%27"
+              | stats by (hostname) count() as matches
               | filter matches:>0
             for: 0m
             labels:
@@ -262,12 +264,11 @@ server:
               summary: "SQLインジェクションの可能性あり"
           - alert: WordPressScan
             expr: |
-              _time:5m
-              namespace:="ingress-nginx"
-              AND remote_addr:!~"192\\.168\\..+"
-              AND _msg:~"wp-login\\.php|xmlrpc\\.php|wp-admin"
-              | stats by (hostname, namespace, pod_name) count() as matches
-              | filter matches:>=5
+              _time:3m
+              namespace:~ "ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              |~"wp-login\\.php|xmlrpc\\.php|wp-admin"
+              | stats by (hostname) count() as matches
+              | filter matches:>3
             for: 0m
             labels:
               severity: warning
@@ -275,10 +276,9 @@ server:
               summary: "WordPress ターゲットのスキャン試行"
           - alert: Log4ShellAttempt
             expr: |
-              namespace: "ingress-nginx" 
-              AND remote_addr:!~"192\\.168\\..+"
-              AND _msg:~"\\$\\{jndi:[a-z]+://" 
-              | stats by (hostname, namespace, pod_name) count() as matches
+              namespace:~ "ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              | ~"\\$\\{jndi:[a-z]+://" 
+              | stats by (hostname) count() as matches
               | filter matches:>0
             for: 0m
             labels:
@@ -287,8 +287,9 @@ server:
               summary: "Log4Shell 攻撃検出"
           - alert: PathTraversalAttempt
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"\\.\\./|\\.\\.\\\\|%2e%2e%2f"
-              | stats by (hostname, namespace, pod_name) count() as matches
+              namespace:~ "ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system" 
+              | ~"\\.\\./|\\.\\.\\\\|%2e%2e%2f"
+              | stats by (hostname) count() as matches
               | filter matches:>0
             for: 0m
             labels:
@@ -297,11 +298,23 @@ server:
               summary: "パストラバーサル試行"
           - alert: SuspiciousUserAgent
             expr: |
-              namespace: "ingress-nginx" AND remote_addr:!~"192\\.168\\..+" AND _msg:~"sqlmap|nikto|XMRig|curl"
-              | stats by (hostname, namespace, pod_name) count() as matches
+              namespace:~ "ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              | ~"sqlmap|nikto|XMRig|curl$"
+              | stats by (hostname) count() as matches
               | filter matches:>0
             for: 0m
             labels:
               severity: warning
             annotations:
               summary: "疑わしい User-Agent を検出"
+          - alert: http80VulnerabilityScan
+            expr: |
+              _time:3m
+              _SYSTEMD_UNIT: "haproxy" AND <NOSRV>
+              | stats by (_HOSTNAME, _SYSTEMD_UNIT) count() as matches
+              | filter matches:>10
+            for: 0m
+            labels:
+              severity: warning
+            annotations:
+              summary: "脆弱性スキャンを検出"
