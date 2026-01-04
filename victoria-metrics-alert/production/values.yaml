@@ -12,7 +12,7 @@ server:
     external.url: "https://grafana.aimhighergg.com"
     external.alert.source: >-
       {{- $t := .ActiveAt -}}
-      /explore?orgId=1&schemaVersion=1&panes=
+      explore?orgId=1&schemaVersion=1&panes=
       {{- if eq .Type `vlogs` -}}
       {{ printf `{"p0":{"datasource":"victoria-logs-cluster","queries":[{"refId":"A","expr":%s}],"range":{"from":"%d","to":"%d"},"compact":false}}`
         (.Expr|jsonEscape)
