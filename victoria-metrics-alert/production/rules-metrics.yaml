@@ -100,7 +100,7 @@ server:
           rules:
           - alert: ServiceDown
             expr: |
-              probe_http_status_code{instance="https://www.aimhighergg.com/"} != 200
+              probe_http_status_code{} != 200
             labels:
               severity: critical
             annotations:
@@ -202,6 +202,36 @@ server:
             annotations:
               summary: "{{ $labels.instance }} の {{ $labels.device}} で書き込み操作に費やされた時間のレート超過"
               description: "{{ $labels.instance }} の {{ $labels.device}} で書き込み操作に費やされた時間のレート（秒あたりの時間）: (current value: {{ $value }})"
+          - alert: NodeDiskUsageWarning
+            expr: |
+              100 * (1 - (
+                node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
+                /
+                node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
+              )) > 80
+              and on(instance, device, mountpoint)
+              node_filesystem_readonly == 0
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+            summary: "NodeDiskUsageWarning"
+            description: "ファイルシステムの使用率 80 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
+        - alert: NodeDiskUsageCritical
+          expr: |
+            100 * (1 - (
+              node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
+              /
+              node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|rpc_pipefs|nsfs|autofs|fuse.lxcfs"}
+            )) > 90
+            and on(instance, device, mountpoint)
+            node_filesystem_readonly == 0
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "NodeDiskUsageCritical"
+            description: "ファイルシステムの使用率 90 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
         - name: gateway
           rules:
           - alert: node_disk_written_bytes_total
