@@ -215,8 +215,8 @@ server:
             labels:
               severity: warning
             annotations:
-            summary: "NodeDiskUsageWarning"
-            description: "ファイルシステムの使用率 80 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
+              summary: "NodeDiskUsageWarning"
+              description: "ファイルシステムの使用率 80 % 超過 server=({{ $labels.instance }}, device={{ $labels.device }}, mountPoint={{ $labels.mountpoint }})"
         - alert: NodeDiskUsageCritical
           expr: |
             100 * (1 - (
