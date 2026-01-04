@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: <path:secret/data/ingress/app_1#name>
+  name: <path:secret/data/ingress/app_1#name>-login
   namespace: <path:secret/data/ingress/app_1#namespace>
   annotations:
     ingressClassName: traefik
@@ -11,10 +11,6 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: <path:secret/data/ingress/app_1#namespace>-ip-whitelist@kubernetescrd
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - <path:secret/data/ingress/app_1#hosts>
-      secretName: <path:secret/data/ingress/app_1#hosts>-tls
   rules:
     - host: <path:secret/data/ingress/app_1#hosts>
       http:
