@@ -239,7 +239,6 @@ server:
             annotations:
               summary: "SQLインジェクションの可能性あり"
           - alert: WordPressScan
-            interval: 1m
             expr: |
               namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
               ~"wp-login\\.php|xmlrpc\\.php|wp-admin"
@@ -269,7 +268,7 @@ server:
               | filter matches:>0
             for: 0m
             labels:
-              severity: high
+              severity: warning
             annotations:
               summary: "パストラバーサル試行"
           - alert: SuspiciousUserAgent
@@ -284,7 +283,6 @@ server:
             annotations:
               summary: "疑わしい User-Agent を検出"
           - alert: http80VulnerabilityScan
-            interval: 1m
             expr: |
               _SYSTEMD_UNIT:"haproxy" 
               "<NOSRV>"
