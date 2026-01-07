@@ -2,3 +2,10 @@ persistence:
   defaultFsType: xfs
 defaultBackupStore:
   backupTarget: "nfs://192.168.1.31:/longhorn/"
+image:
+  longhorn:
+    manager:
+      tag: v1.10.1-hotfix-2
+
+preUpgradeChecker:
+  upgradeVersionCheck: false
