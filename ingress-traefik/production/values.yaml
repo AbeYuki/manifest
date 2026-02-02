@@ -16,6 +16,13 @@ ingressRoute:
 logs:
   access:
     enabled: true
+additionalArguments:
+  - "--entryPoints.web.transport.respondingTimeouts.readTimeout=1800s"
+  - "--entryPoints.web.transport.respondingTimeouts.idleTimeout=1800s"
+  - "--entryPoints.web.transport.respondingTimeouts.writeTimeout=1800s"
+  - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=1800s"
+  - "--entryPoints.websecure.transport.respondingTimeouts.idleTimeout=1800s"
+  - "--entryPoints.websecure.transport.respondingTimeouts.writeTimeout=1800s"
 ports:
   web:
     expose:
