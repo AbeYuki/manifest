@@ -54,7 +54,7 @@ config:
     # VictoriaLogs へ OTLP/HTTP Logs
     otlphttp/victorialogs:
       # VictoriaLogs が受ける Logs ingest endpoint
-      logs_endpoint: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/opentelemetry/v1/logs
+      logs_endpoint: http://vector.monitoring.svc.cluster.local:4318/v1/logs
       # vmauth 経由の場合は Authorization やヘッダを付ける
       # headers:
       #   Authorization: "Bearer <token>"
