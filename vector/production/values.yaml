@@ -50,52 +50,25 @@ customConfig:
       type: remap
       inputs: [otlp_in]
       source: |
-        if !exists(.timestamp) { .timestamp = now() }
-        if exists(.k8s) && exists(.k8s.namespace) && exists(.k8s.namespace.name) {
-          .namespace = .k8s.namespace.name
-        } else {
-          .namespace = "unknown"
-        }
-        if exists(.k8s) && exists(.k8s.pod) && exists(.k8s.pod.name) {
-          .pod = .k8s.pod.name
-        } else {
-          .pod = "unknown"
-        }
-        if exists(.k8s) && exists(.k8s.container) && exists(.k8s.container.name) {
-          .container = .k8s.container.name
-        } else {
-          .container = "unknown"
-        }
-        if exists(.k8s) && exists(.k8s.node) && exists(.k8s.node.name) {
-          .node = .k8s.node.name
-        } else {
-          .node = null
-        }
-        body = null
-        if exists(.message) {
-          body = .message
-        } else if exists(.body) {
-          body = .body
-        } else {
-          body = .
-        }
-        sev = null
-        if exists(.severity) { sev = .severity }
-        res = null
-        if exists(.resource) { res = .resource }
-        attrs = null
-        if exists(.attributes) { attrs = .attributes }
+        if !exists(.timestamp) || is_null(.timestamp) { .timestamp = now() }
+  
+        .namespace = if exists(.k8s.namespace.name) { .k8s.namespace.name } else { "unknown" }
+        .pod       = if exists(.k8s.pod.name)       { .k8s.pod.name }       else { "unknown" }
+        .container = if exists(.k8s.container.name) { .k8s.container.name } else { "unknown" }
+  
+        body = if exists(.message) { .message } else if exists(.body) { .body } else { . }
+  
         .message = encode_json({
           "timestamp": .timestamp,
-          "severity": sev,
-          "body": body,
-          "resource": res,
-          "attributes": attrs,
+          "severity":  if exists(.severity) { .severity } else { null },
+          "body":      body,
+          "resource":  if exists(.resource) { .resource } else { null },
+          "attributes": if exists(.attributes) { .attributes } else { null },
           "k8s": {
             "namespace": .namespace,
             "pod": .pod,
             "container": .container,
-            "node": .node
+            "node": if exists(.k8s.node.name) { .k8s.node.name } else { null }
           }
         })
         del(.body)
