@@ -34,14 +34,14 @@ resources:
     memory: 256Mi
 
 config:
-#  receivers:
-#    filelog:
-#      operators:
-#        - id: app-json
-#          type: json_parser
-#          parse_from: body
-#          parse_to: attributes
-#          on_error: send
+  receivers:
+    filelog:
+      operators:
+        - id: app-json
+          type: json_parser
+          parse_from: body
+          parse_to: attributes
+          on_error: send
   exporters:
     # VictoriaLogs へ OTLP/HTTP Logs
     otlphttp/victorialogs:
