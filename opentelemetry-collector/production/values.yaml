@@ -1,5 +1,10 @@
 mode: daemonset
 
+image:
+  repository: otel/opentelemetry-collector-contrib
+  tag: "0.145.0"
+  pullPolicy: IfNotPresent
+
 presets:
   logsCollection:
     enabled: true
