@@ -50,48 +50,15 @@ customConfig:
       type: remap
       inputs: [otlp_in]
       source: |
-        # timestamp は OTLP に入ってることが多いけど、念のため
-        if !exists(.timestamp) || is_null(.timestamp) {
-          .timestamp = now()
-        }
-        ns  = "unknown"
-        pod = "unknown"
-        ctr = "unknown"
-        node = null
-        if exists(.k8s.namespace.name) { ns = .k8s.namespace.name }
-        if exists(.k8s.pod.name)       { pod = .k8s.pod.name }
-        if exists(.k8s.container.name) { ctr = .k8s.container.name }
-        if exists(.k8s.node.name)      { node = .k8s.node.name }
-        body = .
-        if exists(.message) { body = .message }
-        if !exists(.message) && exists(.body) { body = .body }
-        sev = null
-        if exists(.severity) { sev = .severity }
-        res = null
-        if exists(.resource) { res = .resource }
-        attrs = null
-        if exists(.attributes) { attrs = .attributes }
-        .namespace = ns
-        .pod = pod
-        .container = ctr
-        .message = encode_json({
+        .timestamp = to_string!(.timestamp) ?? to_string!(now())
+        event = {
           "timestamp": .timestamp,
-          "severity": sev,
-          "body": body,
-          "resource": res,
-          "attributes": attrs,
-          "k8s": {
-            "namespace": ns,
-            "pod": pod,
-            "container": ctr,
-            "node": node
-          }
-        })
-        del(.body)
-        del(.attributes)
-        del(.resource)
-        del(.k8s)
-        del(.severity)
+          "namespace": .namespace,
+          "pod": .pod,
+          "container": .container,
+          "message": .message
+        }
+        . = encode_json(event)
 
   sinks:
     to_victorialogs:
@@ -102,7 +69,7 @@ customConfig:
       framing:
         method: newline_delimited
       encoding:
-        codec: json
+        codec: raw_message
       request:
         headers:
           Content-Type: application/x-ndjson
