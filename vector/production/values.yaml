@@ -99,11 +99,15 @@ customConfig:
       inputs: [otlp_tf]
       uri: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/jsonline
       method: post
+      batch:
+        max_events: 1
+      framing:
+        method: newline_delimited
       encoding:
         codec: json
       request:
         headers:
-          Content-Type: application/stream+json
+          Content-Type: application/x-ndjson
           VL-Msg-Field: message
           VL-Time-Field: timestamp
           VL-Stream-Fields: namespace,pod,container
