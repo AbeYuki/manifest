@@ -16,6 +16,15 @@ presets:
     extractAllPodLabels: false
     extractAllPodAnnotations: false
 
+# control plane の taint を許可
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
+
 resources:
   limits:
     cpu: 300m
