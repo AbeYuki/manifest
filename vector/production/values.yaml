@@ -45,78 +45,78 @@ customConfig:
       decoding:
         codec: otlp
 
-transforms:
-  otlp_tf:
-    type: remap
-    inputs: [otlp_in]
-    source: |
-      if !exists(.timestamp) { .timestamp = now() }
-      if exists(.k8s) && exists(.k8s.namespace) && exists(.k8s.namespace.name) {
-        .namespace = .k8s.namespace.name
-      } else {
-        .namespace = "unknown"
-      }
-      if exists(.k8s) && exists(.k8s.pod) && exists(.k8s.pod.name) {
-        .pod = .k8s.pod.name
-      } else {
-        .pod = "unknown"
-      }
-      if exists(.k8s) && exists(.k8s.container) && exists(.k8s.container.name) {
-        .container = .k8s.container.name
-      } else {
-        .container = "unknown"
-      }
-      if exists(.k8s) && exists(.k8s.node) && exists(.k8s.node.name) {
-        .node = .k8s.node.name
-      } else {
-        .node = null
-      }
-      body = null
-      if exists(.message) {
-        body = .message
-      } else if exists(.body) {
-        body = .body
-      } else {
-        body = .
-      }
-      sev = null
-      if exists(.severity) { sev = .severity }
-      res = null
-      if exists(.resource) { res = .resource }
-      attrs = null
-      if exists(.attributes) { attrs = .attributes }
-      .message = encode_json({
-        "timestamp": .timestamp,
-        "severity": sev,
-        "body": body,
-        "resource": res,
-        "attributes": attrs,
-        "k8s": {
-          "namespace": .namespace,
-          "pod": .pod,
-          "container": .container,
-          "node": .node
+  transforms:
+    otlp_tf:
+      type: remap
+      inputs: [otlp_in]
+      source: |
+        if !exists(.timestamp) { .timestamp = now() }
+        if exists(.k8s) && exists(.k8s.namespace) && exists(.k8s.namespace.name) {
+          .namespace = .k8s.namespace.name
+        } else {
+          .namespace = "unknown"
         }
-      })
-      del(.body)
-      del(.attributes)
-      del(.resource)
-      del(.k8s)
-      del(.severity)
+        if exists(.k8s) && exists(.k8s.pod) && exists(.k8s.pod.name) {
+          .pod = .k8s.pod.name
+        } else {
+          .pod = "unknown"
+        }
+        if exists(.k8s) && exists(.k8s.container) && exists(.k8s.container.name) {
+          .container = .k8s.container.name
+        } else {
+          .container = "unknown"
+        }
+        if exists(.k8s) && exists(.k8s.node) && exists(.k8s.node.name) {
+          .node = .k8s.node.name
+        } else {
+          .node = null
+        }
+        body = null
+        if exists(.message) {
+          body = .message
+        } else if exists(.body) {
+          body = .body
+        } else {
+          body = .
+        }
+        sev = null
+        if exists(.severity) { sev = .severity }
+        res = null
+        if exists(.resource) { res = .resource }
+        attrs = null
+        if exists(.attributes) { attrs = .attributes }
+        .message = encode_json({
+          "timestamp": .timestamp,
+          "severity": sev,
+          "body": body,
+          "resource": res,
+          "attributes": attrs,
+          "k8s": {
+            "namespace": .namespace,
+            "pod": .pod,
+            "container": .container,
+            "node": .node
+          }
+        })
+        del(.body)
+        del(.attributes)
+        del(.resource)
+        del(.k8s)
+        del(.severity)
 
-sinks:
-  to_victorialogs:
-    type: http
-    inputs: [otlp_tf]
-    uri: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/jsonline
-    method: post
-    encoding:
-      codec: json
-    batch:
-      max_events: 1
-    request:
-      headers:
-        Content-Type: application/stream+json
-        VL-Msg-Field: message
-        VL-Time-Field: timestamp
-        VL-Stream-Fields: namespace,pod,container
+  sinks:
+    to_victorialogs:
+      type: http
+      inputs: [otlp_tf]
+      uri: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/jsonline
+      method: post
+      encoding:
+        codec: json
+      batch:
+        max_events: 1
+      request:
+        headers:
+          Content-Type: application/stream+json
+          VL-Msg-Field: message
+          VL-Time-Field: timestamp
+          VL-Stream-Fields: namespace,pod,container
