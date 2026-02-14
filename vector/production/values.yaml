@@ -50,25 +50,41 @@ customConfig:
       type: remap
       inputs: [otlp_in]
       source: |
-        if !exists(.timestamp) || is_null(.timestamp) { .timestamp = now() }
-  
-        .namespace = if exists(.k8s.namespace.name) { .k8s.namespace.name } else { "unknown" }
-        .pod       = if exists(.k8s.pod.name)       { .k8s.pod.name }       else { "unknown" }
-        .container = if exists(.k8s.container.name) { .k8s.container.name } else { "unknown" }
-  
-        body = if exists(.message) { .message } else if exists(.body) { .body } else { . }
-  
+        # timestamp は OTLP に入ってることが多いけど、念のため
+        if !exists(.timestamp) || is_null(.timestamp) {
+          .timestamp = now()
+        }
+        ns  = "unknown"
+        pod = "unknown"
+        ctr = "unknown"
+        node = null
+        if exists(.k8s.namespace.name) { ns = .k8s.namespace.name }
+        if exists(.k8s.pod.name)       { pod = .k8s.pod.name }
+        if exists(.k8s.container.name) { ctr = .k8s.container.name }
+        if exists(.k8s.node.name)      { node = .k8s.node.name }
+        body = .
+        if exists(.message) { body = .message }
+        if !exists(.message) && exists(.body) { body = .body }
+        sev = null
+        if exists(.severity) { sev = .severity }
+        res = null
+        if exists(.resource) { res = .resource }
+        attrs = null
+        if exists(.attributes) { attrs = .attributes }
+        .namespace = ns
+        .pod = pod
+        .container = ctr
         .message = encode_json({
           "timestamp": .timestamp,
-          "severity":  if exists(.severity) { .severity } else { null },
-          "body":      body,
-          "resource":  if exists(.resource) { .resource } else { null },
-          "attributes": if exists(.attributes) { .attributes } else { null },
+          "severity": sev,
+          "body": body,
+          "resource": res,
+          "attributes": attrs,
           "k8s": {
-            "namespace": .namespace,
-            "pod": .pod,
-            "container": .container,
-            "node": if exists(.k8s.node.name) { .k8s.node.name } else { null }
+            "namespace": ns,
+            "pod": pod,
+            "container": ctr,
+            "node": node
           }
         })
         del(.body)
