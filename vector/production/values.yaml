@@ -3,74 +3,90 @@
 role: "Stateless-Aggregator"
 replicas: 2
 
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1024Mi
+
+extraContainerPorts:
+  - name: otlp-http
+    containerPort: 4318
+    protocol: TCP
+  - name: vector-api
+    containerPort: 8686
+    protocol: TCP
+
 service:
   enabled: true
   ports:
-    - name: otlp-grpc
-      port: 4317
-      targetPort: 4317
-      protocol: TCP
     - name: otlp-http
       port: 4318
       targetPort: 4318
+      protocol: TCP
+    - name: vector-api
+      port: 8686
+      targetPort: 8686
       protocol: TCP
 
 customConfig:
   api:
     enabled: true
+    address: 0.0.0.0:8686
+    playground: false
 
   sources:
     otlp_in:
-      type: opentelemetry
-      grpc:
-        address: 0.0.0.0:4317
-      http:
-        address: 0.0.0.0:4318
+      type: http_server
+      address: 0.0.0.0:4318
+      path: /v1/logs
+      decoding:
+        codec: otlp
 
   transforms:
-    to_full_json:
+    otlp_tf:
       type: remap
       inputs: [otlp_in]
-      # messagem, k8s attributes 全部まとめて message(JSON文字列) に格納
       source: |
-        .timestamp = now()  # or .timestamp = .timestamp ?? now()
+        .timestamp = .timestamp ?? now()
         .namespace = .k8s.namespace.name ?? "unknown"
         .pod       = .k8s.pod.name ?? "unknown"
         .container = .k8s.container.name ?? "unknown"
-
+        .node      = .k8s.node.name ?? null
+        body = .message ?? .body ?? .
         .message = encode_json({
           "timestamp": .timestamp,
           "severity": .severity ?? null,
-          "body": .message ?? .body ?? null,
+          "body": body,
           "resource": .resource ?? null,
           "attributes": .attributes ?? null,
           "k8s": {
             "namespace": .namespace,
             "pod": .pod,
             "container": .container,
-            "node": .k8s.node.name ?? null
+            "node": .node
           }
         })
+        del(.body)
+        del(.attributes)
+        del(.resource)
+        del(.k8s)
+        del(.severity)
 
   sinks:
-    vlogs_jsonline:
+    to_victorialogs:
       type: http
-      inputs: [to_full_json]
-      # VictoriaLogs公式の Vector HTTP(JSON) 例：/insert/jsonline + _msg_field/_time_field/_stream_fields :contentReference[oaicite:4]{index=4}
-      uri: >-
-        http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/jsonline
-        ?_stream_fields=namespace,pod,container
-        &_msg_field=message
-        &_time_field=timestamp
-      compression: gzip
+      inputs: [otlp_tf]
+      uri: http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/jsonline
+      method: post
+      headers:
+        Content-Type: application/stream+json
+        VL-Msg-Field: message
+        VL-Time-Field: timestamp
+        VL-Stream-Fields: namespace,pod,container
       encoding:
         codec: json
-      framing:
-        method: newline_delimited
-      healthcheck:
-        enabled: false
-      # vmauth/テナント分離する場合
-      # request:
-      #   headers:
-      #     AccountID: "12"
-      #     ProjectID: "34"
+      batch:
+        max_events: 1
