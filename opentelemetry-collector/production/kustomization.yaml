@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monitoring
+
+helmCharts:
+  - name: opentelemetry-collector
+    repo: https://open-telemetry.github.io/opentelemetry-helm-charts
+    # Artifact Hub 等で見える chart version を入れてください（例として 0.145.0）
+    version: 0.145.0
+    releaseName: otelcol
+    namespace: monitoring
+    valuesFile: values.yaml
