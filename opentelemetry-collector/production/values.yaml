@@ -34,6 +34,14 @@ resources:
     memory: 256Mi
 
 config:
+  receivers:
+    filelog:
+      operators:
+        - id: app-json
+          type: json_parser
+          parse_from: body
+          parse_to: attributes
+          on_error: send
   exporters:
     # VictoriaLogs へ OTLP/HTTP Logs
     otlphttp/victorialogs:
@@ -42,40 +50,38 @@ config:
       # vmauth 経由の場合は Authorization やヘッダを付ける
       # headers:
       #   Authorization: "Bearer <token>"
-#  processors:
-#    # 低カーディナリティ：必要最低限の k8s メタデータだけを resource attribute として付与
-#    k8sattributes:
-#      auth_type: serviceAccount
-#      extract:
-#        metadata:
-#          - k8s.namespace.name
-#          - k8s.pod.name
-#          - k8s.container.name
-#          - k8s.node.name
-#    # 高カーディナリティになりがちな属性は削る
-#    attributes/drop_high_card:
-#      actions:
-#        - key: request_id
-#          action: delete
-#        - key: trace_id
-#          action: delete
-#        - key: span_id
-#          action: delete
-#        - key: http.user_agent
-#          action: delete
-#        - key: client.address
-#          action: delete
-#        - key: url.full
-#          action: delete
-#  service:
-#    pipelines:
-#      logs:
-#        processors:
-#          - memory_limiter
-#          - k8sattributes
-#          - attributes/drop_high_card
-#          - batch
-#        exporters:
-#          - otlphttp/victorialogs
-#          - debug
-#
+  processors:
+    # 低カーディナリティ：必要最低限の k8s メタデータだけを resource attribute として付与する場合
+ #   k8sattributes:
+ #     auth_type: serviceAccount
+ #     extract:
+ #       metadata:
+ #         - k8s.namespace.name
+ #         - k8s.pod.name
+ #         - k8s.container.name
+ #         - k8s.node.name
+    # 高カーディナリティになりがちな属性を削る場合
+    attributes/drop_high_card:
+      actions:
+        - key: request_id
+          action: delete
+        - key: trace_id
+          action: delete
+        - key: span_id
+          action: delete
+        - key: http.user_agent
+          action: delete
+        - key: client.address
+          action: delete
+        - key: url.full
+          action: delete
+  service:
+    pipelines:
+      logs:
+        processors:
+          - memory_limiter
+          - k8sattributes
+          - attributes/drop_high_card
+          - batch
+        exporters:
+          - otlphttp/victorialogs
