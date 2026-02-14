@@ -50,7 +50,7 @@ customConfig:
       type: remap
       inputs: [otlp_in]
       source: |
-        .timestamp = to_string!(.timestamp) ?? to_string!(now())
+        .timestamp = to_string(.timestamp) ?? to_string!(now())
         event = {
           "timestamp": .timestamp,
           "namespace": .namespace,
