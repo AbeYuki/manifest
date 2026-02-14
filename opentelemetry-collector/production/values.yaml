@@ -37,6 +37,9 @@ config:
   receivers:
     filelog:
       operators:
+        - id: container-parser
+          max_log_size: 102400
+          type: container
         - id: app-json
           type: json_parser
           parse_from: body
