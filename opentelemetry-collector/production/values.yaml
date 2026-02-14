@@ -40,11 +40,20 @@ config:
         - id: container-parser
           max_log_size: 102400
           type: container
+        - id: route-json
+          type: router
+          routes:
+            - output: parse-json
+              expr: 'body matches "^\\s*\\{"'
         - id: app-json
           type: json_parser
           parse_from: body
           parse_to: attributes
           on_error: send
+        - id: wrap-text
+          type: add
+          field: attributes.message
+          value: EXPR(body)
   exporters:
     # VictoriaLogs へ OTLP/HTTP Logs
     otlphttp/victorialogs:
