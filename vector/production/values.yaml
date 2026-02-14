@@ -99,8 +99,10 @@ customConfig:
       inputs: [otlp_tf]
       uri: "http://victoria-logs-cluster-vlinsert.monitoring.svc.cluster.local:9481/insert/jsonline"
       method: post
+      framing:
+        method: newline_delimited
       encoding:
-        codec: ndjson
+        codec: json
       request:
         headers:
           Content-Type: application/x-ndjson
