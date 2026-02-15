@@ -118,13 +118,13 @@ config:
           action: delete
         - key: url.full
           action: delete
-    transform/cleanup:
-      log_statements:
-        - context: log
-          statements:
-            # message があるなら msg/log を消す
-            - delete_key(attributes, "msg") where attributes["message"] != nil
-            - delete_key(attributes, "log") where attributes["message"] != nil
+    #transform/cleanup:
+    #  log_statements:
+    #    - context: log
+    #      statements:
+    #        # message があるなら msg/log を消す
+    #        - delete_key(attributes, "msg") where attributes["message"] != nil
+    #        - delete_key(attributes, "log") where attributes["message"] != nil
   service:
     pipelines:
       logs:
@@ -132,7 +132,7 @@ config:
         processors:
           - memory_limiter
           - k8sattributes
-          - transform/cleanup
+        #  - transform/cleanup
           - attributes/drop_high_card
           - batch
         exporters:
