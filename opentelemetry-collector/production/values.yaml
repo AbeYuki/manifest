@@ -37,34 +37,34 @@ config:
   receivers:
     filelog:
       operators:
-        #- id: container-parser
-        #  max_log_size: 102400
-        #  type: container
-        - id: parse-cri
-          type: regex_parser
-          regex: '^(?P<ts>[^ ]+) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) (?P<log>.*)$'
-          parse_from: body
-        - id: set-body
-          type: move
-          from: attributes.log
-          to: body
-          if: 'attributes.log != nil'
-        - id: try-json
-          type: json_parser
-          parse_from: body
-          parse_to: attributes
-          if: 'body matches "^\\s*\\{"'
-          on_error: send
-        - id: message-from-msg
-          type: add
-          field: attributes.message
-          value: EXPR(attributes.msg)
-          if: 'attributes.message == nil && attributes.msg != nil'
-        - id: message-from-body
-          type: add
-          field: attributes.message
-          value: EXPR(body)
-          if: 'attributes.message == nil'  
+        - id: container-parser
+          max_log_size: 102400
+          type: container
+        #- id: parse-cri
+        #  type: regex_parser
+        #  regex: '^(?P<ts>[^ ]+) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) (?P<log>.*)$'
+        #  parse_from: body
+        #- id: set-body
+        #  type: move
+        #  from: attributes.log
+        #  to: body
+        #  if: 'attributes.log != nil'
+        #- id: try-json
+        #  type: json_parser
+        #  parse_from: body
+        #  parse_to: attributes
+        #  if: 'body matches "^\\s*\\{"'
+        #  on_error: send
+        #- id: message-from-msg
+        #  type: add
+        #  field: attributes.message
+        #  value: EXPR(attributes.msg)
+        #  if: 'attributes.message == nil && attributes.msg != nil'
+        #- id: message-from-body
+        #  type: add
+        #  field: attributes.message
+        #  value: EXPR(body)
+        #  if: 'attributes.message == nil'  
   exporters:
     # VictoriaLogs へ OTLP/HTTP Logs
     otlphttp/victorialogs:
