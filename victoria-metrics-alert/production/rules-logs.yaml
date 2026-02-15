@@ -139,7 +139,7 @@ server:
           rules:
           - alert: remote_storage_error
             expr: |
-              app_kubernetes_io_name:"prometheus"
+              app.kubernetes.io.name:"prometheus"
               "non-recoverable error" 
               | stats by (hostname, namespace, pod_name) count() as matches
               | filter matches:>0
@@ -164,7 +164,7 @@ server:
               description: "アプリケーションがメモリ不足のためresourcesを調整する"
           - alert: vault_failed_to_heartbeat_to_peer
             expr: |
-              app_kubernetes_io_name:"vault" 
+              app.kubernetes.io.name:"vault" 
               "storage.raft: failed to heartbeat to: peer"
               | stats by (hostname, namespace, pod_name) count() as matches
               | filter matches:>0
@@ -176,7 +176,7 @@ server:
               description: "vault を確認して raft peers を構成してください"
           - alert: pod_input_output_error
             expr: |
-              app_kubernetes_io_name:!"loki"
+              app.kubernetes.io.name:!"loki"
               pod_name:~".+" 
               "input/output"
               | stats by (hostname, namespace, pod_name) count() as matches
@@ -191,7 +191,7 @@ server:
                 {{ $labels.pod_name }} の pod を再起動してください
           - alert: minecraft_bedrock_server_user_connected
             expr: |
-              namespace:"prod-minecraft"
+              k8s.namespace.name:"prod-minecraft"
               "Player connected"
               | stats by (hostname, namespace, pod_name) count() as matches
               | filter matches:>0
@@ -202,7 +202,7 @@ server:
               summary: "Minecraft bedrock server user connected"
           - alert: longhorn_buckup_error
             expr: |
-              namespace:"longhorn-system"
+              k8s.namespace.name:"longhorn-system"
               "cannot mount nfs"
               | stats by (hostname, namespace, pod_name) count() as matches
               | filter matches:>0
@@ -218,7 +218,7 @@ server:
           rules:
           - alert: XMRigMiningAttempt
             expr: |
-              namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              k8s.namespace.name:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
               "mining"
               | stats by (hostname) count() as matches
               | filter matches:>0
@@ -229,7 +229,7 @@ server:
               summary: "XMRig マイニングアクセスを検出"
           - alert: SQLInjectionAttempt
             expr: |
-              namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              k8s.namespace.name:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
               ~"UNION SELECT|DROP TABLE|OR 1=1|--|%27"
               | stats by (hostname) count() as matches
               | filter matches:>0
@@ -240,7 +240,7 @@ server:
               summary: "SQLインジェクションの可能性あり"
           - alert: WordPressScan
             expr: |
-              namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              k8s.namespace.name:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
               ~"wp-login\\.php|xmlrpc\\.php|wp-admin"
               | stats by (hostname) count() as matches
               | filter matches:>3
@@ -251,7 +251,7 @@ server:
               summary: "WordPress ターゲットのスキャン試行"
           - alert: Log4ShellAttempt
             expr: |
-              namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              k8s.namespace.name:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
               ~"\\$\\{jndi:[a-z]+://" 
               | stats by (hostname) count() as matches
               | filter matches:>0
@@ -262,7 +262,7 @@ server:
               summary: "Log4Shell 攻撃検出"
           - alert: PathTraversalAttempt
             expr: |
-              namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system" 
+              k8s.namespace.name:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system" 
               ~"\\.\\./|\\.\\.\\\\|%2e%2e%2f"
               | stats by (hostname) count() as matches
               | filter matches:>0
@@ -273,7 +273,7 @@ server:
               summary: "パストラバーサル試行"
           - alert: SuspiciousUserAgent
             expr: |
-              namespace:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
+              k8s.namespace.name:~"ingress-nginx|ingress-traefik|envoy-gateway|envoy-gateway-system"
               ~"sqlmap|nikto|XMRig|curl$"
               | stats by (hostname) count() as matches
               | filter matches:>0
