@@ -78,6 +78,14 @@ config:
     # 低カーディナリティ：必要最低限の k8s メタデータだけを resource attribute として付与する場合
     k8sattributes:
       auth_type: serviceAccount
+      passthrough: false
+      pod_association:
+        - sources:
+            - from: resource_attribute
+              name: k8s.pod.ip
+        - sources:
+            - from: resource_attribute
+              name: k8s.pod.uid
       extract:
         metadata:
           - k8s.namespace.name
@@ -103,6 +111,71 @@ config:
           - service.name
           - service.version
         #  - service.instance.id
+        labels:
+          - tag_name: app.kubernetes.io.name
+            key: app.kubernetes.io/name
+            from: pod
+          - tag_name: app.kubernetes.io.instance
+            key: app.kubernetes.io/instance
+            from: pod
+          - tag_name: app.kubernetes.io.version
+            key: app.kubernetes.io/version
+            from: pod
+          - tag_name: app.kubernetes.io.component
+            key: app.kubernetes.io/component
+            from: pod
+          - tag_name: app.kubernetes.io.part_of
+            key: app.kubernetes.io/part-of
+            from: pod
+          - tag_name: app.kubernetes.io.managed_by
+            key: app.kubernetes.io/managed-by
+            from: pod
+          - tag_name: app.kubernetes.io.created_by
+            key: app.kubernetes.io/created-by
+            from: pod
+          - tag_name: helm.sh.chart
+            key: helm.sh/chart
+            from: pod
+          - tag_name: app
+            key: app
+            from: pod
+          - tag_name: environment
+            key: environment
+            from: pod
+        annotations:
+          - tag_name: helm.release.name
+            key: meta.helm.sh/release-name
+            from: pod
+          - tag_name: helm.release.namespace
+            key: meta.helm.sh/release-namespace
+            from: pod
+          - tag_name: helm.hook
+            key: helm.sh/hook
+            from: pod
+          - tag_name: helm.hook_weight
+            key: helm.sh/hook-weight
+            from: pod
+          - tag_name: helm.hook_delete_policy
+            key: helm.sh/hook-delete-policy
+            from: pod
+          - tag_name: checksum.config
+            key: checksum/config
+            from: pod
+          - tag_name: reloader.auto
+            key: reloader.stakater.com/auto
+            from: pod
+          - tag_name: kubectl.restarted_at
+            key: kubectl.kubernetes.io/restartedAt
+            from: pod
+          - tag_name: prometheus.scrape
+            key: prometheus.io/scrape
+            from: pod
+          - tag_name: prometheus.port
+            key: prometheus.io/port
+            from: pod
+          - tag_name: prometheus.path
+            key: prometheus.io/path
+            from: pod
     # 高カーディナリティになりがちな属性を削る場合
     attributes/drop_high_card:
       actions:
