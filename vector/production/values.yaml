@@ -50,15 +50,14 @@ customConfig:
       type: remap
       inputs: [otlp_in]
       source: |
-        .timestamp = to_string(.timestamp) ?? to_string!(now())
-        event = {
-          "timestamp": .timestamp,
-          "namespace": .namespace,
-          "pod": .pod,
-          "container": .container,
-          "message": .message
+        raw = to_string!(.message)
+        obj, err = parse_json(raw)
+        if err == null && is_object(obj) {
+          . = obj
+        } else {
+          . = { "message": raw }
         }
-        . = encode_json(event)
+        .timestamp = now()
 
   sinks:
     to_victorialogs:
