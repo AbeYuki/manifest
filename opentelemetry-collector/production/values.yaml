@@ -128,7 +128,6 @@ config:
   service:
     pipelines:
       logs:
-        receivers: [filelog]
         processors:
           - memory_limiter
           - k8sattributes
