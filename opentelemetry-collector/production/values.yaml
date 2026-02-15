@@ -53,6 +53,7 @@ config:
           type: json_parser
           parse_from: body
           parse_to: attributes
+          if: 'body matches "^\\s*\\{"'
           on_error: send
         - id: message-from-msg
           type: add
