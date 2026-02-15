@@ -50,13 +50,6 @@ customConfig:
       type: remap
       inputs: [otlp_in]
       source: |
-        raw = to_string!(.message)
-        obj, err = parse_json(raw)
-        if err == null && is_object(obj) {
-          . = obj
-        } else {
-          . = { "message": raw }
-        }
         .timestamp = now()
 
   sinks:
@@ -68,7 +61,7 @@ customConfig:
       framing:
         method: newline_delimited
       encoding:
-        codec: raw_message
+        codec: json
       request:
         headers:
           Content-Type: application/x-ndjson
