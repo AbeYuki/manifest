@@ -1,7 +1,7 @@
 helmCharts:
   - name: cert-manager-webhook-sakuracloud
     repo: https://ophum.github.io/cert-manager-webhook-sakuracloud/
-    version: 0.4.5
+    version: 0.4.4
     releaseName: cert-manager-webhook-sakuracloud
     namespace: cert-manager
     valuesFile: values.yaml
