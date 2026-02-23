@@ -5,7 +5,7 @@ metadata:
   namespace: argo-rollouts
   annotations:
     ingressClassName: traefik
-    cert-manager.io/cluster-issuer: ingress-traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod-dns01
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: argo-rollouts-ip-whitelist@kubernetescrd,argo-rollouts-basic-auth@kubernetescrd
 spec:
