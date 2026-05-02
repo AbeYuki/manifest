@@ -16,7 +16,7 @@ spec:
         app: viteful-backend
     spec:
       imagePullSecrets:
-        - name: registry
+        - name: registry-credentials
       containers:
         - name: backend
           image: <path:secret/data/viteful/registry#BACKEND_IMAGE>:0.1.0
