@@ -4,5 +4,3 @@ namespace: <path:secret/data/viteful/dev/namespace#NAMESPACE>
 resources:
   - ../base
   - avp-secret.yaml
-  - ingress.yaml
-
