@@ -16,8 +16,8 @@ metadata:
 spec:
   sources:
     - secret:
-        name: vault-root-ca-secret-bundle
-        key: ca.pem
+        name: vault-root-ca-secret
+        key: ca.crt
   target:
     secret:
       key: ca.pem
