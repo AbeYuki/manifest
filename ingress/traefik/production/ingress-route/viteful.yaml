@@ -10,5 +10,8 @@ spec:
   routes:
     - match: Host(`<path:secret/data/viteful/dev/ingress#HOST>`)
       kind: Rule
+      services:
+        - name: viteful-frontend
+          port: 80
   tls:
     secretName: <path:secret/data/viteful/dev/namespace#NAMESPACE>-tls
