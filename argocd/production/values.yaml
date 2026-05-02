@@ -323,8 +323,11 @@ repoServer:
     - name: custom-tools
       emptyDir: {}
     - name: vault-ca
-      configMap: 
-        name: vault-trust-bundle
+      secret:
+        secretName: vault-root-ca-secret-bundle
+        items:
+          - key: ca.pem
+            path: ca.pem
     - name: vault-client-tls
       secret:
         secretName: vault-client-tls

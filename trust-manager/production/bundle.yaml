@@ -12,33 +12,15 @@
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
-  name: vault-trust-bundle
-  # namespace の指定不可（ClusterScope）
+  name: vault-root-ca-secret-bundle
 spec:
   sources:
-    # namespace: cert-manager のリソースを参照
-    - configMap:
-        name: vault-ca-bundle
-        key: ca.pem
-  target:
-    configMap:
-      key: ca.pem
-    namespaceSelector:
-      matchLabels:
-        trust-manager/bundle: "enabled"
----
-apiVersion: trust.cert-manager.io/v1alpha1
-kind: Bundle
-metadata:
-  name: vault-trust-bundle-secret
-spec:
-  sources:
-    - configMap:
-        name: vault-ca-bundle
-        key: ca.pem
+    - secret:
+        name: vault-root-ca-secret
+        key: ca.crt
   target:
     secret:
-      key: ca.crt
+      key: ca.pem
     namespaceSelector:
       matchLabels:
         trust-manager/bundle: "enabled"
