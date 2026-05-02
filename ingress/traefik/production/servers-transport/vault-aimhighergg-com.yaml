@@ -7,6 +7,6 @@ spec:
   serverName: vault.vault.svc.cluster.local
   insecureSkipVerify: false
   rootCAs:  # Vault サーバ証明書を検証するための CA
-    - secret: vault-trust-bundle-secret
+    - secret: vault-root-ca-secret-bundle
   certificatesSecrets: # Traefik が Vault へ提示するクライアント証明書
     - traefik-vault-client-tls
