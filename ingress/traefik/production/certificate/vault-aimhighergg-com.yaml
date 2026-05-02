@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: vault-aimhighergg-coma-tls
+  name: vault-aimhighergg-com-tls
   namespace: vault
 spec:
   secretName: vault-aimhighergg-com-tls
