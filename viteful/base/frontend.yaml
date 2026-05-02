@@ -14,6 +14,8 @@ spec:
       labels:
         app: viteful-frontend
     spec:
+      imagePullSecrets:
+        - name: registry-credentials
       containers:
         - name: frontend
           image: <path:secret/data/viteful/dev/registry#FRONTEND_IMAGE>:0.1.0
