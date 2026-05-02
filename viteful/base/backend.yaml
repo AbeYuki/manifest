@@ -20,6 +20,7 @@ spec:
       containers:
         - name: backend
           image: <path:secret/data/viteful/registry#BACKEND_IMAGE>:0.1.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 1323
           env:
