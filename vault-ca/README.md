@@ -7,6 +7,13 @@ ClusterIssuer:
   secretName: vault-root-ca-secret
 ```
 
+Root 証明書は 1年有効 / 30日前更新とする
+
+```bash
+duration: 8760h      # 1年
+renewBefore: 720h    # 30日前
+```
+
 # Leaf 証明書
 
 Leaf 証明書は 90日有効 / 15日前更新とする。
