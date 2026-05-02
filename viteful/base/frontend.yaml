@@ -21,9 +21,9 @@ spec:
           image: <path:secret/data/viteful/dev/registry#FRONTEND_IMAGE>:0.1.0
           ports:
             - containerPort: 80
-      env:
-        - name: API_UPSTREAM
-          value: "http://viteful-backend.viteful.svc.cluster.local:1323"
+          env:
+            - name: API_UPSTREAM
+              value: "http://viteful-backend.viteful.svc.cluster.local:1323"
 ---
 apiVersion: v1
 kind: Service
