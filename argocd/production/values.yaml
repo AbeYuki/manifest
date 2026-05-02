@@ -330,7 +330,7 @@ repoServer:
             path: ca.pem
     - name: vault-client-tls
       secret:
-        secretName: vault-client-tls-bundle
+        secretName: vault-client-tls
         items:
           - key: tls.crt
             path: tls.crt
