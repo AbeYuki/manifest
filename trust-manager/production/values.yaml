@@ -2,4 +2,4 @@ secretTargets:
   enabled: true
   authorizedSecretsAll: false
   authorizedSecrets:
-    - vault-trust-bundle-secret
+    - vault-root-ca-secret-bundle
