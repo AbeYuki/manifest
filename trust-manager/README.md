@@ -22,7 +22,7 @@ Root CA は信頼アンカーであり、Leaf 証明書は実際に Vault / AVP 
 ## trust-manager Secret target の許可設定
 
 trust-manager で target を Secret にする場合、trust-manager の values で Secret target を有効化し、target Secret 名を明示的に許可する必要がある。
-
+Secret 名が secretTargets.authorizedSecrets に含まれていない場合 RBAC エラーになる。
 ```yaml
 secretTargets:
   enabled: true
@@ -31,8 +31,7 @@ secretTargets:
     - vault-root-ca-secret-bundle
 ```
 
-以下の Bundle の場合:
-
+以下の Bundle の場合、target Secret 名は Bundle 名と同じ secret/vault-root-ca-secret-bundle になる。
 ```yaml
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
@@ -50,9 +49,6 @@ spec:
       matchLabels:
         trust-manager/bundle: "enabled"
 ```
-
-target Secret 名は Bundle 名と同じ vault-root-ca-secret-bundle になる。
-Secret 名が secretTargets.authorizedSecrets に含まれていない場合、以下のような RBAC エラーになる。
 
 ## Root CA bundle の役割
 
