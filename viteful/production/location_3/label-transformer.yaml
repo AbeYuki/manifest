@@ -1,7 +1,7 @@
 apiVersion: builtin
 kind: LabelTransformer
 metadata:
-  name: label-transformer
+  name: label-transformer-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_3>
 labels:
   app: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_3>
 fieldSpecs:
