@@ -5,3 +5,13 @@ resources:
   - ../base/frontend
 transformers:
   - prefix-suffix-transformer.yaml
+patches:
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: viteful-frontend
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: "http://viteful-backend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_2>:1323"
