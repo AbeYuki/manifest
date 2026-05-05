@@ -7,5 +7,5 @@ helmCharts:
     valuesFile: values.yaml
 
 resources:
-- cluster-issuer.yaml
+#- cluster-issuer.yaml
 - secret.yaml
