@@ -5,7 +5,5 @@ metadata:
 suffix: -<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_2>
 fieldSpecs:
   - path: metadata/name
-  - path: metadata/labels/app
-  - path: spec/selector/matchLabels/app
   - path: spec/template/spec/containers/name
   - path: spec/template/spec/containers/env/valueFrom/secretKeyRef/name
