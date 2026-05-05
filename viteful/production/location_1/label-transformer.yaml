@@ -5,9 +5,11 @@ metadata:
 labels:
   app: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_1>
 fieldSpecs:
-- path: metadata/labels
-  create: true
-- path: spec/selector/matchLabels
-  create: true
-- path: spec/template/metadata/labels
-  create: true
+  - path: metadata/labels
+    create: true
+  - path: spec/selector/matchLabels
+    kind: Deployment
+    create: true
+  - path: spec/template/metadata/labels
+    kind: Deployment
+    create: true
