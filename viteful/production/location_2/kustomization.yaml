@@ -6,7 +6,8 @@ resources:
   - avp-secret.yaml
 transformers:
   - prefix-suffix-transformer.yaml
-  - label-transformer.yaml
+commonLabels:
+  app: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_2>
 patches:
   - target:
       version: v1
@@ -16,4 +17,13 @@ patches:
     patch: |-
       - op: replace
         path: /spec/selector/app
+        value: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_2>
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: viteful-frontend
+    patch: |-
+      - op: replace
+        path: /spec/selector/matchLabels/app
         value: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_2>
