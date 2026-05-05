@@ -27,9 +27,7 @@ spec:
               value: "http://viteful-backend:1323"
             - name: VITE_LOCATION_NAME
               valueFrom:
-                secretKeyRef:
-                  name: viteful-env-secret
-                  key: VITE_LOCATION_NAME
+                name: viteful-env-secret
 ---
 apiVersion: v1
 kind: Service
