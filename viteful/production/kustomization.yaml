@@ -1,0 +1,7 @@
+resources:
+  - ../base/backend
+  - ../base/db
+  - ./location_1
+  - ./location_2
+  - ./location_3
+  - avp-secret.yaml
