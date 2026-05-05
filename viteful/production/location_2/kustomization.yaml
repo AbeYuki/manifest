@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: <path:secret/data/viteful/production/namespace#NAMESPACE>
 resources:
   - ../../base/frontend
+  - avp-secret.yaml
 transformers:
   - prefix-suffix-transformer.yaml
 patches:
