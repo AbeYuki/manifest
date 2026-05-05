@@ -6,6 +6,7 @@ resources:
   - avp-secret.yaml
 transformers:
   - prefix-suffix-transformer.yaml
+  - label-transformer.yaml
 patches:
   - target:
       version: v1

@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: label-transformer
+labels:
+  app: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_1>
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/selector/matchLabels
+  create: true
+- path: spec/template/metadata/labels
+  create: true
