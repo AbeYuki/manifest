@@ -25,8 +25,8 @@ spec:
           env:
             - name: API_UPSTREAM
               value: "http://viteful-backend:1323"
-            - name: VITE_LOCATION_NAME
-              secretRef:
+          envFrom:
+            - secretRef:
                 name: viteful-env-secret
 ---
 apiVersion: v1
