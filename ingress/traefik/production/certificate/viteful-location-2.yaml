@@ -9,4 +9,4 @@ spec:
     kind: ClusterIssuer
     name: letsencrypt-prod-http01-traefik
   dnsNames:
-    - <path:secret/data/viteful/production/ingress#HOST>
+    - <path:secret/data/viteful/production/ingress#HOST_2>
