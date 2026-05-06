@@ -27,3 +27,6 @@ patches:
       - op: replace
         path: /spec/selector/matchLabels/app
         value: viteful-frontend-<path:secret/data/viteful/production/env#VITE_LOCATION_NAME_2>
+replicas:
+- name: frontend
+  count: 2
