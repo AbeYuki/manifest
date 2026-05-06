@@ -6,5 +6,5 @@ resources:
   - ./location_3
   - avp-secret.yaml
 replicas:
-- name: backend
+- name: viteful-backend
   count: 2
